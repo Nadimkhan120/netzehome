@@ -1,8 +1,14 @@
-import React, { Component, useEffect } from "react";
-import { useWindowDimensions } from "react-native";
-
-import Animated, {
+import type { Component } from 'react';
+import type React from 'react';
+import { useEffect } from 'react';
+import { useWindowDimensions } from 'react-native';
+import type {
   AnimationCallback,
+  WithSpringConfig,
+  WithTimingConfig,
+} from 'react-native-reanimated';
+import type Animated from 'react-native-reanimated';
+import {
   Easing,
   interpolate,
   interpolateColor,
@@ -12,13 +18,11 @@ import Animated, {
   useSharedValue,
   withDelay,
   withSpring,
-  WithSpringConfig,
   withTiming,
-  WithTimingConfig,
-} from "react-native-reanimated";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+} from 'react-native-reanimated';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { sharedClamp, sharedMax, sharedMin } from "./math";
+import { sharedClamp, sharedMax, sharedMin } from './math';
 
 /**
  * Interpolate number
@@ -27,10 +31,13 @@ export const useInterpolate = (
   progress: Animated.SharedValue<number>,
   input: number[],
   output: number[],
+  //@ts-ignore
   type?: Animated.Extrapolate
 ) => {
   // @ts-ignore
-  return useDerivedValue(() => interpolate(progress.value, input, output, type));
+  return useDerivedValue(() =>
+    interpolate(progress.value, input, output, type)
+  );
 };
 
 /**
@@ -40,18 +47,24 @@ export const useInterpolateColor = (
   progress: Animated.SharedValue<number>,
   input: number[],
   output: (number | string)[],
-  colorSpace?: "RGB" | "HSV" | undefined
+  colorSpace?: 'RGB' | 'HSV' | undefined
 ) => {
-  "worklet";
+  'worklet';
   // @ts-ignore
-  return useDerivedValue(() => interpolateColor(progress.value, input, output, colorSpace));
+  return useDerivedValue(() =>
+    interpolateColor(progress.value, input, output, colorSpace)
+  );
 };
 
 /**
  * Linear interpolation between x and y using a to weight between them
  */
-export const useMix = (progress: Animated.SharedValue<number>, x: number, y: number) => {
-  "worklet";
+export const useMix = (
+  progress: Animated.SharedValue<number>,
+  x: number,
+  y: number
+) => {
+  'worklet';
   return useDerivedValue(() => x + progress.value * (y - x));
 };
 
@@ -60,7 +73,7 @@ export const useMix = (progress: Animated.SharedValue<number>, x: number, y: num
  */
 export const useRadian = (value: Animated.SharedValue<number>) =>
   useDerivedValue(() => {
-    "worklet";
+    'worklet';
     return `${value.value}deg`;
   });
 
@@ -72,14 +85,16 @@ export const useShareClamp = (
   lowerValue: number,
   upperValue: number
 ) => {
-  "worklet";
-  return useDerivedValue(() => sharedClamp(value.value, lowerValue, upperValue));
+  'worklet';
+  return useDerivedValue(() =>
+    sharedClamp(value.value, lowerValue, upperValue)
+  );
 };
 /**
  * Return min number of args
  */
 export const useMin = (...args: Animated.SharedValue<number>[]) => {
-  "worklet";
+  'worklet';
   return useDerivedValue(() => sharedMin(...args.map((x) => x.value)));
 };
 
@@ -87,7 +102,7 @@ export const useMin = (...args: Animated.SharedValue<number>[]) => {
  * Return max number of args
  */
 export const useMax = (...args: Animated.SharedValue<number>[]) => {
-  "worklet";
+  'worklet';
   return useDerivedValue(() => sharedMax(...args.map((x) => x.value)));
 };
 
