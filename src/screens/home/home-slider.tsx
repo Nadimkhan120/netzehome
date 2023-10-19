@@ -1,29 +1,38 @@
-import React from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
-import { scale } from 'react-native-size-matters';
+import React from "react";
+import { ScrollView, StyleSheet } from "react-native";
+import { scale } from "react-native-size-matters";
 
-import { PressableScale, Text, View } from '@/ui';
+import { useTopVacancies } from "@/services/api/vacancies";
+import { useUser } from "@/store/user";
+import { PressableScale, Text, View } from "@/ui";
 
-import { HomeSliderItem } from './slider-item';
+import { HomeSliderItem } from "./slider-item";
+import { useRefreshOnFocus } from "@/hooks";
 
 export const HomeSliderContainer = ({}) => {
+  const company = useUser((state) => state?.company);
+
+  const { data, refetch } = useTopVacancies({
+    variables: {
+      id: company?.id,
+    },
+  });
+
+  useRefreshOnFocus(refetch);
+
   return (
-    <View backgroundColor={'secondary'} paddingTop={'large'}>
+    <View backgroundColor={"secondary"} paddingTop={"large"}>
       <View
-        flexDirection={'row'}
-        paddingHorizontal={'xLarge'}
-        alignItems={'center'}
-        justifyContent={'space-between'}
+        flexDirection={"row"}
+        paddingHorizontal={"xLarge"}
+        alignItems={"center"}
+        justifyContent={"space-between"}
       >
-        <Text variant={'medium16'} color={'black'}>
+        <Text variant={"medium16"} color={"black"}>
           Recent Jobs
         </Text>
         <PressableScale>
-          <Text
-            color={'primary'}
-            variant={'regular13'}
-            textDecorationLine={'underline'}
-          >
+          <Text color={"primary"} variant={"regular13"} textDecorationLine={"underline"}>
             See All
           </Text>
         </PressableScale>
@@ -34,8 +43,8 @@ export const HomeSliderContainer = ({}) => {
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.container}
       >
-        {[0, 1, 2, 3, 4, 5].map((element, index) => {
-          return <HomeSliderItem key={index} />;
+        {data?.response?.data?.map((element, index) => {
+          return <HomeSliderItem data={element} key={index} />;
         })}
       </ScrollView>
     </View>

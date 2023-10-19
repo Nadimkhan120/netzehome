@@ -44,7 +44,7 @@ export const theme = createTheme({
     grey500: palette.grey500,
     error: palette.error,
     info: palette.info,
-    warning: palette.info,
+    warning: palette.warning,
     transparent: 'transparent',
   },
   spacing: {
@@ -175,6 +175,11 @@ export const theme = createTheme({
       fontFamily: AppFonts.APP_FONT_SEMI_BOLD,
     },
 
+    semiBold8: {
+      fontSize: 8,
+      fontFamily: AppFonts.APP_FONT_SEMI_BOLD,
+    },
+
     heading: {
       fontSize: 16,
       fontFamily: AppFonts.APP_FONT_BOLD,
@@ -215,6 +220,15 @@ export const theme = createTheme({
       backgroundColor: 'transparent',
       borderWidth: 1,
       borderColor: 'primary',
+    },
+    error: {
+      borderRadius: scale(4),
+      height: scale(44),
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: 'transparent',
+      borderWidth: 1,
+      borderColor: 'error',
     },
   },
 

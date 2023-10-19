@@ -1,20 +1,21 @@
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { useTheme } from "@shopify/restyle";
+import { Image } from "expo-image";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { StyleSheet } from "react-native";
 import { scale } from "react-native-size-matters";
 import * as z from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useNavigation, useRoute } from "@react-navigation/native";
-import { useTheme } from "@shopify/restyle";
-import { Image } from "expo-image";
 import { icons } from "@/assets/icons";
 import { ScreenHeader } from "@/components/screen-header";
+import { useVerifyEmail } from "@/services/api/auth/verify-email";
 import { useApp } from "@/store/app";
+import { setUserToken } from "@/store/auth";
 import type { Theme } from "@/theme";
 import { Button, ControlledInput, Screen, Text, View } from "@/ui";
-import { useVerifyEmail } from "@/services/api/auth/verify-email";
 import { showErrorMessage } from "@/utils";
-import { setUserToken } from "@/store/auth";
+import { setUserWithProfile } from "@/store/user";
 
 const schema = z.object({
   code: z
@@ -51,6 +52,7 @@ export const VerifyCode = () => {
           console.log("data", JSON.stringify(data, null, 2));
           if (data?.response?.status === 200) {
             setUserToken(data?.response?.data?.token);
+            setUserWithProfile(data?.response?.data);
             if (companyType === "company") {
               navigate("CompanyInformation");
             } else {
@@ -118,3 +120,4 @@ const styles = StyleSheet.create({
     width: scale(98),
   },
 });
+

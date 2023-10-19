@@ -1,19 +1,21 @@
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useNavigation } from "@react-navigation/native";
+import { useTheme } from "@shopify/restyle";
+import { Image } from "expo-image";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { StyleSheet } from "react-native";
 import { scale } from "react-native-size-matters";
 import * as z from "zod";
+
 import { icons } from "@/assets/icons";
 import { IconButton } from "@/components";
-import { login } from "@/store/auth";
-import type { Theme } from "@/theme";
 import { useLogin } from "@/services/api/auth/login";
-import { showErrorMessage } from "@/utils";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useNavigation } from "@react-navigation/native";
-import { useTheme } from "@shopify/restyle";
-import { Image } from "expo-image";
+import { login } from "@/store/auth";
+import { setUserData } from "@/store/user";
+import type { Theme } from "@/theme";
 import { Button, ControlledInput, PressableScale, Screen, Text, View } from "@/ui";
+import { showErrorMessage } from "@/utils";
 
 const schema = z.object({
   email: z
@@ -47,6 +49,7 @@ export const Login = () => {
         onSuccess: (data) => {
           if (data?.response?.status === 200) {
             login(data?.response?.data?.token);
+            setUserData(data?.response?.data);
           } else {
             showErrorMessage(data.response.message);
           }
@@ -93,7 +96,7 @@ export const Login = () => {
         <Button label="Log in" onPress={handleSubmit(onSubmit)} loading={isLoading} />
 
         <View paddingVertical={"2xl"} alignSelf={"center"}>
-          <PressableScale onPress={() => null}>
+          <PressableScale onPress={() => navigate("ForgotPassword")}>
             <Text>Forgot password?</Text>
           </PressableScale>
         </View>

@@ -1,14 +1,12 @@
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import type { RouteProp } from '@react-navigation/native';
-import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import * as React from 'react';
-import { Platform } from 'react-native';
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import type { RouteProp } from "@react-navigation/native";
+import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import * as React from "react";
 
-import { AppDrawer } from '@/components/app-drawer';
-import { AddPost, Candidates, Home, Settings, Vacancies } from '@/screens';
-import { Home as Home2 } from '@/screens/home/home2';
+import { AppDrawer } from "@/components/app-drawer";
+import { AddPost, Candidates, Home, Settings, Vacancies } from "@/screens";
 
-import { AppBottomTab } from './bottom-tab';
+import { AppBottomTab } from "./bottom-tab";
 
 type TabParamList = {
   Home: undefined;
@@ -35,38 +33,38 @@ export const TabNavigator = () => {
           }}
         >
           <Tab.Screen
-            name={'Home'}
-            component={Platform.OS === 'ios' ? Home : Home2}
+            name={"Home"}
+            component={Home}
             options={{
-              title: 'Home',
+              title: "Home",
             }}
           />
           <Tab.Screen
-            name={'Vacancies'}
+            name={"Vacancies"}
             component={Vacancies}
             options={{
-              title: 'Vacancies',
+              title: "Vacancies",
             }}
           />
           <Tab.Screen
-            name={'AddPost'}
+            name={"AddPost"}
             component={AddPost}
             options={{
-              title: 'Post A Job',
+              title: "Post A Job",
             }}
           />
           <Tab.Screen
-            name={'Candidates'}
+            name={"Candidates"}
             component={Candidates}
             options={{
-              title: 'Candidates',
+              title: "Candidates",
             }}
           />
           <Tab.Screen
-            name={'Settings'}
+            name={"Settings"}
             component={Settings}
             options={{
-              title: 'More',
+              title: "More",
             }}
           />
         </Tab.Group>
