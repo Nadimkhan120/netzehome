@@ -1,17 +1,17 @@
+
+import React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigation } from "@react-navigation/native";
 import { useTheme } from "@shopify/restyle";
 import { Image } from "expo-image";
-import React from "react";
 import { useForm } from "react-hook-form";
 import { StyleSheet } from "react-native";
 import { scale } from "react-native-size-matters";
 import * as z from "zod";
-
 import { icons } from "@/assets/icons";
 import { IconButton } from "@/components";
 import { useLogin } from "@/services/api/auth/login";
-import { login } from "@/store/auth";
+import { login, loginFromVerifyCode } from "@/store/auth";
 import { setUserData } from "@/store/user";
 import type { Theme } from "@/theme";
 import { Button, ControlledInput, PressableScale, Screen, Text, View } from "@/ui";
@@ -43,23 +43,26 @@ export const Login = () => {
   });
 
   const onSubmit = (data: FormType) => {
-    loginApi(
-      { email: data?.email, password: data?.password },
-      {
-        onSuccess: (data) => {
-          if (data?.response?.status === 200) {
-            login(data?.response?.data?.token);
-            setUserData(data?.response?.data);
-          } else {
-            showErrorMessage(data.response.message);
-          }
-        },
-        onError: (error) => {
-          // An error happened!
-          console.log(`error`, error?.response?.data);
-        },
-      }
-    );
+
+    loginFromVerifyCode()
+
+    // loginApi(
+    //   { email: data?.email, password: data?.password },
+    //   {
+    //     onSuccess: (data) => {
+    //       if (data?.response?.status === 200) {
+            
+    //         setUserData(data?.response?.data);
+    //       } else {
+    //         showErrorMessage(data.response.message);
+    //       }
+    //     },
+    //     onError: (error) => {
+    //       // An error happened!
+    //       console.log(`error`, error?.response?.data);
+    //     },
+    //   }
+    // );
   };
 
   return (
@@ -120,7 +123,7 @@ export const Login = () => {
         </View>
 
         <View paddingVertical={"2xl"} alignSelf={"center"}>
-          <PressableScale onPress={() => navigate("RegisterOptions")}>
+          <PressableScale onPress={() =>  navigate('Register')}>
             <Text variant={"regular14"} color={"grey200"}>
               Haven’t an account?{" "}
               <Text variant={"semiBold14"} color={"primary"}>

@@ -1,17 +1,14 @@
-import { useNavigation } from '@react-navigation/native';
-import { Image } from 'expo-image';
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import { scale } from 'react-native-size-matters';
-
+import { useNavigation } from '@react-navigation/native';
+import { Image } from 'expo-image';
 import { icons } from '@/assets/icons';
 import type { Candidate } from '@/services/api/candidate';
 import { PressableScale, Text, View } from '@/ui';
 
-import { Avatar } from '../avatar';
-
 type PersonItemProps = {
-  data: Candidate;
+  data?: any;
 };
 
 export const PersonItem = ({ data }: PersonItemProps) => {
@@ -29,48 +26,60 @@ export const PersonItem = ({ data }: PersonItemProps) => {
         paddingHorizontal={'large'}
       >
         <View>
-          <Avatar
+          <Image
             source={{ uri: 'https://fakeimg.pl/400x400/cccccc/cccccc' }}
             placeholder={{ uri: 'https://fakeimg.pl/400x400/cccccc/cccccc' }}
             transition={1000}
+            style={{
+              height: scale(72),
+              width: scale(72),
+              borderRadius: 8,
+            }}
           />
         </View>
         <View flex={1} paddingHorizontal={'medium'}>
-          <Text variant={'semiBold14'} color={'black'}>
-            {data?.full_name}
+          <Text variant={'medium16'} color={'black'}>
+            Sr. UI/UX Designer
           </Text>
-          <View flexDirection={'row'} marginTop={'tiny'} alignItems={'center'}>
-            <Text variant={'regular13'} color={'grey300'}>
-              Applied For:{' '}
+          <View flexDirection={'row'} alignItems={'center'}>
+            <Text variant={'medium12'} color={'grey100'}>
+              Tripadvisor,
             </Text>
-            <Text variant={'regular13'} color={'grey100'}>
-              {'React Native Developer'}
+            <Text variant={'regular12'} color={'grey300'}>
+              in California
             </Text>
           </View>
 
-          <View flexDirection={'row'} marginTop={'tiny'} alignItems={'center'}>
-            <Text variant={'regular13'} color={'grey300'}>
-              Applied on:{' '}
-            </Text>
-            <Text variant={'regular13'} color={'grey100'}>
-              {data?.applied_on}
-            </Text>
-          </View>
           <View
             flexDirection={'row'}
             gap={'medium'}
             alignItems={'center'}
             paddingTop={'small'}
           >
-            {/* {tags.map((item, index) => {
-            return <Tag key={index} name={item} icon="cv" />;
-          })} */}
+            {['React', 'Laravel', 'MangoDb'].map((item, index) => {
+              return (
+                <View
+                  key={index}
+                  backgroundColor={'grey500'}
+                  borderRadius={scale(4)}
+                  height={scale(31)}
+                  paddingHorizontal={'medium'}
+                  justifyContent={'center'}
+                  alignItems={'center'}
+                  flexDirection={'row'}
+                >
+                  <Text variant={'regular13'} color={'grey100'}>
+                    {item}
+                  </Text>
+                </View>
+              );
+            })}
           </View>
         </View>
 
         <PressableScale>
           <Image
-            source={icons['more-horizontal']}
+            source={icons['star']}
             contentFit="contain"
             style={styles.image}
           />

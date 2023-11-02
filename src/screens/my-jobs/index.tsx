@@ -27,8 +27,7 @@ import { useJobCategories, useJobTypes } from '@/services/api/settings';
 import { useUser } from '@/store/user';
 import type { Theme } from '@/theme';
 import { Button, Screen, Text, View } from '@/ui';
-import Header from './header';
-import VecanciesList from './vacancies-list';
+
 import { useNavigation } from '@react-navigation/native';
 import { SelectOptionButton } from '@/components/select-option-button';
 import { format } from 'date-fns';
@@ -37,6 +36,7 @@ import { showErrorMessage } from '@/utils';
 import { queryClient } from '@/services/api/api-provider';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import Explore from './explore';
+import { ScreenHeader } from '@/components/screen-header';
 
 const data2 = [
   {
@@ -55,12 +55,10 @@ const data2 = [
 
 const FirstRoute = () => <Explore />;
 const SecondRoute = () => <Explore />;
-const ThirdRoute = () => <Explore />;
 
 const renderScene = SceneMap({
   first: FirstRoute,
   second: SecondRoute,
-  third: ThirdRoute,
 });
 
 const renderLabel = ({
@@ -98,7 +96,7 @@ const renderTabBar = (props: any) => {
   );
 };
 
-export const Vacancies = () => {
+export const MyJobs = () => {
   const { colors } = useTheme<Theme>();
   const { bottom } = useSafeAreaInsets();
   const navigation = useNavigation();
@@ -162,9 +160,8 @@ export const Vacancies = () => {
 
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
-    { key: 'first', title: 'Explore' },
-    { key: 'second', title: 'Applied' },
-    { key: 'third', title: 'Saved' },
+    { key: 'first', title: 'Applied Jobs' },
+    { key: 'second', title: 'Saved Jobs' },
   ]);
 
   useRefreshOnFocus(refetch);
@@ -289,29 +286,13 @@ export const Vacancies = () => {
     );
   };
 
-  const renderVacancyItem = ({ item }: any) => (
-    <VecanciesList
-      data={item}
-      onOptionPress={(data) => {
-        setSelectedVacancy(data);
-        handlePresentOptionsModalPress();
-      }}
-    />
-  );
-
   return (
     <Screen
       edges={['top']}
       backgroundColor={colors.white}
       barStyle="dark-content"
     >
-      <Header />
-
-      <SearchWithFilter
-        searchValue={searchQuery}
-        onChangeText={(text) => setSearchQuery(text)}
-        onFilter={handlePresentModalPress}
-      />
+      <ScreenHeader title="My Jobs" />
 
       <TabView
         navigationState={{ index, routes }}

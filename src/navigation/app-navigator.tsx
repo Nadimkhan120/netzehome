@@ -1,5 +1,5 @@
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import * as React from "react";
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import * as React from 'react';
 
 import {
   AddPaymentCard,
@@ -30,12 +30,16 @@ import {
   Steps,
   AddStep,
   AddCompany,
-} from "@/screens";
-import Applicants from "@/screens/applicants";
-import CandidateProfile from "@/screens/candidate-profile";
-import { Job } from "@/screens/job";
-import JobDetail from "@/screens/job-detail";
-import { TabNavigator } from "./tab-navigator";
+  MyContacts,
+  MyJobs,
+  MyCompanies,
+  Search,
+} from '@/screens';
+import Applicants from '@/screens/applicants';
+import CandidateProfile from '@/screens/candidate-profile';
+import { Job } from '@/screens/job';
+import JobDetail from '@/screens/job-detail';
+import { TabNavigator } from './tab-navigator';
 
 export type AppStackParamList = {
   TabNavigator: undefined;
@@ -72,6 +76,10 @@ export type AppStackParamList = {
   Steps: { id: number };
   AddStep: { processId: number; stepsCount: number };
   AddCompany: undefined;
+  MyContacts: undefined;
+  MyJobs: undefined;
+  MyCompanies: undefined;
+  Search: undefined;
 };
 
 const Stack = createNativeStackNavigator<AppStackParamList>();
@@ -102,7 +110,10 @@ export const AppNavigator = () => {
         <Stack.Screen name="JdLibraryDetail" component={JdLibraryDetail} />
         <Stack.Screen name="MyAccount" component={MyAccount} />
         <Stack.Screen name="ChangePassword" component={ChangePassword} />
-        <Stack.Screen name="PersonalInformation" component={PersonalInformation} />
+        <Stack.Screen
+          name="PersonalInformation"
+          component={PersonalInformation}
+        />
         <Stack.Screen name="LoginAndSecurity" component={LoginAndSecurity} />
         <Stack.Screen name="CompanyDetail" component={CompanyDetail} />
         <Stack.Screen name="EditCompany" component={EditCompany} />
@@ -112,13 +123,20 @@ export const AppNavigator = () => {
         <Stack.Screen name="Roles" component={Roles} />
         <Stack.Screen name="AddRole" component={AddRole} />
         <Stack.Screen name="JobDescription" component={JobDescription} />
-        <Stack.Screen name="RecruitmentProcess" component={RecruitmentProcess} />
+        <Stack.Screen
+          name="RecruitmentProcess"
+          component={RecruitmentProcess}
+        />
         <Stack.Screen name="AddProcess" component={AddProcess} />
         <Stack.Screen name="Steps" component={Steps} />
         <Stack.Screen name="AddStep" component={AddStep} />
         <Stack.Screen name="AddCompany" component={AddCompany} />
+
+        <Stack.Screen name="MyContacts" component={MyContacts} />
+        <Stack.Screen name="MyCompanies" component={MyCompanies} />
+        <Stack.Screen name="MyJobs" component={MyJobs} />
+        <Stack.Screen name="Search" component={Search} />
       </Stack.Group>
     </Stack.Navigator>
   );
 };
-

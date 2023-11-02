@@ -54,6 +54,14 @@ export const Register = () => {
   });
 
   const onSubmit = (data: RegisterFormType) => {
+
+    navigate("VerifyCode", {
+      email: data?.email,
+      password: data?.password,
+    });
+
+    return
+
     registerApi(
       {
         email: data?.email,
@@ -94,7 +102,7 @@ export const Register = () => {
             Registration 👍
           </Text>
           <Text variant={"regular14"} paddingTop={"small"} color={"grey100"}>
-            Let’s Register. Apply to jobs!
+            Let's Register. Apply to jobs!
           </Text>
         </View>
 
@@ -145,7 +153,7 @@ export const Register = () => {
         <View paddingVertical={"2xl"} alignSelf={"center"}>
           <PressableScale onPress={() => navigate("RegisterOptions")}>
             <Text variant={"regular14"} color={"grey200"}>
-              Haven’t an account?{" "}
+              Haven't an account?{" "}
               <Text variant={"semiBold14"} color={"primary"}>
                 Register
               </Text>

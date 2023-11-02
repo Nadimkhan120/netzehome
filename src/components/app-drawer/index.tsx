@@ -1,22 +1,20 @@
+import * as React from 'react';
+import { Dimensions } from 'react-native';
+import { Drawer } from 'react-native-drawer-layout';
+import { scale } from 'react-native-size-matters';
+import { icons } from '@/assets/icons';
+import { useCompanies } from '@/services/api/company';
+import { closeDrawer, openDrawer, useApp } from '@/store/app';
+import { logOut } from '@/store/auth';
+import { useUser, removeUserData } from '@/store/user';
+import { PressableScale, Screen, Text, View } from '@/ui';
+import { Avatar } from '../avatar';
 
-import * as React from "react";
-import { Dimensions, StyleSheet } from "react-native";
-import { Drawer } from "react-native-drawer-layout";
-import { scale } from "react-native-size-matters";
-import { icons } from "@/assets/icons";
-import { useCompanies } from "@/services/api/company";
-import { closeDrawer, openDrawer, useApp } from "@/store/app";
-import { logOut } from "@/store/auth";
-import { useUser, removeUserData, setUserCompanyWithRoles } from "@/store/user";
-import { PressableScale, Screen, Text, View } from "@/ui";
-import { Avatar } from "../avatar";
-import { CompanyButton } from "../company-button";
-import { palette } from "@/theme";
-import { useNavigation } from "@react-navigation/native";
-import { useRefreshOnFocus } from "@/hooks";
-import { Image } from "expo-image";
+import { useNavigation } from '@react-navigation/native';
+import { useRefreshOnFocus } from '@/hooks';
+import { Image } from 'expo-image';
 
-const { width } = Dimensions.get("screen");
+const { width } = Dimensions.get('screen');
 
 type AppDrawer = {
   children: React.ReactNode;
@@ -52,139 +50,144 @@ export function AppDrawer({ children }: AppDrawer) {
           <Screen>
             <View flex={1}>
               <View
-                paddingHorizontal={"large"}
-                flexDirection={"row"}
-                paddingTop={"medium"}
-                alignItems={"center"}
+                paddingHorizontal={'large'}
+                flexDirection={'row'}
+                paddingTop={'medium'}
+                alignItems={'center'}
+                borderBottomColor={'grey500'}
+                paddingBottom={'medium'}
+                borderBottomWidth={1}
               >
                 <Avatar source={icons.avatar} size="medium" />
                 <View>
                   <Text
-                    variant={"medium16"}
-                    textTransform={"capitalize"}
-                    paddingLeft={"medium"}
-                    color={"black"}
+                    variant={'medium16'}
+                    textTransform={'capitalize'}
+                    paddingLeft={'medium'}
+                    color={'black'}
                   >
                     {user?.full_name} 👋
                   </Text>
                   <Text
-                    variant={"regular14"}
-                    paddingLeft={"medium"}
-                    paddingTop={"tiny"}
-                    color={"grey200"}
+                    variant={'regular14'}
+                    paddingLeft={'medium'}
+                    paddingTop={'tiny'}
+                    color={'grey200'}
                   >
                     View profile
                   </Text>
                 </View>
               </View>
 
-              <View
-                backgroundColor={"grey500"}
-                paddingVertical={"small"}
-                paddingHorizontal={"large"}
-                marginTop={"medium"}
-              >
-                <Text variant={"regular13"} color={"grey100"}>
-                  Your Companies
-                </Text>
-              </View>
+              <View height={30} />
 
-              <View marginTop={"small"} />
-
-              {companies?.response?.data?.map((item, index) => {
-                const isSelected = item?.id === company?.id;
-
-                return (
-                  <PressableScale
-                    key={index}
-                    onPress={() => {
-                      setUserCompanyWithRoles({ company: item });
-                      navigate("CompanyDetail");
-                      closeDrawer();
-                    }}
-                  >
-                    <View
-                      flexDirection={"row"}
-                      alignItems={"center"}
-                      paddingHorizontal={"large"}
-                      //backgroundColor={"info"}
-                      paddingVertical={"small"}
-                      borderBottomColor={"grey500"}
-                      borderBottomWidth={StyleSheet.hairlineWidth * 2}
-                    >
-                      <View flex={1} flexDirection={"row"} alignItems={"center"}>
-                        <CompanyButton
-                          backgroundColor={"black"}
-                          icon="company"
-                          onPress={() => null}
-                          size={scale(48)}
-                          imageSize={scale(48)}
-                        />
-                        <View paddingLeft={"small"}>
-                          <Text
-                            variant={"semiBold14"}
-                            color={isSelected ? "primary" : "black"}
-                          >
-                            {item?.name}
-                          </Text>
-                          <Text
-                            variant={"regular12"}
-                            paddingTop={"tiny"}
-                            color={isSelected ? "primary" : "black"}
-                          >
-                            {item?.member_since}
-                          </Text>
-                        </View>
-                      </View>
-                      <Image
-                        source={icons["arrow-right"]}
-                        style={{
-                          height: scale(24),
-                          width: scale(24),
-                          tintColor: isSelected ? palette?.primary : null,
-                        }}
-                        contentFit="contain"
-                      />
-                    </View>
-                  </PressableScale>
-                );
-              })}
-
-              <View alignSelf={"center"} paddingVertical={"large"}>
-                <PressableScale
-                  onPress={() => {
-                    closeDrawer();
-                    navigate("AddCompany");
-                  }}
-                >
-                  <Text variant={"medium14"} color={"primary"}>
-                    + Add New Company
-                  </Text>
-                </PressableScale>
-              </View>
-
-              <View flex={1} paddingBottom={"large"} justifyContent={"flex-end"}>
-                <PressableScale onPress={() => navigate("MyAccount")}>
+              <View>
+                <PressableScale onPress={() => navigate('MyJobs')}>
                   <View
                     height={scale(56)}
-                    alignItems={"center"}
-                    marginHorizontal={"large"}
+                    alignItems={'center'}
+                    marginHorizontal={'large'}
                     borderRadius={scale(8)}
-                    marginBottom={"large"}
-                    backgroundColor={"grey500"}
-                    flexDirection={"row"}
-                    paddingHorizontal={"large"}
+                    marginBottom={'large'}
+                    backgroundColor={'grey500'}
+                    flexDirection={'row'}
+                    paddingHorizontal={'large'}
+                  >
+                    <Image
+                      source={icons['vacancies']}
+                      style={{ height: scale(24), width: scale(24) }}
+                      contentFit="contain"
+                    />
+                    <Text
+                      variant={'medium14'}
+                      color={'grey200'}
+                      paddingLeft={'large'}
+                    >
+                      My Jobs
+                    </Text>
+                  </View>
+                </PressableScale>
+                <PressableScale onPress={() => navigate('MyContacts')}>
+                  <View
+                    height={scale(56)}
+                    alignItems={'center'}
+                    marginHorizontal={'large'}
+                    borderRadius={scale(8)}
+                    marginBottom={'large'}
+                    backgroundColor={'grey500'}
+                    flexDirection={'row'}
+                    paddingHorizontal={'large'}
+                  >
+                    <Image
+                      source={icons['person']}
+                      style={{ height: scale(24), width: scale(24) }}
+                      contentFit="contain"
+                    />
+                    <Text
+                      variant={'medium14'}
+                      color={'grey200'}
+                      paddingLeft={'large'}
+                    >
+                      My Contacts
+                    </Text>
+                  </View>
+                </PressableScale>
+                <PressableScale onPress={() => navigate('MyCompanies')}>
+                  <View
+                    height={scale(56)}
+                    alignItems={'center'}
+                    marginHorizontal={'large'}
+                    borderRadius={scale(8)}
+                    marginBottom={'large'}
+                    backgroundColor={'grey500'}
+                    flexDirection={'row'}
+                    paddingHorizontal={'large'}
+                  >
+                    <Image
+                      source={icons['book']}
+                      contentFit="contain"
+                      style={{ height: scale(24), width: scale(24) }}
+                    />
+                    <Text
+                      variant={'medium14'}
+                      color={'grey200'}
+                      paddingLeft={'large'}
+                    >
+                      My Companies
+                    </Text>
+                  </View>
+                </PressableScale>
+                <PressableScale onPress={() => navigate('MyAccount')}>
+                  <View
+                    height={scale(56)}
+                    alignItems={'center'}
+                    marginHorizontal={'large'}
+                    borderRadius={scale(8)}
+                    marginBottom={'large'}
+                    backgroundColor={'grey500'}
+                    flexDirection={'row'}
+                    paddingHorizontal={'large'}
                   >
                     <Image
                       source={icons.settings}
                       style={{ height: scale(24), width: scale(24) }}
                     />
-                    <Text variant={"medium14"} color={"grey200"} paddingLeft={"large"}>
-                      Account
+                    <Text
+                      variant={'medium14'}
+                      color={'grey200'}
+                      paddingLeft={'large'}
+                    >
+                      My Account
                     </Text>
                   </View>
                 </PressableScale>
+              </View>
 
+              <View
+                flex={1}
+                paddingBottom={'large'}
+                justifyContent={'flex-end'}
+              >
                 <PressableScale
                   onPress={() => {
                     removeUserData();
@@ -193,18 +196,22 @@ export function AppDrawer({ children }: AppDrawer) {
                 >
                   <View
                     height={scale(56)}
-                    backgroundColor={"grey500"}
-                    alignItems={"center"}
-                    marginHorizontal={"large"}
+                    backgroundColor={'grey500'}
+                    alignItems={'center'}
+                    marginHorizontal={'large'}
                     borderRadius={scale(8)}
-                    flexDirection={"row"}
-                    paddingHorizontal={"large"}
+                    flexDirection={'row'}
+                    paddingHorizontal={'large'}
                   >
                     <Image
-                      source={icons["log-out"]}
+                      source={icons['log-out']}
                       style={{ height: scale(24), width: scale(24) }}
                     />
-                    <Text variant={"medium14"} color={"error"} paddingLeft={"large"}>
+                    <Text
+                      variant={'medium14'}
+                      color={'error'}
+                      paddingLeft={'large'}
+                    >
                       Sign Out
                     </Text>
                   </View>

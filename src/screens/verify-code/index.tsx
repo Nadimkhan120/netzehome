@@ -1,8 +1,9 @@
+
+import React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useTheme } from "@shopify/restyle";
 import { Image } from "expo-image";
-import React from "react";
 import { useForm } from "react-hook-form";
 import { StyleSheet } from "react-native";
 import { scale } from "react-native-size-matters";
@@ -41,6 +42,9 @@ export const VerifyCode = () => {
   });
 
   const onSubmit = (data: VerifyCodeFormType) => {
+    navigate("CompanyInformation");
+    return 
+
     verifyEmailApi(
       {
         email: route?.params?.email,

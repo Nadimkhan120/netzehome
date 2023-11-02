@@ -1,31 +1,25 @@
-import React from "react";
-import { StyleSheet } from "react-native";
-import { scale } from "react-native-size-matters";
-import { Text, View } from "@/ui";
-import { AddButton } from "@/components/add-button";
+import React from 'react';
+import { StyleSheet } from 'react-native';
+import { scale } from 'react-native-size-matters';
+import { Text, View } from '@/ui';
 
-type HeaderProps = {
-  onPress: () => void;
-};
-
-const Header = ({ onPress }: HeaderProps) => {
+const Header = () => {
   return (
     <View
-      flexDirection={"row"}
-      alignItems={"center"}
-      justifyContent={"space-between"}
-      backgroundColor={"white"}
-      paddingHorizontal={"large"}
+      flexDirection={'row'}
+      alignItems={'center'}
+      justifyContent={'space-between'}
+      backgroundColor={'white'}
+      paddingHorizontal={'large'}
       style={style.container}
-      borderBottomColor={"grey500"}
+      borderBottomColor={'grey500'}
       borderBottomWidth={1}
     >
-      <View flexDirection={"column"}>
-        <Text variant={"medium17"} fontWeight={"500"}>
-          Vacancies
+      <View flexDirection={'column'}>
+        <Text variant={'medium17'} fontWeight={'500'}>
+          Jobs
         </Text>
       </View>
-      <AddButton label="Job" onPress={onPress} />
     </View>
   );
 };
