@@ -4,12 +4,34 @@ import { PressableScale, Text, View } from '@/ui';
 import { Image } from 'expo-image';
 import { icons } from '@/assets/icons';
 import { Avatar } from '@/components/avatar';
+import { useNavigation } from '@react-navigation/native';
 
 type HomeSliderItemProps = {
   data: any;
 };
 
 export const HomeSliderItem = ({ data }: HomeSliderItemProps) => {
+  const { navigate } = useNavigation();
+
+  if (data?.name === 'Add') {
+    return (
+      <PressableScale onPress={() => navigate('AddProfile')}>
+        <View
+          marginRight={'medium'}
+          borderRadius={scale(8)}
+          padding={'large'}
+          backgroundColor={'white'}
+          height={scale(160)}
+          width={scale(300)}
+          justifyContent={'center'}
+          alignItems={'center'}
+        >
+          <Text>hello</Text>
+        </View>
+      </PressableScale>
+    );
+  }
+
   return (
     <View
       marginRight={'medium'}

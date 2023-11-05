@@ -34,7 +34,7 @@ export const HomeSliderContainer = ({}) => {
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.container}
       >
-        {[{ name: 'Jhon Wick' }, { name: 'Jhon Wick' }]?.map(
+        {[{ name: 'Jhon Wick' }, { name: 'Jhon Wick' }, { name: 'Add' }]?.map(
           (element, index) => {
             return <HomeSliderItem data={element} key={index} />;
           }

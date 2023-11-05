@@ -58,7 +58,11 @@ export function AppDrawer({ children }: AppDrawer) {
                 paddingBottom={'medium'}
                 borderBottomWidth={1}
               >
-                <Avatar source={icons.avatar} size="medium" />
+                <Avatar
+                  source={icons.avatar}
+                  size="medium"
+                  onPress={() => navigate('EditProfile')}
+                />
                 <View>
                   <Text
                     variant={'medium16'}
