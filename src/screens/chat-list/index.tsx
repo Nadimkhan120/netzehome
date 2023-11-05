@@ -20,7 +20,7 @@ import { useUser } from '@/store/user';
 import type { Theme } from '@/theme';
 import { Button, Screen, Text, View } from '@/ui';
 import ChatListItem from './chat-list-item';
-import CapsuleView from './capsule-view';
+import CapsuleView from '@/components/capsule-view';
 
 export const ChatList = () => {
   const { colors } = useTheme<Theme>();
@@ -51,8 +51,8 @@ export const ChatList = () => {
   }, []);
 
   const renderItem = useCallback(
-    ({ item }) => {
-      return <ChatListItem />;
+    ({ item, index }) => {
+      return <ChatListItem key={index} />;
     },
     [data, bottomSheetModalRef, selectUser, setSelectUser]
   );

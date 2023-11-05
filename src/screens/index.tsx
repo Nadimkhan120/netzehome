@@ -59,3 +59,4 @@ export * from './chats';
 export * from './choose-company';
 export * from './choose-skills';
 export * from './choose-degree';
+export * from './notifications';

@@ -72,6 +72,7 @@ export const icons = {
   'price-tag': require('../images/price-tag.png'),
   stepper: require('../images/stepper.png'),
   'plain-line': require('../images/plain-line.png'),
+  zapier: require('../images/zapier.png'),
 };
 
 export type IconTypes = keyof typeof icons;

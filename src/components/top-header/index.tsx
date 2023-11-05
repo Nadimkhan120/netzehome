@@ -46,7 +46,7 @@ export const TopHeader = () => {
               />
             </View>
           </PressableScale>
-          <PressableScale onPress={() => navigate('MyAccount')}>
+          <PressableScale onPress={() => navigate('Notifications')}>
             <View>
               <Image
                 source={icons['bell']}

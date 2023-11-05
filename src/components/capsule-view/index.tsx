@@ -1,4 +1,4 @@
-import { Button, Screen, Text, View } from '@/ui';
+import { Text, View } from '@/ui';
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import { scale } from 'react-native-size-matters';
