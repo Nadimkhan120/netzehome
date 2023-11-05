@@ -37,6 +37,13 @@ import {
   EditProfile,
   AddProfile,
   MyJobDetail,
+  ChatList,
+  Chats,
+  AddEducation,
+  AddExperience,
+  ChooseCompany,
+  ChooseSkills,
+  ChooseDegree,
 } from '@/screens';
 import Applicants from '@/screens/applicants';
 import CandidateProfile from '@/screens/candidate-profile';
@@ -86,6 +93,13 @@ export type AppStackParamList = {
   EditProfile: undefined;
   AddProfile: undefined;
   MyJobDetail: undefined;
+  ChatList: undefined;
+  Chats: undefined;
+  AddEducation: undefined;
+  AddExperience: undefined;
+  ChooseCompany: undefined;
+  ChooseSkills: undefined;
+  ChooseDegree: undefined;
 };
 
 const Stack = createNativeStackNavigator<AppStackParamList>();
@@ -145,6 +159,14 @@ export const AppNavigator = () => {
         <Stack.Screen name="AddProfile" component={AddProfile} />
         <Stack.Screen name="EditProfile" component={EditProfile} />
         <Stack.Screen name="MyJobDetail" component={MyJobDetail} />
+
+        <Stack.Screen name="Chats" component={Chats} />
+        <Stack.Screen name="ChatList" component={ChatList} />
+        <Stack.Screen name="AddEducation" component={AddEducation} />
+        <Stack.Screen name="AddExperience" component={AddExperience} />
+        <Stack.Screen name="ChooseCompany" component={ChooseCompany} />
+        <Stack.Screen name="ChooseDegree" component={ChooseDegree} />
+        <Stack.Screen name="ChooseSkills" component={ChooseSkills} />
       </Stack.Group>
     </Stack.Navigator>
   );

@@ -51,3 +51,11 @@ export * from './my-companies';
 export * from './edit-profile';
 export * from './add-profile';
 export * from './my-job-detail';
+
+export * from './add-experience';
+export * from './add-education';
+export * from './chat-list';
+export * from './chats';
+export * from './choose-company';
+export * from './choose-skills';
+export * from './choose-degree';

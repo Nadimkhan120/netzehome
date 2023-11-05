@@ -4,7 +4,7 @@ import { JobDetailTopContainer } from './top-container';
 import { useTheme } from '@shopify/restyle';
 import type { Theme } from '@/theme';
 import { ScreenHeader } from '@/components/screen-header';
-import { ScrollView, StyleSheet } from 'react-native';
+import { ScrollView } from 'react-native';
 import JobDetailItem from './job-detail-item';
 import { JobDetailsData } from './data';
 import { CustomStepper } from './custom-stepper';
@@ -19,11 +19,8 @@ export const MyJobDetail = () => {
       backgroundColor={colors.white}
       barStyle="dark-content"
     >
-      <ScreenHeader />
-      <View
-        borderBottomColor={'black'}
-        borderBottomWidth={StyleSheet.hairlineWidth}
-      />
+      <ScreenHeader showBorder={true} />
+
       <ScrollView>
         <View flex={1} backgroundColor={'grey500'}>
           <JobDetailTopContainer />
@@ -32,7 +29,7 @@ export const MyJobDetail = () => {
             <View alignItems={'center'} style={{ marginTop: scale(50) }}>
               {JobDetailsData?.map((element, index) => {
                 return (
-                  <View flexDirection={'row'} alignItems={'center'}>
+                  <View key={index} flexDirection={'row'} alignItems={'center'}>
                     <CustomStepper
                       index={index}
                       count={JobDetailsData?.length}

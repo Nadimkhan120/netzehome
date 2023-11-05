@@ -40,9 +40,9 @@ const schema = z.object({
   languages: z.string().optional(),
 });
 
-export type AddProfileFormType = z.infer<typeof schema>;
+export type AddExperienceFormType = z.infer<typeof schema>;
 
-export const AddProfile = () => {
+export const AddExperience = () => {
   const { colors } = useTheme<Theme>();
   const { goBack } = useNavigation();
   const route = useRoute<any>();
@@ -56,7 +56,7 @@ export const AddProfile = () => {
 
   const data = route?.params?.data;
 
-  const { handleSubmit, control, setValue } = useForm<AddProfileFormType>({
+  const { handleSubmit, control, setValue } = useForm<AddExperienceFormType>({
     resolver: zodResolver(schema),
     // defaultValues: {
     //   companyName: data?.name,
@@ -75,7 +75,7 @@ export const AddProfile = () => {
     // },
   });
 
-  const onSubmit = (data: AddProfileFormType) => {
+  const onSubmit = (data: AddExperienceFormType) => {
     return;
     editCompanyApi(
       {
