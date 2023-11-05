@@ -36,6 +36,7 @@ import {
   Search,
   EditProfile,
   AddProfile,
+  MyJobDetail,
 } from '@/screens';
 import Applicants from '@/screens/applicants';
 import CandidateProfile from '@/screens/candidate-profile';
@@ -84,6 +85,7 @@ export type AppStackParamList = {
   Search: undefined;
   EditProfile: undefined;
   AddProfile: undefined;
+  MyJobDetail: undefined;
 };
 
 const Stack = createNativeStackNavigator<AppStackParamList>();
@@ -142,6 +144,7 @@ export const AppNavigator = () => {
         <Stack.Screen name="Search" component={Search} />
         <Stack.Screen name="AddProfile" component={AddProfile} />
         <Stack.Screen name="EditProfile" component={EditProfile} />
+        <Stack.Screen name="MyJobDetail" component={MyJobDetail} />
       </Stack.Group>
     </Stack.Navigator>
   );

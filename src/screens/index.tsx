@@ -50,3 +50,4 @@ export * from './search';
 export * from './my-companies';
 export * from './edit-profile';
 export * from './add-profile';
+export * from './my-job-detail';
