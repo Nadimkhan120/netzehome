@@ -70,6 +70,8 @@ export const icons = {
   'star-fill': require('../images/star-fill.png'),
   clock: require('../images/clock.png'),
   'price-tag': require('../images/price-tag.png'),
+  stepper: require('../images/stepper.png'),
+  'plain-line': require('../images/plain-line.png'),
 };
 
 export type IconTypes = keyof typeof icons;

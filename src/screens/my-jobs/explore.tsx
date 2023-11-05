@@ -2,13 +2,17 @@ import React, { useCallback } from 'react';
 import { FlashList } from '@shopify/flash-list';
 import { View } from '@/ui';
 import JobItem from './job-item';
+import { useNavigation } from '@react-navigation/native';
 
 const Explore = () => {
+
+  const { navigate } = useNavigation();
+
   const renderItem = useCallback(({ item }) => {
     return (
       <JobItem
         data={item}
-        onPress={function (): void {}}
+        onPress={() => navigate('MyJobDetail')}        
         onOptionPress={function (): void {}}
       />
     );

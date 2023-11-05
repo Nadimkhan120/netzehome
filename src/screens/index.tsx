@@ -48,3 +48,4 @@ export * from './my-contacts';
 export * from './my-jobs';
 export * from './search';
 export * from './my-companies';
+export * from './my-job-detail';

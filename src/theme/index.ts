@@ -20,6 +20,7 @@ export const palette = {
   info: '#5386E4',
   warning: '#FFBC42',
   transparent: 'transparent',
+  blue: '#2e57bd',
 };
 
 export const theme = createTheme({
@@ -46,6 +47,7 @@ export const theme = createTheme({
     info: palette.info,
     warning: palette.warning,
     transparent: 'transparent',
+    blue: palette.blue,
   },
   spacing: {
     tiny: scale(2),
@@ -269,5 +271,6 @@ export const darkTheme: Theme = {
     info: palette.info,
     warning: palette.info,
     transparent: 'transparent',
+    blue: palette.blue,
   },
 };
