@@ -44,6 +44,7 @@ import {
   ChooseCompany,
   ChooseSkills,
   ChooseDegree,
+  Notifications,
   Profile,
   ChooseLocation,
   ChooseDegreeField,
@@ -104,6 +105,7 @@ export type AppStackParamList = {
   ChooseCompany: undefined;
   ChooseSkills: undefined;
   ChooseDegree: undefined;
+  Notifications: undefined;
   Profile: undefined;
   ChooseLocation: undefined;
   ChooseDegreeField: undefined;
@@ -175,6 +177,7 @@ export const AppNavigator = () => {
         <Stack.Screen name="ChooseCompany" component={ChooseCompany} />
         <Stack.Screen name="ChooseDegree" component={ChooseDegree} />
         <Stack.Screen name="ChooseSkills" component={ChooseSkills} />
+        <Stack.Screen name="Notifications" component={Notifications} />
         <Stack.Screen name="Profile" component={Profile} />
         <Stack.Screen name="ChooseLocation" component={ChooseLocation} />
         <Stack.Screen name="ChooseDegreeField" component={ChooseDegreeField} />

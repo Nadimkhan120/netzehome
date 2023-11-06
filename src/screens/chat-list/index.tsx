@@ -19,6 +19,8 @@ import { useGetUser } from '@/services/api/user';
 import { useUser } from '@/store/user';
 import type { Theme } from '@/theme';
 import { Button, Screen, Text, View } from '@/ui';
+import ChatListItem from './chat-list-item';
+import CapsuleView from '@/components/capsule-view';
 
 export const ChatList = () => {
   const { colors } = useTheme<Theme>();
@@ -49,17 +51,8 @@ export const ChatList = () => {
   }, []);
 
   const renderItem = useCallback(
-    ({ item }) => {
-      return (
-        <View></View>
-        // <UserItem
-        //   data={item}
-        //   onOptionPress={(user) => {
-        //     setSelectUser(user);
-        //     handlePresentModalPress();
-        //   }}
-        // />
-      );
+    ({ item, index }) => {
+      return <ChatListItem key={index} />;
     },
     [data, bottomSheetModalRef, selectUser, setSelectUser]
   );
@@ -90,14 +83,9 @@ export const ChatList = () => {
 
   return (
     <Screen backgroundColor={colors.white} edges={['top']}>
-      <ScreenHeader
-        title="Users"
-        rightElement={
-          <AddButton label="User" onPress={() => navigate('AddUser')} />
-        }
-      />
+      <ScreenHeader title="Chats" showBorder={true} icon={'close'} />
 
-      <View
+      {/* <View
         backgroundColor={'grey500'}
         paddingVertical={'large'}
         // flexDirection={"row"}
@@ -107,9 +95,30 @@ export const ChatList = () => {
         paddingBottom={'medium'}
       >
         <SearchField placeholder="Search by name" showBorder={true} />
-      </View>
+      </View> */}
 
       <View flex={1} backgroundColor={'grey500'}>
+        <View
+          height={scale(50)}
+          flexDirection={'row'}
+          alignItems={'center'}
+          paddingHorizontal={'large'}
+          backgroundColor={'white'}
+          marginVertical={'tiny'}
+        >
+          {[
+            { heading: 'Profile 1', active: true },
+            { heading: 'Profile 2', active: false },
+          ].map((element) => {
+            return <CapsuleView element={element} />;
+          })}
+        </View>
+        <View paddingHorizontal={'large'} paddingVertical={'small'}>
+          <Text variant={'regular14'} color={'grey300'}>
+            2 Unreads
+          </Text>
+        </View>
+
         <FlashList
           //@ts-ignore
           data={[0, 1, 2, 3, 4]}

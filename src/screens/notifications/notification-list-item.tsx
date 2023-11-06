@@ -5,12 +5,8 @@ import { Image } from 'expo-image';
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import { scale } from 'react-native-size-matters';
-import type { Theme } from '@/theme';
-import { useTheme } from '@shopify/restyle';
 
-const ChatListItem = () => {
-  const { colors } = useTheme<Theme>();
-
+const NotificationListItem = () => {
   return (
     <PressableScale onPress={null}>
       <View
@@ -21,46 +17,46 @@ const ChatListItem = () => {
         backgroundColor={'white'}
         paddingVertical={'medium'}
       >
-        <View>
-          <Avatar
+        <View
+          height={scale(48)}
+          width={scale(48)}
+          backgroundColor={'grey500'}
+          borderRadius={30}
+          alignItems={'center'}
+          justifyContent={'center'}
+        >
+          <Image
             transition={1000}
-            source={{ uri: 'https://fakeimg.pl/400x400/cccccc/cccccc' }}
-            placeholder={{ uri: 'https://fakeimg.pl/400x400/cccccc/cccccc' }}
+            source={icons.zapier}
+            contentFit="contain"
+            style={style.image}
           />
         </View>
 
         <View flex={1} paddingLeft={'medium'}>
           <View
             flexDirection={'row'}
-            alignItems={'center'}
             justifyContent={'space-between'}
             paddingTop={'tiny'}
           >
             <View gap={'small'}>
               <Text variant={'medium14'} color={'black'}>
-                Wade Warren
+                Gojek Indonesia
               </Text>
               <Text
                 variant={'regular13'}
                 textTransform={'capitalize'}
                 marginVertical={'tiny'}
-                color={'grey100'}
+                color={'grey200'}
               >
-                Do you agree with the salary?{' '}
+                Posted new design jobs
               </Text>
             </View>
 
             <View alignItems={'flex-end'} gap={'tiny'}>
-              <Text variant={'regular12'} color={'black'}>
+              <Text variant={'regular12'} color={'grey300'}>
                 Just Now
               </Text>
-              <PressableScale onPress={() => null}>
-                <View style={style.count} backgroundColor={'danger'}>
-                  <Text color={'white'} variant={'medium12'}>
-                    1
-                  </Text>
-                </View>
-              </PressableScale>
             </View>
           </View>
         </View>
@@ -81,6 +77,10 @@ const style = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  image: {
+    width: scale(24),
+    height: scale(24),
+  },
 });
 
-export default ChatListItem;
+export default NotificationListItem;

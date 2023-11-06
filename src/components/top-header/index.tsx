@@ -37,7 +37,7 @@ export const TopHeader = () => {
               />
             </View>
           </PressableScale>
-          <PressableScale onPress={() => navigate('MyAccount')}>
+          <PressableScale onPress={() => navigate('ChatList')}>
             <View>
               <Image
                 source={icons['message']}
@@ -46,7 +46,7 @@ export const TopHeader = () => {
               />
             </View>
           </PressableScale>
-          <PressableScale onPress={() => navigate('MyAccount')}>
+          <PressableScale onPress={() => navigate('Notifications')}>
             <View>
               <Image
                 source={icons['bell']}
