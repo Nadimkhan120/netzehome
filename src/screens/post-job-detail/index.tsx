@@ -1,43 +1,42 @@
-import type { BottomSheetModal } from "@gorhom/bottom-sheet";
-import { BottomSheetFlatList } from "@gorhom/bottom-sheet";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useNavigation } from "@react-navigation/native";
-import { useTheme } from "@shopify/restyle";
-import { format } from "date-fns";
-import React, { useCallback, useMemo, useRef, useState } from "react";
-import { useForm } from "react-hook-form";
-import { ScrollView, StyleSheet } from "react-native";
-import DatePicker from "react-native-date-picker";
-import { scale } from "react-native-size-matters";
-import * as z from "zod";
+import type { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { BottomSheetFlatList } from '@gorhom/bottom-sheet';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useNavigation } from '@react-navigation/native';
+import { useTheme } from '@shopify/restyle';
+import { format } from 'date-fns';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { ScrollView, StyleSheet } from 'react-native';
+import DatePicker from 'react-native-date-picker';
+import { scale } from 'react-native-size-matters';
+import * as z from 'zod';
+import { BottomModal } from '@/components/bottom-modal';
+import SelectionBox from '@/components/drop-down';
+import StepIndicator from '@/components/indicator-2';
+import { ScreenHeader } from '@/components/screen-header';
+import { SelectModalItem } from '@/components/select-modal-item';
+import { SelectOptionButton } from '@/components/select-option-button';
+import { useSoftKeyboardEffect } from '@/hooks';
+import { useCompanies } from '@/services/api/company';
+import { useJobCategories } from '@/services/api/settings';
+import { setPostCompany, setPostJobStep2 } from '@/store/post-job';
+import type { Theme } from '@/theme';
+import { Button, ControlledInput, Screen, Text, View } from '@/ui';
 
-import { BottomModal } from "@/components/bottom-modal";
-import SelectionBox from "@/components/drop-down";
-import StepIndicator from "@/components/indicator-2";
-import { ScreenHeader } from "@/components/screen-header";
-import { SelectModalItem } from "@/components/select-modal-item";
-import { SelectOptionButton } from "@/components/select-option-button";
-import { useSoftKeyboardEffect } from "@/hooks";
-import { useCompanies } from "@/services/api/company";
-import { useJobCategories } from "@/services/api/settings";
-import { setPostCompany, setPostJobStep2 } from "@/store/post-job";
-import type { Theme } from "@/theme";
-import { Button, ControlledInput, Screen, Text, View } from "@/ui";
-
-const labels = ["Job Detail", "Post Description", "Post Detail", "Preview"];
+const labels = ['Job Detail', 'Post Description', 'Post Detail', 'Preview'];
 
 const schema = z.object({
   company: z.string({
-    required_error: "Company is required",
+    required_error: 'Company is required',
   }),
   location: z.string({
-    required_error: "Job location is required",
+    required_error: 'Job location is required',
   }),
   jobCategory: z.string({
-    required_error: "Job category is required",
+    required_error: 'Job category is required',
   }),
   date: z.string({
-    required_error: "Date  is required",
+    required_error: 'Date  is required',
   }),
 });
 
@@ -60,8 +59,8 @@ export const PostJobDetail = () => {
     resolver: zodResolver(schema),
   });
 
-  const watchCompany = watch("company");
-  const watchDate = watch("date");
+  const watchCompany = watch('company');
+  const watchDate = watch('date');
 
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
@@ -72,7 +71,7 @@ export const PostJobDetail = () => {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
   // variabless
-  const snapPoints = useMemo(() => ["35%"], []);
+  const snapPoints = useMemo(() => ['35%'], []);
 
   // callbacks
   const handlePresentModalPress = useCallback(() => {
@@ -88,7 +87,7 @@ export const PostJobDetail = () => {
   const onSubmit = (data: PostJobDetailFormType) => {
     setPostJobStep2(data);
 
-    navigation.navigate("PostJobPreview");
+    navigation.navigate('PostJobPreview');
   };
 
   const renderItem = useCallback(
@@ -96,13 +95,13 @@ export const PostJobDetail = () => {
       return (
         <SelectModalItem
           title={item?.name}
-          icon={"company"}
+          icon={'company'}
           onPress={(data) => {
             setPostCompany({
               name: item?.name,
               id: item?.id,
             });
-            setValue("company", data);
+            setValue('company', data);
             handleDismissModalPress();
           }}
         />
@@ -112,20 +111,24 @@ export const PostJobDetail = () => {
   );
 
   return (
-    <Screen backgroundColor={colors.white} edges={["top"]}>
+    <Screen backgroundColor={colors.white} edges={['top']}>
       <ScreenHeader />
-      <View paddingHorizontal={"large"} backgroundColor={"grey500"} paddingBottom={"medium"}>
+      <View
+        paddingHorizontal={'large'}
+        backgroundColor={'grey500'}
+        paddingBottom={'medium'}
+      >
         <StepIndicator stepCount={4} currentPosition={2} labels={labels} />
       </View>
       <ScrollView
         contentContainerStyle={styles.container}
         showsVerticalScrollIndicator={false}
       >
-        <View paddingTop={"large"} gap={"medium"} paddingHorizontal={"large"}>
+        <View paddingTop={'large'} gap={'medium'} paddingHorizontal={'large'}>
           <SelectOptionButton
             label="Company"
             isSelected={watchCompany ? true : false}
-            selectedText={watchCompany ?? "Select company"}
+            selectedText={watchCompany ?? 'Select company'}
             icon="arrow-ios-down"
             onPress={handlePresentModalPress}
             error={errors?.company?.message}
@@ -144,16 +147,16 @@ export const PostJobDetail = () => {
               placeholder="Select job category"
               data={jobCategores}
               onChange={(data) => {
-                setValue("jobCategory", `${data?.id},${data?.name}`);
+                setValue('jobCategory', `${data?.id},${data?.name}`);
 
-                setError("jobCategory", {
-                  type: "custom",
-                  message: "",
+                setError('jobCategory', {
+                  type: 'custom',
+                  message: '',
                 });
               }}
             />
             {errors?.jobCategory?.message && (
-              <Text paddingTop={"small"} variant="regular14" color={"error"}>
+              <Text paddingTop={'small'} variant="regular14" color={'error'}>
                 {errors?.jobCategory?.message}
               </Text>
             )}
@@ -169,7 +172,7 @@ export const PostJobDetail = () => {
           <SelectOptionButton
             label="Deadline Date"
             isSelected={watchDate ? true : false}
-            selectedText={watchDate ?? "Select date"}
+            selectedText={watchDate ?? 'Select date'}
             icon="calendar"
             onPress={() => setOpen(true)}
           />
@@ -177,8 +180,16 @@ export const PostJobDetail = () => {
 
         <View height={scale(72)} />
 
-        <View paddingVertical={"large"} borderTopWidth={1} borderTopColor={"grey400"}>
-          <Button label="Next" marginHorizontal={"large"} onPress={handleSubmit(onSubmit)} />
+        <View
+          paddingVertical={'large'}
+          borderTopWidth={1}
+          borderTopColor={'grey400'}
+        >
+          <Button
+            label="Next"
+            marginHorizontal={'large'}
+            onPress={handleSubmit(onSubmit)}
+          />
         </View>
       </ScrollView>
 
@@ -186,7 +197,7 @@ export const PostJobDetail = () => {
         ref={bottomSheetModalRef}
         index={0}
         snapPoints={snapPoints}
-        backgroundStyle={{ backgroundColor: "rgb(250,250,253)" }}
+        backgroundStyle={{ backgroundColor: 'rgb(250,250,253)' }}
       >
         <BottomSheetFlatList
           contentContainerStyle={styles.contentContainer}
@@ -203,8 +214,8 @@ export const PostJobDetail = () => {
         date={date}
         onConfirm={(date) => {
           const myDate = new Date(date);
-          const formattedDate = format(myDate, "yyyy/MM/dd");
-          setValue("date", formattedDate);
+          const formattedDate = format(myDate, 'yyyy/MM/dd');
+          setValue('date', formattedDate);
           setOpen(false);
           setDate(date);
         }}

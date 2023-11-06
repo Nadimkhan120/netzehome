@@ -1,4 +1,10 @@
-import React, { useEffect } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { useForm } from 'react-hook-form';
 import { ScrollView, StyleSheet, useWindowDimensions } from 'react-native';
 import { scale } from 'react-native-size-matters';
@@ -17,11 +23,32 @@ import {
   useGetCompanyDetails,
 } from '@/services/api/company';
 import { useUser } from '@/store/user';
-import type { Theme } from '@/theme';
-import { Button, ControlledInput, Screen, View } from '@/ui';
+import { palette, type Theme } from '@/theme';
+import {
+  Button,
+  ControlledInput,
+  PressableScale,
+  Screen,
+  Text,
+  View,
+} from '@/ui';
 import { DescriptionField } from '@/ui/description-field';
 import { showErrorMessage, showSuccessMessage } from '@/utils';
 import { Avatar } from '@/components/avatar';
+import SwitchToggle from 'react-native-switch-toggle';
+import SelectionBox from '@/components/drop-down';
+import { SelectOptionButton } from '@/components/select-option-button';
+import { CheckBox } from '@/components/checkbox';
+import { BottomModal } from '@/components/bottom-modal';
+import type { BottomSheetModal } from '@gorhom/bottom-sheet';
+import {
+  BottomSheetFlatList,
+  BottomSheetFooter,
+  BottomSheetView,
+} from '@gorhom/bottom-sheet';
+import { SelectModalItem } from '@/components/select-modal-item';
+import { format } from 'date-fns';
+import DatePicker from 'react-native-date-picker';
 
 const schema = z.object({
   name: z.string({
@@ -38,166 +65,173 @@ const schema = z.object({
   location: z.string().optional(),
   salary: z.string().optional(),
   languages: z.string().optional(),
+  startDate: z.string({
+    required_error: 'Start date is required',
+  }),
+  endDate: z.string({
+    required_error: 'End date is required',
+  }),
 });
 
 export type AddEducationFormType = z.infer<typeof schema>;
 
+const employees = [
+  { name: 'Full Time', id: 1 },
+  { name: 'Part Time', id: 2 },
+  { name: 'Freelance', id: 3 },
+  { name: 'Contract', id: 4 },
+  { name: 'Self Employed', id: 5 },
+  { name: 'Seasonal', id: 6 },
+];
+
 export const AddEducation = () => {
   const { colors } = useTheme<Theme>();
-  const { goBack } = useNavigation();
+  const { goBack, navigate } = useNavigation();
   const route = useRoute<any>();
   const { width } = useWindowDimensions();
 
   useSoftKeyboardEffect();
 
+  const [on, setOn] = useState<boolean>(false);
+  const [startDate, setStartDate] = useState(new Date());
+  const [openStartDate, setOpenStartDate] = useState(false);
+  const [endDate, setEndDate] = useState(new Date());
+  const [openEndDate, setOpenEndDate] = useState(false);
+
   const company = useUser((state) => state?.company);
 
   const { mutate: editCompanyApi, isLoading } = useEditCompany();
 
+  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+  // variables
+  const snapPoints = useMemo(() => ['60%'], []);
+
+  // callbacks
+  const handlePresentModalPress = useCallback(() => {
+    bottomSheetModalRef.current?.present();
+  }, []);
+
+  // callbacks
+  const handleDismissModalPress = useCallback(() => {
+    bottomSheetModalRef.current?.dismiss();
+  }, []);
+
   const data = route?.params?.data;
 
-  const { handleSubmit, control, setValue } = useForm<AddEducationFormType>({
-    resolver: zodResolver(schema),
-    // defaultValues: {
-    //   companyName: data?.name,
-    //   email: data?.email,
-    //   phone: data?.location?.phone,
-    //   website: data?.location?.website,
-    //   bio: data?.short_description,
-    //   employees: data?.no_of_employees,
-    //   wage: data?.average_wage,
-    //   address: data?.location?.address_1,
-    //   city: data?.location?.city_name,
-    //   country: data?.location?.country_name,
-    //   facebook: data?.facebook_link,
-    //   instgram: data?.instagram_link,
-    //   whatsapp: data?.twitter_link,
-    // },
-  });
+  const { handleSubmit, control, setValue, watch } =
+    useForm<AddEducationFormType>({
+      resolver: zodResolver(schema),
+    });
 
   const onSubmit = (data: AddEducationFormType) => {
     return;
-    editCompanyApi(
-      {
-        name: data?.companyName,
-        email: data?.email,
-        contact_number: data?.phone,
-        no_of_employees: parseInt(data?.employees),
-        start_time: '9 am',
-        end_time: '6 pm',
-        average_wage: parseInt(data?.wage),
-        languages: [1, 2],
-        categories: [1, 2],
-        company_id: company?.id,
-        short_description: data?.bio,
-        facebook_link: data?.facebook,
-        instagram_link: data?.instgram,
-        twitter_link: data?.whatsapp,
-        locations: {
-          address_1: data?.address,
-          address_2: '',
-          city_id: '1',
-          country_id: '1',
-          phone: data?.phone,
-          email: data?.email,
-          website: data?.website,
-          web_location: '',
-          longitude: '0.00000',
-          latitude: '0.0000',
-          google_location: data?.location,
-        },
-      },
-      {
-        onSuccess: (responseData) => {
-          if (responseData?.status === 200) {
-            showSuccessMessage(responseData?.message ?? '');
-            queryClient.invalidateQueries(useCompanies.getKey());
-            queryClient.invalidateQueries(useGetCompanyDetails.getKey());
-            goBack();
-          } else {
-            showErrorMessage(responseData?.message ?? '');
-          }
-        },
-        onError: (error) => {
-          //@ts-ignore
-          showErrorMessage(error?.response?.data?.message ?? '');
-        },
-      }
-    );
   };
 
-  useEffect(() => {}, []);
+  const watchStartDate = watch('startDate');
+  const watchEndDate = watch('endDate');
+
+  const renderItem = useCallback(({ item }: any) => {
+    return (
+      <SelectModalItem
+        title={item?.title}
+        item={item}
+        onPress={(data) => {
+          handleDismissModalPress();
+        }}
+      />
+    );
+  }, []);
 
   return (
     <Screen backgroundColor={colors.white} edges={['top']}>
-      <ScreenHeader title="Edit Profile" showBorder={true} icon="close" />
+      <ScreenHeader title="Add Education" showBorder={true} icon="close" />
 
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <View height={scale(119)}>
-          <Image
-            source={icons['back-cover']}
-            style={{ height: scale(119), width: width }}
-          />
-          <View
-            alignSelf={'flex-start'}
-            position={'absolute'}
-            // bottom={0}
-            marginLeft={'large'}
-            style={{
-              bottom: -scale(28),
-            }}
-          >
-            <Avatar source={icons['avatar-2']} size="large" />
+        <View
+          backgroundColor={'secondary'}
+          flexDirection={'row'}
+          paddingHorizontal={'large'}
+          paddingVertical={'large'}
+        >
+          <View flex={1}>
+            <Text variant={'medium14'} color={'black'}>
+              Notify network
+            </Text>
+            <Text variant={'regular13'} paddingTop={'small'} color={'grey300'}>
+              Turn on to notify your network of key profile changes (such as new
+              job) and work anniversaries. Updates can take up to 2 hours.
+            </Text>
           </View>
+          <SwitchToggle
+            switchOn={on}
+            onPress={() => setOn(!on)}
+            circleColorOff={palette.white}
+            circleColorOn={palette.white}
+            backgroundColorOn={palette.primary}
+            backgroundColorOff="#95969D"
+          />
         </View>
 
-        <View height={scale(44)} />
-
         <View paddingTop={'large'} paddingHorizontal={'large'} rowGap={'small'}>
-          <ControlledInput
-            placeholder="Enter  name"
-            label="Profile Name"
-            control={control}
-            name="name"
+          <SelectOptionButton
+            label="School"
+            isSelected={false}
+            selectedText="Please Select"
+            icon={'chevron-down'}
+            onPress={() => {
+              navigate('ChooseSchool');
+            }}
+          />
+
+          <SelectOptionButton
+            label="Degree"
+            isSelected={false}
+            selectedText="Please Select"
+            icon={'chevron-down'}
+            onPress={() => {
+              navigate('ChooseDegree');
+            }}
+          />
+
+          <SelectOptionButton
+            label="Field of study"
+            isSelected={false}
+            selectedText="Please Select"
+            icon={'chevron-down'}
+            onPress={() => {
+              navigate('ChooseDegreeField');
+            }}
+          />
+
+          <SelectOptionButton
+            label="Start Date"
+            isSelected={watchStartDate ? true : false}
+            selectedText={watchStartDate ? watchStartDate : 'Please Select'}
+            icon={'chevron-down'}
+            onPress={() => {
+              setOpenStartDate(true);
+            }}
+          />
+          <SelectOptionButton
+            label="End Date"
+            isSelected={watchEndDate ? true : false}
+            selectedText={watchEndDate ? watchEndDate : 'Please Select'}
+            icon={'chevron-down'}
+            onPress={() => {
+              setOpenEndDate(true);
+            }}
           />
 
           <ControlledInput
-            placeholder="Enter job tilte"
-            label="Job Title"
+            placeholder="eg A+"
+            label="Grade"
             control={control}
             name="email"
-          />
-
-          <ControlledInput
-            placeholder="Enter salary"
-            label="Expected Salary"
-            control={control}
-            name="salary"
-          />
-          <ControlledInput
-            placeholder="e.g Urdu, English"
-            label="Languages"
-            control={control}
-            name="languages"
-          />
-
-          <ControlledInput
-            placeholder="Enter email"
-            label="Email"
-            control={control}
-            name="email"
-          />
-
-          <ControlledInput
-            placeholder="Enter location."
-            label="Location"
-            control={control}
-            name="location"
           />
 
           <DescriptionField
-            placeholder="Write here"
-            label="Cover Letter"
+            placeholder="Enter description"
+            label="Description"
             control={control}
             name="cover"
           />
@@ -212,6 +246,54 @@ export const AddEducation = () => {
           />
         </View>
       </ScrollView>
+
+      <BottomModal
+        ref={bottomSheetModalRef}
+        index={0}
+        snapPoints={snapPoints}
+        backgroundStyle={{ backgroundColor: colors.background }}
+      >
+        <BottomSheetFlatList
+          contentContainerStyle={styles.contentContainer}
+          data={employees}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={renderItem}
+        />
+      </BottomModal>
+
+      <DatePicker
+        modal
+        locale="en"
+        open={openStartDate}
+        date={startDate}
+        onConfirm={(date) => {
+          const myDate = new Date(date);
+          const formattedDate = format(myDate, 'yyyy/MM/dd');
+          setValue('startDate', formattedDate);
+          setOpenStartDate(false);
+          setStartDate(date);
+        }}
+        onCancel={() => {
+          setOpenStartDate(false);
+        }}
+      />
+
+      <DatePicker
+        modal
+        locale="en"
+        open={openEndDate}
+        date={endDate}
+        onConfirm={(date) => {
+          const myDate = new Date(date);
+          const formattedDate = format(myDate, 'yyyy/MM/dd');
+          setValue('endDate', formattedDate);
+          setOpenEndDate(false);
+          setEndDate(date);
+        }}
+        onCancel={() => {
+          setOpenEndDate(false);
+        }}
+      />
     </Screen>
   );
 };
@@ -219,5 +301,8 @@ export const AddEducation = () => {
 const styles = StyleSheet.create({
   scrollContainer: {
     paddingBottom: scale(160),
+  },
+  contentContainer: {
+    paddingHorizontal: scale(16),
   },
 });

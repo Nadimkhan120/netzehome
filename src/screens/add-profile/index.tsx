@@ -47,6 +47,7 @@ export const AddProfile = () => {
   const { goBack } = useNavigation();
   const route = useRoute<any>();
   const { width } = useWindowDimensions();
+  const { navigate } = useNavigation();
 
   useSoftKeyboardEffect();
 
@@ -208,8 +209,9 @@ export const AddProfile = () => {
         <View flex={1} justifyContent={'flex-end'} paddingHorizontal={'large'}>
           <Button
             label="Save Profile"
-            // onPress={handleSubmit(onSubmit)}
-            onPress={() => {}}
+            onPress={() => {
+              navigate('Profile');
+            }}
             loading={isLoading}
           />
         </View>

@@ -1,5 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react';
-import type { BottomSheetModal } from '@gorhom/bottom-sheet';
+import React, { useCallback, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { FlashList } from '@shopify/flash-list';
 import { useTheme } from '@shopify/restyle';
@@ -11,22 +10,17 @@ import { useGetUser } from '@/services/api/user';
 import { useUser } from '@/store/user';
 import type { Theme } from '@/theme';
 import { Screen, Text, View } from '@/ui';
-import CompanyItem from './company-item';
+import LocationItem from './location-item';
 
 const employees = [
-  { id: 1, name: 'Bachelor of Science (B.Sc.)' },
-  { id: 2, name: 'Bachelor of Arts (B.A.)' },
-  { id: 3, name: 'Master of Business Administration (MBA)' },
-  { id: 4, name: 'Doctor of Medicine (M.D.)' },
-  { id: 5, name: 'Master of Science (M.Sc.)' },
-  { id: 6, name: 'Bachelor of Engineering (B.Eng.)' },
-  { id: 7, name: 'Bachelor of Fine Arts (B.F.A.)' },
-  { id: 8, name: 'Doctor of Philosophy (Ph.D.)' },
-  { id: 9, name: 'Master of Education (M.Ed.)' },
-  { id: 10, name: 'Juris Doctor (J.D.)' },
+  { name: 'Austrailia', id: 1 },
+  { name: 'United state', id: 2 },
+  { name: 'Argentena', id: 3 },
+  { name: 'UAE', id: 4 },
+  { name: '', id: 5 },
 ];
 
-export const ChooseCompany = () => {
+export const ChooseLocation = () => {
   const { colors } = useTheme<Theme>();
 
   const { goBack } = useNavigation();
@@ -40,12 +34,10 @@ export const ChooseCompany = () => {
     },
   });
 
-  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-
   const renderItem = useCallback(
     ({ item }) => {
       return (
-        <CompanyItem
+        <LocationItem
           data={item}
           onPress={() => {
             console.log('hello');
@@ -53,12 +45,12 @@ export const ChooseCompany = () => {
         />
       );
     },
-    [data, bottomSheetModalRef, selectUser, setSelectUser]
+    [data]
   );
 
   return (
     <Screen backgroundColor={colors.white} edges={['top']}>
-      <ScreenHeader title="Company Name" />
+      <ScreenHeader title="Location" icon="close" />
 
       <View
         backgroundColor={'grey500'}

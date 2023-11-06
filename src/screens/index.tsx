@@ -60,3 +60,7 @@ export * from './choose-company';
 export * from './choose-skills';
 export * from './choose-degree';
 export * from './notifications';
+export * from './profile';
+export * from './choose-location';
+export * from './choose-degree-fields';
+export * from './choose-school';

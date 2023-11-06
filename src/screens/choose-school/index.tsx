@@ -11,22 +11,22 @@ import { useGetUser } from '@/services/api/user';
 import { useUser } from '@/store/user';
 import type { Theme } from '@/theme';
 import { Screen, Text, View } from '@/ui';
-import CompanyItem from './company-item';
+import DegreeItem from './school-item';
 
 const employees = [
-  { id: 1, name: 'Bachelor of Science (B.Sc.)' },
-  { id: 2, name: 'Bachelor of Arts (B.A.)' },
-  { id: 3, name: 'Master of Business Administration (MBA)' },
-  { id: 4, name: 'Doctor of Medicine (M.D.)' },
-  { id: 5, name: 'Master of Science (M.Sc.)' },
-  { id: 6, name: 'Bachelor of Engineering (B.Eng.)' },
-  { id: 7, name: 'Bachelor of Fine Arts (B.F.A.)' },
-  { id: 8, name: 'Doctor of Philosophy (Ph.D.)' },
-  { id: 9, name: 'Master of Education (M.Ed.)' },
-  { id: 10, name: 'Juris Doctor (J.D.)' },
+  { id: 1, name: 'Harvard University' },
+  { id: 2, name: 'Stanford University' },
+  { id: 3, name: 'Massachusetts Institute of Technology (MIT)' },
+  { id: 4, name: 'University of Oxford' },
+  { id: 5, name: 'University of Cambridge' },
+  { id: 6, name: 'California Institute of Technology (Caltech)' },
+  { id: 7, name: 'Princeton University' },
+  { id: 8, name: 'Yale University' },
+  { id: 9, name: 'University of Chicago' },
+  { id: 10, name: 'Columbia University' },
 ];
 
-export const ChooseCompany = () => {
+export const ChooseSchool = () => {
   const { colors } = useTheme<Theme>();
 
   const { goBack } = useNavigation();
@@ -45,7 +45,7 @@ export const ChooseCompany = () => {
   const renderItem = useCallback(
     ({ item }) => {
       return (
-        <CompanyItem
+        <DegreeItem
           data={item}
           onPress={() => {
             console.log('hello');
@@ -58,7 +58,7 @@ export const ChooseCompany = () => {
 
   return (
     <Screen backgroundColor={colors.white} edges={['top']}>
-      <ScreenHeader title="Company Name" />
+      <ScreenHeader title="School" />
 
       <View
         backgroundColor={'grey500'}

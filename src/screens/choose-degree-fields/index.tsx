@@ -11,22 +11,27 @@ import { useGetUser } from '@/services/api/user';
 import { useUser } from '@/store/user';
 import type { Theme } from '@/theme';
 import { Screen, Text, View } from '@/ui';
-import CompanyItem from './company-item';
+import DegreeFieldItem from './degree-field-item';
 
 const employees = [
-  { id: 1, name: 'Bachelor of Science (B.Sc.)' },
-  { id: 2, name: 'Bachelor of Arts (B.A.)' },
-  { id: 3, name: 'Master of Business Administration (MBA)' },
-  { id: 4, name: 'Doctor of Medicine (M.D.)' },
-  { id: 5, name: 'Master of Science (M.Sc.)' },
-  { id: 6, name: 'Bachelor of Engineering (B.Eng.)' },
-  { id: 7, name: 'Bachelor of Fine Arts (B.F.A.)' },
-  { id: 8, name: 'Doctor of Philosophy (Ph.D.)' },
-  { id: 9, name: 'Master of Education (M.Ed.)' },
-  { id: 10, name: 'Juris Doctor (J.D.)' },
+  { id: 1, name: 'Computer Science' },
+  { id: 2, name: 'Engineering' },
+  { id: 3, name: 'Psychology' },
+  { id: 4, name: 'Business Administration' },
+  { id: 5, name: 'Biology' },
+  { id: 6, name: 'Economics' },
+  { id: 7, name: 'Medicine' },
+  { id: 8, name: 'Art History' },
+  { id: 9, name: 'Political Science' },
+  { id: 10, name: 'Mathematics' },
+  { id: 11, name: 'Environmental Science' },
+  { id: 12, name: 'Linguistics' },
+  { id: 13, name: 'History' },
+  { id: 14, name: 'Sociology' },
+  { id: 15, name: 'Music Theory' },
 ];
 
-export const ChooseCompany = () => {
+export const ChooseDegreeField = () => {
   const { colors } = useTheme<Theme>();
 
   const { goBack } = useNavigation();
@@ -45,7 +50,7 @@ export const ChooseCompany = () => {
   const renderItem = useCallback(
     ({ item }) => {
       return (
-        <CompanyItem
+        <DegreeFieldItem
           data={item}
           onPress={() => {
             console.log('hello');
@@ -58,7 +63,7 @@ export const ChooseCompany = () => {
 
   return (
     <Screen backgroundColor={colors.white} edges={['top']}>
-      <ScreenHeader title="Company Name" />
+      <ScreenHeader title="Field" />
 
       <View
         backgroundColor={'grey500'}
