@@ -44,6 +44,10 @@ import {
   ChooseCompany,
   ChooseSkills,
   ChooseDegree,
+  Profile,
+  ChooseLocation,
+  ChooseDegreeField,
+  ChooseSchool,
 } from '@/screens';
 import Applicants from '@/screens/applicants';
 import CandidateProfile from '@/screens/candidate-profile';
@@ -100,6 +104,10 @@ export type AppStackParamList = {
   ChooseCompany: undefined;
   ChooseSkills: undefined;
   ChooseDegree: undefined;
+  Profile: undefined;
+  ChooseLocation: undefined;
+  ChooseDegreeField: undefined;
+  ChooseSchool: undefined;
 };
 
 const Stack = createNativeStackNavigator<AppStackParamList>();
@@ -167,6 +175,10 @@ export const AppNavigator = () => {
         <Stack.Screen name="ChooseCompany" component={ChooseCompany} />
         <Stack.Screen name="ChooseDegree" component={ChooseDegree} />
         <Stack.Screen name="ChooseSkills" component={ChooseSkills} />
+        <Stack.Screen name="Profile" component={Profile} />
+        <Stack.Screen name="ChooseLocation" component={ChooseLocation} />
+        <Stack.Screen name="ChooseDegreeField" component={ChooseDegreeField} />
+        <Stack.Screen name="ChooseSchool" component={ChooseSchool} />
       </Stack.Group>
     </Stack.Navigator>
   );

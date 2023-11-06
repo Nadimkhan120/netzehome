@@ -26,7 +26,13 @@ export const HomeSliderItem = ({ data }: HomeSliderItemProps) => {
           justifyContent={'center'}
           alignItems={'center'}
         >
-          <Text>hello</Text>
+          <Image
+            source={icons['plus2']}
+            style={{ height: scale(24), width: scale(24) }}
+          />
+          <Text variant={'medium16'} color={'grey200'}>
+            Add New Profile
+          </Text>
         </View>
       </PressableScale>
     );

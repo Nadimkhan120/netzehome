@@ -1,11 +1,11 @@
-import { Image } from "expo-image";
-import React from "react";
-import { StyleSheet } from "react-native";
-import { scale } from "react-native-size-matters";
+import { Image } from 'expo-image';
+import React from 'react';
+import { StyleSheet } from 'react-native';
+import { scale } from 'react-native-size-matters';
 
-import type { IconTypes } from "@/assets/icons";
-import { icons } from "@/assets/icons";
-import { Pressable, Text } from "@/ui";
+import type { IconTypes } from '@/assets/icons';
+import { icons } from '@/assets/icons';
+import { Pressable, Text } from '@/ui';
 
 type SelectModalItemProps = {
   title: string;
@@ -14,12 +14,19 @@ type SelectModalItemProps = {
   item?: any;
 };
 
-export const SelectModalItem = ({ title, icon, onPress, item }: SelectModalItemProps) => {
+export const SelectModalItem = ({
+  title,
+  icon,
+  onPress,
+  item,
+}: SelectModalItemProps) => {
+  console.log('title', title);
+
   return (
     <Pressable
       onPress={() => onPress?.(item ? item : title)}
-      flexDirection={"row"}
-      alignItems={"center"}
+      flexDirection={'row'}
+      alignItems={'center'}
       height={scale(37)}
       style={({ pressed }) => [
         {
@@ -27,9 +34,11 @@ export const SelectModalItem = ({ title, icon, onPress, item }: SelectModalItemP
         },
       ]}
     >
-      {icon ? <Image source={icons[icon]} style={styles.image} contentFit="contain" /> : null}
+      {icon ? (
+        <Image source={icons[icon]} style={styles.image} contentFit="contain" />
+      ) : null}
 
-      <Text variant={"medium14"} color={"grey200"}>
+      <Text variant={'medium14'} color={'grey200'}>
         {item ? item?.name : title}
       </Text>
     </Pressable>
