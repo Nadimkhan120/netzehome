@@ -1,43 +1,55 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, {
+  ReactNode,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import type { BottomSheetModal } from '@gorhom/bottom-sheet';
-import { BottomSheetFooter, BottomSheetView } from '@gorhom/bottom-sheet';
-import { useNavigation } from '@react-navigation/native';
-import { FlashList } from '@shopify/flash-list';
+import { BottomSheetFlatList } from '@gorhom/bottom-sheet';
 import { useTheme } from '@shopify/restyle';
 import { Image } from 'expo-image';
-import { StyleSheet } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { StyleSheet, TextInput } from 'react-native';
 import { scale } from 'react-native-size-matters';
-import { ImageButton } from '@/components';
-import ActivityIndicator from '@/components/activity-indicator';
-import { AddButton } from '@/components/add-button';
 import { BottomModal } from '@/components/bottom-modal';
-import { ScreenHeader } from '@/components/screen-header';
-import { SearchField } from '@/components/search-field';
-import { Status } from '@/components/status-info';
-import type { User } from '@/services/api/user';
-import { useGetUser } from '@/services/api/user';
+import { Header } from './header';
 import { useUser } from '@/store/user';
 import type { Theme } from '@/theme';
-import { Button, Screen, Text, View } from '@/ui';
+import { PressableScale, Screen, View } from '@/ui';
+import { Chat, MessageType } from '@flyerhq/react-native-chat-ui';
+import { AvoidSoftInput } from 'react-native-avoid-softinput';
+import { icons } from '@/assets/icons';
+import { SelectModalItem } from '@/components/select-modal-item';
+
+// For the testing purposes, you should probably use https://github.com/uuidjs/uuid
+const uuidv4 = () => {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+    const r = Math.floor(Math.random() * 16);
+    const v = c === 'x' ? r : (r % 4) + 8;
+    return v.toString(16);
+  });
+};
+
+const employees = [
+  { name: 'Clear Chat', id: 1 },
+  { name: 'Block User', id: 2 },
+  { name: 'Delete Chat', id: 6 },
+];
 
 export const Chats = () => {
   const { colors } = useTheme<Theme>();
-  const { bottom } = useSafeAreaInsets();
-  const { navigate } = useNavigation();
+
+  const [messages, setMessages] = useState<MessageType.Any[]>([]);
+  const [message, setMessage] = useState<string>('');
+
+  const user = { id: '06c33e8b-e835-4736-80f4-63f44b66666c' };
 
   const company = useUser((state) => state?.company);
-  const [selectUser, setSelectUser] = useState<User | null>(null);
-
-  const { data, isLoading } = useGetUser({
-    variables: {
-      id: company?.id,
-    },
-  });
 
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   // variables
-  const snapPoints = useMemo(() => ['60%'], []);
+  const snapPoints = useMemo(() => ['40%'], []);
 
   // callbacks
   const handlePresentModalPress = useCallback(() => {
@@ -49,82 +61,133 @@ export const Chats = () => {
     bottomSheetModalRef.current?.dismiss();
   }, []);
 
-  const renderItem = useCallback(
-    ({ item }) => {
-      return (
-        <View></View>
-        // <UserItem
-        //   data={item}
-        //   onOptionPress={(user) => {
-        //     setSelectUser(user);
-        //     handlePresentModalPress();
-        //   }}
-        // />
-      );
-    },
-    [data, bottomSheetModalRef, selectUser, setSelectUser]
-  );
+  const addMessage = (message: MessageType.Any) => {
+    setMessages([message, ...messages]);
+  };
 
-  // renders
-  const renderFooter = useCallback(
-    (props) => (
-      <BottomSheetFooter {...props} bottomInset={bottom}>
-        <View paddingVertical={'large'}>
-          <Button
-            marginHorizontal={'large'}
-            label="Edit User "
-            onPress={handleDismissModalPress}
-            variant={'outline'}
+  const handleSendPress = (message: string) => {
+    const textMessage: MessageType.Text = {
+      author: user,
+      createdAt: Date.now(),
+      id: uuidv4(),
+      text: message,
+      type: 'text',
+    };
+    addMessage(textMessage);
+    setMessage('');
+  };
+
+  /**
+   * For dismissing keyboard and avoiding textinput hide behind keyboard
+   */
+  useEffect(() => {
+    AvoidSoftInput.setEnabled(true);
+    AvoidSoftInput.setAvoidOffset(30);
+    AvoidSoftInput.setEasing('easeIn');
+    AvoidSoftInput.setHideAnimationDelay(100);
+    AvoidSoftInput.setHideAnimationDuration(300);
+    AvoidSoftInput.setShowAnimationDelay(100);
+    AvoidSoftInput.setShowAnimationDuration(800);
+  }, []);
+
+  const renderItem = useCallback(({ item }: any) => {
+    return (
+      <SelectModalItem
+        title={item?.title}
+        item={item}
+        onPress={(data) => {
+          handleDismissModalPress();
+        }}
+      />
+    );
+  }, []);
+
+  const renderBubble = ({
+    child,
+    message,
+    nextMessageInGroup,
+  }: {
+    child: ReactNode;
+    message: MessageType.Any;
+    nextMessageInGroup: boolean;
+  }) => {
+    return (
+      <View
+        style={{
+          backgroundColor:
+            user.id !== message.author.id ? '#ffffff' : colors.primary,
+          borderBottomLeftRadius: 10,
+          borderBottomRightRadius: 10,
+          borderTopLeftRadius: 10,
+          overflow: 'hidden',
+        }}
+      >
+        {child}
+      </View>
+    );
+  };
+
+  const renderBottomComponent = () => {
+    return (
+      <View
+        flexDirection={'row'}
+        height={scale(52)}
+        borderRadius={scale(8)}
+        marginBottom="small"
+        alignItems={'center'}
+        paddingHorizontal={'large'}
+        backgroundColor={'grey500'}
+        marginHorizontal={'large'}
+      >
+        <PressableScale>
+          <Image
+            source={icons['voice']}
+            style={styles.icon}
+            contentFit="contain"
           />
-          <Button
-            marginHorizontal={'large'}
-            label="Delete "
-            onPress={handleDismissModalPress}
-            marginTop={'small'}
-            variant={'error'}
+        </PressableScale>
+        <View flex={1}>
+          <TextInput
+            placeholder="Type here"
+            value={message}
+            style={styles.input}
+            textAlignVertical="center"
+            onChangeText={(value) => {
+              setMessage(value);
+            }}
           />
         </View>
-      </BottomSheetFooter>
-    ),
-    []
-  );
+        <PressableScale>
+          <Image
+            source={icons['chat-plus']}
+            style={styles.icon}
+            contentFit="contain"
+          />
+        </PressableScale>
+        <PressableScale onPress={() => handleSendPress(message)}>
+          <Image
+            source={icons['send']}
+            style={{
+              height: scale(44),
+              width: scale(32),
+              marginLeft: scale(5),
+            }}
+          />
+        </PressableScale>
+      </View>
+    );
+  };
 
   return (
-    <Screen backgroundColor={colors.white} edges={['top']}>
-      <ScreenHeader
-        title="Users"
-        rightElement={
-          <AddButton label="User" onPress={() => navigate('AddUser')} />
-        }
-      />
-
-      <View
-        backgroundColor={'grey500'}
-        paddingVertical={'large'}
-        // flexDirection={"row"}
-        //   alignItems={"center"}
-        paddingHorizontal={'large'}
-        //columnGap={"medium"}
-        paddingBottom={'medium'}
-      >
-        <SearchField placeholder="Search by name" showBorder={true} />
-      </View>
+    <Screen backgroundColor={colors.white}>
+      <Header title="Users" onRightPress={handlePresentModalPress} />
 
       <View flex={1} backgroundColor={'grey500'}>
-        <FlashList
-          //@ts-ignore
-          data={[0, 1, 2, 3, 4]}
-          renderItem={renderItem}
-          estimatedItemSize={150}
-          ListEmptyComponent={
-            <View
-              height={scale(300)}
-              justifyContent={'center'}
-              alignItems={'center'}
-            >
-              <Text>No Users Found</Text>
-            </View>
-          }
+        <Chat
+          messages={messages}
+          renderBubble={renderBubble}
+          user={user}
+          customBottomComponent={renderBottomComponent}
         />
       </View>
 
@@ -132,58 +195,14 @@ export const Chats = () => {
         ref={bottomSheetModalRef}
         index={0}
         snapPoints={snapPoints}
-        backgroundStyle={{ backgroundColor: 'rgb(250,250,253)' }}
-        footerComponent={renderFooter}
+        backgroundStyle={{ backgroundColor: colors.background }}
       >
-        <BottomSheetView style={styles.contentContainer}>
-          <View
-            flexDirection={'row'}
-            justifyContent={'space-between'}
-            alignItems={'center'}
-          >
-            <ImageButton
-              icon="close"
-              onPress={handleDismissModalPress}
-              size={scale(16)}
-            />
-            <Status
-              status={selectUser?.isactive === '0' ? 'Pending' : 'Active'}
-            />
-          </View>
-          <View
-            alignItems={'center'}
-            justifyContent={'center'}
-            paddingVertical={'medium'}
-          >
-            <Image
-              transition={1000}
-              source={{ uri: 'https://fakeimg.pl/400x400/cccccc/cccccc' }}
-              placeholder={{ uri: 'https://fakeimg.pl/400x400/cccccc/cccccc' }}
-              style={styles.image}
-              contentFit="contain"
-            />
-          </View>
-          <View
-            gap={'tiny'}
-            alignItems={'center'}
-            justifyContent={'center'}
-            paddingVertical={'medium'}
-          >
-            <Text
-              variant={'medium24'}
-              textTransform={'capitalize'}
-              color={'black'}
-            >
-              {selectUser?.person_name}
-            </Text>
-            <Text variant={'regular13'} color={'grey200'}>
-              {selectUser?.email}
-            </Text>
-            <Text variant={'regular13'} color={'black'}>
-              {selectUser?.role}
-            </Text>
-          </View>
-        </BottomSheetView>
+        <BottomSheetFlatList
+          contentContainerStyle={styles.contentContainer}
+          data={employees}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={renderItem}
+        />
       </BottomModal>
     </Screen>
   );
@@ -197,5 +216,15 @@ const styles = StyleSheet.create({
     height: scale(106),
     width: scale(106),
     borderRadius: scale(53),
+  },
+  icon: {
+    height: scale(24),
+    width: scale(24),
+  },
+  input: {
+    fontSize: scale(13),
+    marginLeft: scale(8),
+    height: scale(52),
+    paddingHorizontal: scale(8),
   },
 });

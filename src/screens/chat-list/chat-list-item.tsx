@@ -1,18 +1,15 @@
-import { icons } from '@/assets/icons';
-import { Avatar } from '@/components/avatar';
-import { PressableScale, Text, View } from '@/ui';
-import { Image } from 'expo-image';
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import { scale } from 'react-native-size-matters';
-import type { Theme } from '@/theme';
-import { useTheme } from '@shopify/restyle';
+import { Avatar } from '@/components/avatar';
+import { PressableScale, Text, View } from '@/ui';
+import { useNavigation } from '@react-navigation/native';
 
 const ChatListItem = () => {
-  const { colors } = useTheme<Theme>();
+  const { navigate } = useNavigation();
 
   return (
-    <PressableScale onPress={null}>
+    <PressableScale onPress={() => navigate('Chats')}>
       <View
         flexDirection={'row'}
         paddingHorizontal={'large'}

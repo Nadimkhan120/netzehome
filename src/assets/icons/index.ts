@@ -75,6 +75,9 @@ export const icons = {
   zapier: require('../images/zapier.png'),
   plus2: require('../images/plus2.png'),
   'chevron-down': require('../images/chevron-down.png'),
+  voice: require('../images/voice.png'),
+  send: require('../images/send.png'),
+  'chat-plus': require('../images/chat-plus.png'),
 };
 
 export type IconTypes = keyof typeof icons;

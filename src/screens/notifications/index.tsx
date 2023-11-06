@@ -4,9 +4,14 @@ import { useTheme } from '@shopify/restyle';
 import { scale } from 'react-native-size-matters';
 import { ScreenHeader } from '@/components/screen-header';
 import type { Theme } from '@/theme';
-import { Screen, Text, View } from '@/ui';
+import { PressableScale, Screen, Text, View } from '@/ui';
 import CapsuleView from '@/components/capsule-view';
 import NotificationListItem from './notification-list-item';
+
+const menu = [
+  { heading: 'Profile 1', active: true },
+  { heading: 'Profile 2', active: false },
+];
 
 export const Notifications = () => {
   const { colors } = useTheme<Theme>();
@@ -21,9 +26,11 @@ export const Notifications = () => {
         title="Notification"
         icon={'close'}
         rightElement={
-          <Text variant={'medium14'} color={'blue'}>
-            Mark all as read
-          </Text>
+          <PressableScale>
+            <Text variant={'medium14'} color={'blue'}>
+              Mark all as read
+            </Text>
+          </PressableScale>
         }
       />
       <View flex={1} backgroundColor={'grey500'}>
@@ -34,11 +41,8 @@ export const Notifications = () => {
           paddingHorizontal={'large'}
           backgroundColor={'white'}
         >
-          {[
-            { heading: 'Profile 1', active: true },
-            { heading: 'Profile 2', active: false },
-          ].map((element) => {
-            return <CapsuleView element={element} />;
+          {menu.map((element) => {
+            return <CapsuleView key={element?.heading} element={element} />;
           })}
         </View>
 
@@ -54,7 +58,7 @@ export const Notifications = () => {
                 color={'grey300'}
                 backgroundColor={'error'}
               >
-                2 Unreads
+                New
               </Text>
             </View>
           }

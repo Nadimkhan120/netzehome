@@ -22,6 +22,11 @@ import { Button, Screen, Text, View } from '@/ui';
 import ChatListItem from './chat-list-item';
 import CapsuleView from '@/components/capsule-view';
 
+const menu = [
+  { heading: 'Profile 1', active: true },
+  { heading: 'Profile 2', active: false },
+];
+
 export const ChatList = () => {
   const { colors } = useTheme<Theme>();
   const { bottom } = useSafeAreaInsets();
@@ -85,18 +90,6 @@ export const ChatList = () => {
     <Screen backgroundColor={colors.white} edges={['top']}>
       <ScreenHeader title="Chats" showBorder={true} icon={'close'} />
 
-      {/* <View
-        backgroundColor={'grey500'}
-        paddingVertical={'large'}
-        // flexDirection={"row"}
-        //   alignItems={"center"}
-        paddingHorizontal={'large'}
-        //columnGap={"medium"}
-        paddingBottom={'medium'}
-      >
-        <SearchField placeholder="Search by name" showBorder={true} />
-      </View> */}
-
       <View flex={1} backgroundColor={'grey500'}>
         <View
           height={scale(50)}
@@ -106,11 +99,8 @@ export const ChatList = () => {
           backgroundColor={'white'}
           marginVertical={'tiny'}
         >
-          {[
-            { heading: 'Profile 1', active: true },
-            { heading: 'Profile 2', active: false },
-          ].map((element) => {
-            return <CapsuleView element={element} />;
+          {menu?.map((element) => {
+            return <CapsuleView key={element?.heading} element={element} />;
           })}
         </View>
         <View paddingHorizontal={'large'} paddingVertical={'small'}>
