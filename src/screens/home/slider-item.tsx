@@ -13,7 +13,9 @@ type HomeSliderItemProps = {
 export const HomeSliderItem = ({ data }: HomeSliderItemProps) => {
   const { navigate } = useNavigation();
 
-  if (data?.name === 'Add') {
+  console.log('data', data);
+
+  if (data?.full_name === 'Add') {
     return (
       <PressableScale onPress={() => navigate('AddProfile')}>
         <View
@@ -39,45 +41,49 @@ export const HomeSliderItem = ({ data }: HomeSliderItemProps) => {
   }
 
   return (
-    <View
-      marginRight={'medium'}
-      borderRadius={scale(8)}
-      padding={'large'}
-      backgroundColor={'black'}
-      height={scale(160)}
-      width={scale(300)}
-      justifyContent={'center'}
-      alignItems={'center'}
+    <PressableScale
+      onPress={() => navigate('Profile', { id: data?.unique_id })}
     >
-      <View position={'absolute'} left={scale(16)} top={scale(16)}>
-        <PressableScale>
-          <Image
-            source={icons['qr']}
-            style={{ height: scale(24), width: scale(24) }}
-          />
-        </PressableScale>
-      </View>
-      <View position={'absolute'} right={scale(16)} top={scale(16)}>
-        <PressableScale>
-          <Image
-            source={icons['more-vertical']}
-            style={{ height: scale(24), width: scale(24) }}
-          />
-        </PressableScale>
-      </View>
+      <View
+        marginRight={'medium'}
+        borderRadius={scale(8)}
+        padding={'large'}
+        backgroundColor={'black'}
+        height={scale(160)}
+        width={scale(300)}
+        justifyContent={'center'}
+        alignItems={'center'}
+      >
+        <View position={'absolute'} left={scale(16)} top={scale(16)}>
+          <PressableScale>
+            <Image
+              source={icons['qr']}
+              style={{ height: scale(24), width: scale(24) }}
+            />
+          </PressableScale>
+        </View>
+        <View position={'absolute'} right={scale(16)} top={scale(16)}>
+          <PressableScale>
+            <Image
+              source={icons['more-vertical']}
+              style={{ height: scale(24), width: scale(24) }}
+            />
+          </PressableScale>
+        </View>
 
-      <View alignItems={'center'} justifyContent={'center'}>
-        <Avatar source={icons['avatar-2']} />
-        <Text variant={'medium24'} paddingTop={'tiny'} color={'white'}>
-          {data?.name}
-        </Text>
-        <Text variant={'regular12'} color={'white'} paddingTop={'tiny'}>
-          User Experience Designer at Conrad labs
-        </Text>
-        <Text variant={'regular12'} color={'white'} paddingTop={'tiny'}>
-          Rawalpindi, Pakistan
-        </Text>
+        <View alignItems={'center'} justifyContent={'center'}>
+          <Avatar source={icons['avatar-2']} />
+          <Text variant={'medium24'} paddingTop={'tiny'} color={'white'}>
+            {data?.name}
+          </Text>
+          <Text variant={'regular12'} color={'white'} paddingTop={'tiny'}>
+            User Experience Designer at Conrad labs
+          </Text>
+          <Text variant={'regular12'} color={'white'} paddingTop={'tiny'}>
+            Rawalpindi, Pakistan
+          </Text>
+        </View>
       </View>
-    </View>
+    </PressableScale>
   );
 };

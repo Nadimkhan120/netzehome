@@ -23,10 +23,12 @@ import { useIndustries, useSkills } from '@/services/api/settings';
 import { useDebounce } from '@/hooks';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import Explore from './explore';
+import Network from './network';
+import Saved from './saved';
 
 const FirstRoute = () => <Explore />;
-const SecondRoute = () => <Explore />;
-const ThirdRoute = () => <Explore />;
+const SecondRoute = () => <Network />;
+const ThirdRoute = () => <Saved />;
 
 const renderScene = SceneMap({
   first: FirstRoute,
@@ -185,43 +187,6 @@ export const Candidates = () => {
         initialLayout={{ width: layout.width }}
         renderTabBar={renderTabBar}
       />
-
-      {/* {isLoading ? (
-        <View
-          flex={1}
-          height={scale(300)}
-          justifyContent={'center'}
-          alignItems={'center'}
-        >
-          <ActivityIndicator size={'large'} />
-        </View>
-      ) : (
-        <View flex={1} backgroundColor={'white'} paddingTop={'large'}>
-          <FlashList
-            data={
-              showFilter
-                ? filterData?.response?.data
-                : debouncedSearch
-                ? seachData?.response?.data
-                : data?.response?.data
-            }
-            renderItem={renderItem}
-            estimatedItemSize={150}
-            contentContainerStyle={{
-              paddingBottom: scale(100),
-            }}
-            ListEmptyComponent={
-              <View
-                height={scale(300)}
-                justifyContent={'center'}
-                alignItems={'center'}
-              >
-                <Text>No Cadidates Found</Text>
-              </View>
-            }
-          />
-        </View>
-      )} */}
 
       <BottomModal
         ref={bottomSheetModalRef}

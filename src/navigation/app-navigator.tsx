@@ -49,6 +49,8 @@ import {
   ChooseLocation,
   ChooseDegreeField,
   ChooseSchool,
+  NewJobDetails,
+  NewCompanyDetails,
 } from '@/screens';
 import Applicants from '@/screens/applicants';
 import CandidateProfile from '@/screens/candidate-profile';
@@ -60,6 +62,8 @@ export type AppStackParamList = {
   TabNavigator: undefined;
   Details: { id: number };
   Job: { id: string };
+  NewJobDetails: { id: string };
+  NewCompanyDetails: { id: any };
   Payments: undefined;
   Applicants: { id: any };
   jobDetail: { id: null };
@@ -106,7 +110,7 @@ export type AppStackParamList = {
   ChooseSkills: undefined;
   ChooseDegree: undefined;
   Notifications: undefined;
-  Profile: undefined;
+  Profile: { id: number };
   ChooseLocation: undefined;
   ChooseDegreeField: undefined;
   ChooseSchool: undefined;
@@ -140,10 +144,7 @@ export const AppNavigator = () => {
         <Stack.Screen name="JdLibraryDetail" component={JdLibraryDetail} />
         <Stack.Screen name="MyAccount" component={MyAccount} />
         <Stack.Screen name="ChangePassword" component={ChangePassword} />
-        <Stack.Screen
-          name="PersonalInformation"
-          component={PersonalInformation}
-        />
+        <Stack.Screen name="PersonalInformation" component={PersonalInformation} />
         <Stack.Screen name="LoginAndSecurity" component={LoginAndSecurity} />
         <Stack.Screen name="CompanyDetail" component={CompanyDetail} />
         <Stack.Screen name="EditCompany" component={EditCompany} />
@@ -153,10 +154,7 @@ export const AppNavigator = () => {
         <Stack.Screen name="Roles" component={Roles} />
         <Stack.Screen name="AddRole" component={AddRole} />
         <Stack.Screen name="JobDescription" component={JobDescription} />
-        <Stack.Screen
-          name="RecruitmentProcess"
-          component={RecruitmentProcess}
-        />
+        <Stack.Screen name="RecruitmentProcess" component={RecruitmentProcess} />
         <Stack.Screen name="AddProcess" component={AddProcess} />
         <Stack.Screen name="Steps" component={Steps} />
         <Stack.Screen name="AddStep" component={AddStep} />
@@ -182,6 +180,8 @@ export const AppNavigator = () => {
         <Stack.Screen name="ChooseLocation" component={ChooseLocation} />
         <Stack.Screen name="ChooseDegreeField" component={ChooseDegreeField} />
         <Stack.Screen name="ChooseSchool" component={ChooseSchool} />
+        <Stack.Screen name="NewJobDetails" component={NewJobDetails} />
+        <Stack.Screen name="NewCompanyDetails" component={NewCompanyDetails} />
       </Stack.Group>
     </Stack.Navigator>
   );

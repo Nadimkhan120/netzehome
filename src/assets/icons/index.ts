@@ -78,6 +78,7 @@ export const icons = {
   voice: require('../images/voice.png'),
   send: require('../images/send.png'),
   'chat-plus': require('../images/chat-plus.png'),
+  link: require('../images/link.png'),
 };
 
 export type IconTypes = keyof typeof icons;

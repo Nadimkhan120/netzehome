@@ -5,26 +5,23 @@ import { View, Text } from '@/ui';
 import {
   useAllCandidates,
   useSaveCandidate,
-  useSavedCandidates,
   useUnsaveSaveCandidate,
-  useAddContactCandidate,
+  useSavedCandidates,
   useMyNetworks,
+  useAddContactCandidate,
 } from '@/services/api/candidate';
 import ActivityIndicator from '@/components/activity-indicator';
 import { useUser } from '@/store/user';
 import { queryClient } from '@/services/api/api-provider';
 import { scale } from 'react-native-size-matters';
 
-const Explore = () => {
+const Saved = () => {
   const user = useUser((state) => state?.user);
-
-  const { isLoading, data } = useAllCandidates({
+  const { isLoading, data } = useSavedCandidates({
     variables: {
       person_id: user?.id,
     },
   });
-
-  //console.log('useAllCandidates', JSON.stringify(data, null, 2));
 
   const { mutate: saveCandidateApi, isLoading: isSaving } = useSaveCandidate();
   const { mutate: saveUnCandidateApi, isLoading: isUnSaving } = useUnsaveSaveCandidate();
@@ -41,8 +38,6 @@ const Explore = () => {
                 { company_id: 0, person_id: person?.id, emails: person?.email },
                 {
                   onSuccess: (data) => {
-                    console.log('addHandShakeApi', data);
-
                     if (data?.response?.status === 200) {
                       queryClient.invalidateQueries(useAllCandidates.getKey());
                       queryClient.invalidateQueries(useMyNetworks.getKey());
@@ -130,7 +125,7 @@ const Explore = () => {
           }}
           ListEmptyComponent={
             <View height={scale(300)} justifyContent={'center'} alignItems={'center'}>
-              <Text>No Network Found</Text>
+              <Text>No Candidate Found</Text>
             </View>
           }
         />
@@ -139,4 +134,4 @@ const Explore = () => {
   );
 };
 
-export default Explore;
+export default Saved;

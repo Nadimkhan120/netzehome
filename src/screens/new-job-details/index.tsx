@@ -11,14 +11,15 @@ import ActivityIndicator from '@/components/activity-indicator';
 import { ScreenHeader } from '@/components/screen-header';
 import { useCandidateDetail } from '@/services/api/candidate';
 import type { Theme } from '@/theme';
-import { Screen, Text, View, PressableScale } from '@/ui';
-import Education from './education';
-import Experience from './experience';
-import Header from './header';
-import History from './history';
 import OverView from './overview';
+import Company from './company';
+import Details from './details';
+import Stats from './stats';
 import { Image } from 'expo-image';
 import { icons } from '@/assets/icons';
+import { Text, View, Screen } from '@/ui';
+import Header from './header';
+import { useJobDetail } from '@/services/api/vacancies';
 
 const OverViewTab = ({ route, data }: any) => {
   return (
@@ -26,50 +27,30 @@ const OverViewTab = ({ route, data }: any) => {
       <TabScrollView index={route?.index}>
         <OverView data={data} />
       </TabScrollView>
-      <View paddingVertical={'large'} paddingHorizontal={'large'}>
-        <PressableScale>
-          <View
-            backgroundColor={'black'}
-            height={scale(44)}
-            borderRadius={scale(8)}
-            justifyContent={'center'}
-            alignItems={'center'}
-          >
-            <Image
-              source={icons['message']}
-              style={{
-                height: scale(18),
-                width: scale(18),
-              }}
-              contentFit="contain"
-            />
-          </View>
-        </PressableScale>
-      </View>
     </>
   );
 };
 
-const EducationTab = ({ route, data }: any) => {
+const CompanyTab = ({ route, data }: any) => {
   return (
     <TabScrollView index={route?.index}>
-      <Education data={data} />
+      <Company companyData={data} />
     </TabScrollView>
   );
 };
 
-const ExperienceTab = ({ route, data }: any) => {
+const DetailsTab = ({ route, data }: any) => {
   return (
     <TabScrollView index={route?.index}>
-      <Experience data={data} />
+      <Details data={data} />
     </TabScrollView>
   );
 };
 
-const HistoryTab = ({ route }: any) => {
+const StatsTab = ({ route, data }: any) => {
   return (
     <TabScrollView index={route?.index}>
-      <History />
+      <Stats data={data} />
     </TabScrollView>
   );
 };
@@ -99,7 +80,7 @@ const renderTabBar = (props: any) => {
   );
 };
 
-export function Job() {
+export function NewJobDetails() {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const { colors } = useTheme<Theme>();
   const { width } = useWindowDimensions();
@@ -108,41 +89,41 @@ export function Job() {
 
   const [routes] = useState<Route[]>([
     { key: 'Overview', title: 'Overview', index: 0 },
-    { key: 'Experience', title: 'Experience', index: 1 },
-    { key: 'Education & Skills', title: 'Education & Skills', index: 2 },
-    // { key: 'History', title: 'History', index: 3 },
+    { key: 'Company', title: 'Company', index: 1 },
+    { key: 'Details', title: 'Details', index: 2 },
+    { key: 'Stats', title: 'Stats', index: 3 },
   ]);
 
   const [index, setIndex] = useState(0);
   const animationHeaderPosition = useSharedValue(0);
   const animationHeaderHeight = useSharedValue(0);
 
-  const { data: candidateData, isLoading } = useCandidateDetail({
+  const { data: jobDetailsData, isLoading } = useJobDetail({
     variables: {
       // @ts-ignore
-      unique_id: route?.params?.id,
+      id: route?.params?.id,
     },
   });
 
-  console.log('candidateData', JSON.stringify(candidateData, null, 2));
+  console.log('jobDetailsData', JSON.stringify(jobDetailsData, null, 2));
 
   const renderScene = useCallback(
     ({ route }: any) => {
       switch (route.key) {
         case 'Overview':
-          return <OverViewTab route={route} index={0} data={candidateData?.resume_bio} />;
-        case 'Experience':
-          return <ExperienceTab route={route} index={1} data={candidateData?.experience} />;
-        case 'Education & Skills':
-          return <EducationTab route={route} index={2} data={candidateData} />;
-        // case 'History':
-        //   return <HistoryTab route={route} index={2} />;
+          return <OverViewTab route={route} index={0} data={jobDetailsData?.response?.data?.long_description} />;
+        case 'Company':
+          return <CompanyTab route={route} index={1} data={jobDetailsData?.response?.data?.company_id} />;
+        case 'Details':
+          return <DetailsTab route={route} index={2} data={jobDetailsData?.response?.data} />;
+        case 'Stats':
+          return <StatsTab route={route} index={2} data={jobDetailsData?.response?.data} />;
 
         default:
           return null;
       }
     },
-    [candidateData]
+    [jobDetailsData]
   );
 
   const onStartRefresh = async () => {
@@ -155,7 +136,7 @@ export function Job() {
   const renderHeader = () => {
     return (
       <View>
-        <Header data={candidateData} />
+        <Header data={jobDetailsData?.response?.data} />
         <View height={scale(10)} backgroundColor={'grey500'} />
       </View>
     );

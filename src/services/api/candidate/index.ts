@@ -1,10 +1,18 @@
-import type { AxiosError } from "axios";
-import { createQuery } from "react-query-kit";
+import type { AxiosError } from 'axios';
+import { createQuery, createMutation } from 'react-query-kit';
 
-import { NetWorkService } from "@/services/apinetworkservice";
+import { NetWorkService } from '@/services/apinetworkservice';
 
 type Variables = { statusId: number; id: number };
-type Variables2 = void;
+type Variables2 = { person_id: number };
+type VariablesVoid = void;
+type SaveCandidate = { candidate_id: number; person_id: number };
+
+type AddContactCandidate = {
+  emails: number;
+  person_id: number;
+  company_id: number;
+};
 
 type Profile = {
   unique_id: string;
@@ -51,6 +59,8 @@ type Response = {
   message: string;
   status: number;
 };
+
+type Response3 = any;
 
 type Response4 = {
   response: {
@@ -176,7 +186,7 @@ type Candidates = {
 };
 
 export const useCandidates = createQuery<Response, Variables, AxiosError>({
-  primaryKey: "company-candidates",
+  primaryKey: 'company-candidates',
   queryFn: ({ queryKey: [primaryKey, variables] }) => {
     return NetWorkService.Get({
       url: `${primaryKey}/company_id/${variables?.id}/status/${variables?.statusId}`,
@@ -186,17 +196,37 @@ export const useCandidates = createQuery<Response, Variables, AxiosError>({
 });
 
 export const useAllCandidates = createQuery<Response4, Variables2, AxiosError>({
-  primaryKey: "all-candidates",
-  queryFn: ({ queryKey: [primaryKey] }) => {
+  primaryKey: 'applicants',
+  queryFn: ({ queryKey: [primaryKey, variables] }) => {
     return NetWorkService.Get({
-      url: `${primaryKey}`,
+      url: `${primaryKey}?person_id=${variables?.person_id}`,
+      //@ts-ignore
+    }).then((response) => response.data);
+  },
+});
+
+export const useSavedCandidates = createQuery<Response4, Variables2, AxiosError>({
+  primaryKey: 'applicant/saved-candidate',
+  queryFn: ({ queryKey: [primaryKey, variables] }) => {
+    return NetWorkService.Get({
+      url: `${primaryKey}?person_id=${variables?.person_id}`,
+      //@ts-ignore
+    }).then((response) => response.data);
+  },
+});
+
+export const useMyNetworks = createQuery<Response4, Variables2, AxiosError>({
+  primaryKey: 'applicant/my-contacts',
+  queryFn: ({ queryKey: [primaryKey, variables] }) => {
+    return NetWorkService.Get({
+      url: `${primaryKey}?person_id=${variables?.person_id}`,
       //@ts-ignore
     }).then((response) => response.data);
   },
 });
 
 export const useCandidateStatuses = createQuery<Response2, Variables2, AxiosError>({
-  primaryKey: "job-applied-job-statuses",
+  primaryKey: 'job-applied-job-statuses',
   queryFn: ({ queryKey: [primaryKey] }) => {
     return NetWorkService.Get({ url: primaryKey }).then(
       //@ts-ignore
@@ -206,7 +236,7 @@ export const useCandidateStatuses = createQuery<Response2, Variables2, AxiosErro
 });
 
 export const useCandidateDetail = createQuery<CandidateProfile, Profile, AxiosError>({
-  primaryKey: "person/profile-detail",
+  primaryKey: 'person/profile-detail',
   queryFn: ({ queryKey: [primaryKey, variables] }) => {
     return NetWorkService.Post({
       url: `${primaryKey}`,
@@ -217,9 +247,9 @@ export const useCandidateDetail = createQuery<CandidateProfile, Profile, AxiosEr
 });
 
 export const useCandidateByJob = createQuery<Candidates, Variables3, AxiosError>({
-  primaryKey: "job-candidates/",
+  primaryKey: 'job-candidates/',
   queryFn: ({ queryKey: [primaryKey, variables] }) => {
-    console.log("yyyy", `${primaryKey}job_id/${variables?.id}`);
+    console.log('yyyy', `${primaryKey}job_id/${variables?.id}`);
     return NetWorkService.Get({
       url: `${primaryKey}job_id/${variables?.id}`,
       //@ts-ignore
@@ -228,7 +258,7 @@ export const useCandidateByJob = createQuery<Candidates, Variables3, AxiosError>
 });
 
 export const useCandidateByName = createQuery<Candidates, Search, AxiosError>({
-  primaryKey: "find-candidates",
+  primaryKey: 'find-candidates',
   queryFn: ({ queryKey: [primaryKey, variables] }) => {
     return NetWorkService.Get({
       url: `${primaryKey}?name=${variables?.search}`,
@@ -238,11 +268,48 @@ export const useCandidateByName = createQuery<Candidates, Search, AxiosError>({
 });
 
 export const useFilterCandidates = createQuery<Candidates, Filter, AxiosError>({
-  primaryKey: "find-candidates?skill=2&industries=1&name=Shafqat jan",
+  primaryKey: 'find-candidates?skill=2&industries=1&name=Shafqat jan',
   queryFn: ({ queryKey: [primaryKey, variables] }) => {
     return NetWorkService.Get({
       url: `${primaryKey}?skill=${variables?.skill}&industries=${variables?.industries}`,
       //@ts-ignore
     }).then((response) => response.data);
   },
+});
+
+export const useSaveCandidate = createMutation<Response3, SaveCandidate, AxiosError>({
+  mutationFn: async (variables) =>
+    NetWorkService.Post({
+      url: 'company/candidate/save',
+      body: {
+        candidate_id: variables?.candidate_id,
+        company_id: variables?.person_id,
+      },
+      // @ts-ignore
+    }).then((response) => response?.data),
+});
+
+export const useUnsaveSaveCandidate = createMutation<Response3, SaveCandidate, AxiosError>({
+  mutationFn: async (variables) =>
+    NetWorkService.Post({
+      url: 'candidate/unsave',
+      body: {
+        candidate_id: variables?.candidate_id,
+        company_id: variables?.person_id,
+      },
+      // @ts-ignore
+    }).then((response) => response?.data),
+});
+
+export const useAddContactCandidate = createMutation<Response3, AddContactCandidate, AxiosError>({
+  mutationFn: async (variables) =>
+    NetWorkService.Post({
+      url: 'applicant/add-contact-candidate',
+      body: {
+        emails: variables?.emails,
+        person_id: variables?.person_id,
+        company_id: variables?.company_id,
+      },
+      // @ts-ignore
+    }).then((response) => response?.data),
 });

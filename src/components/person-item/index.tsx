@@ -4,27 +4,23 @@ import { scale } from 'react-native-size-matters';
 import { useNavigation } from '@react-navigation/native';
 import { Image } from 'expo-image';
 import { icons } from '@/assets/icons';
-import type { Candidate } from '@/services/api/candidate';
 import { PressableScale, Text, View } from '@/ui';
 
 type PersonItemProps = {
   data?: any;
+  onStartPress?: (data: any) => void;
 };
 
-export const PersonItem = ({ data }: PersonItemProps) => {
+export const PersonItem = ({ data, onStartPress }: PersonItemProps) => {
   const navigation = useNavigation();
 
   return (
     <PressableScale
       onPress={() => {
-        navigation?.navigate('Job', { id: data?.unique_id });
+        navigation?.navigate('NewJobDetails', { id: data?.id });
       }}
     >
-      <View
-        flexDirection={'row'}
-        marginBottom={'large'}
-        paddingHorizontal={'large'}
-      >
+      <View flexDirection={'row'} marginBottom={'large'} paddingHorizontal={'large'}>
         <View>
           <Image
             source={{ uri: 'https://fakeimg.pl/400x400/cccccc/cccccc' }}
@@ -39,47 +35,50 @@ export const PersonItem = ({ data }: PersonItemProps) => {
         </View>
         <View flex={1} paddingHorizontal={'medium'}>
           <Text variant={'medium16'} color={'black'}>
-            Sr. UI/UX Designer
+            {data?.job_titles}
           </Text>
           <View flexDirection={'row'} alignItems={'center'}>
             <Text variant={'medium12'} color={'grey100'}>
-              Tripadvisor,
+              {data?.company_name},
             </Text>
             <Text variant={'regular12'} color={'grey300'}>
-              in California
+              in {data?.country_name}
             </Text>
           </View>
 
-          <View
+          {/* <View
             flexDirection={'row'}
             gap={'medium'}
             alignItems={'center'}
             paddingTop={'small'}
+            flexWrap={'wrap'}
           >
-            {['React', 'Laravel', 'MangoDb'].map((item, index) => {
-              return (
-                <View
-                  key={index}
-                  backgroundColor={'grey500'}
-                  borderRadius={scale(4)}
-                  height={scale(31)}
-                  paddingHorizontal={'medium'}
-                  justifyContent={'center'}
-                  alignItems={'center'}
-                  flexDirection={'row'}
-                >
-                  <Text variant={'regular13'} color={'grey100'}>
-                    {item}
-                  </Text>
-                </View>
-              );
-            })}
-          </View>
+            {data?.skillls[0] && data?.skillls[0]?.skill?.includes('[')
+              ? null
+              : data?.skillls?.map((item, index) => {
+                  return (
+                    <View
+                      key={index}
+                      backgroundColor={'grey500'}
+                      borderRadius={scale(4)}
+                      height={scale(31)}
+                      paddingHorizontal={'medium'}
+                      justifyContent={'center'}
+                      alignItems={'center'}
+                      flexDirection={'row'}
+                    >
+                      <Text variant={'regular13'} color={'grey100'}>
+                        {item?.skill}
+                      </Text>
+                    </View>
+                  );
+                })}
+          </View> */}
         </View>
 
-        <PressableScale>
+        <PressableScale onPress={() => onStartPress?.(data)}>
           <Image
-            source={icons['star']}
+            source={data?.isSaved === 0 ? icons['star'] : icons['star-fill']}
             contentFit="contain"
             style={styles.image}
           />

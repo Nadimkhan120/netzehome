@@ -1,19 +1,14 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
-import { FlatList, StyleSheet, Alert, useWindowDimensions } from 'react-native';
+import { StyleSheet, Alert, useWindowDimensions } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { scale } from 'react-native-size-matters';
 import type { BottomSheetModal } from '@gorhom/bottom-sheet';
-import {
-  BottomSheetFlatList,
-  BottomSheetFooter,
-  BottomSheetView,
-} from '@gorhom/bottom-sheet';
+import { BottomSheetFlatList, BottomSheetFooter, BottomSheetView } from '@gorhom/bottom-sheet';
 import { useTheme } from '@shopify/restyle';
 import ActivityIndicator from '@/components/activity-indicator';
 import { BottomModal } from '@/components/bottom-modal';
 import SelectionBox from '@/components/drop-down';
-import { ScrollMenu } from '@/components/scroll-menu';
-import { SearchWithFilter } from '@/components/search-with-filter';
+
 import { SelectModalItem } from '@/components/select-modal-item';
 import { useDebounce, useRefreshOnFocus } from '@/hooks';
 import {
@@ -27,7 +22,7 @@ import { useJobCategories, useJobTypes } from '@/services/api/settings';
 import { useUser } from '@/store/user';
 import type { Theme } from '@/theme';
 import { Button, Screen, Text, View } from '@/ui';
-
+import { ScreenHeader } from '@/components/screen-header';
 import { useNavigation } from '@react-navigation/native';
 import { SelectOptionButton } from '@/components/select-option-button';
 import { format } from 'date-fns';
@@ -35,8 +30,8 @@ import DatePicker from 'react-native-date-picker';
 import { showErrorMessage } from '@/utils';
 import { queryClient } from '@/services/api/api-provider';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
-import Explore from './explore';
-import { ScreenHeader } from '@/components/screen-header';
+import Applied from './applied';
+import Saved from './saved';
 
 const data2 = [
   {
@@ -53,21 +48,15 @@ const data2 = [
   },
 ];
 
-const FirstRoute = () => <Explore />;
-const SecondRoute = () => <Explore />;
+const FirstRoute = () => <Applied />;
+const SecondRoute = () => <Saved />;
 
 const renderScene = SceneMap({
   first: FirstRoute,
   second: SecondRoute,
 });
 
-const renderLabel = ({
-  focused,
-  route,
-}: {
-  focused: boolean;
-  route: { title: string };
-}) => {
+const renderLabel = ({ focused, route }: { focused: boolean; route: { title: string } }) => {
   return (
     <Text
       color={focused ? 'primary' : 'grey300'}
@@ -191,11 +180,7 @@ export const MyJobs = () => {
   const renderFooter = useCallback(
     (props) => (
       <BottomSheetFooter {...props} bottomInset={bottom}>
-        <View
-          paddingVertical={'large'}
-          borderTopWidth={1}
-          borderTopColor={'grey400'}
-        >
+        <View paddingVertical={'large'} borderTopWidth={1} borderTopColor={'grey400'}>
           <Button
             marginHorizontal={'large'}
             label="Show Results"
@@ -229,47 +214,38 @@ export const MyJobs = () => {
                 navigation.navigate('Applicants', { id: selectedVacancy?.id });
               }, 200);
             } else if (data?.name === 'Delete Job') {
-              Alert.alert(
-                'Confirmation',
-                'Are you sure? you want to delete this job ',
-                [
-                  {
-                    text: 'Cancel',
-                    onPress: () => console.log('Cancel Pressed'),
-                    style: 'cancel',
-                  },
-                  {
-                    text: 'Delete',
-                    onPress: () => {
-                      deletePost(
-                        { id: selectedVacancy?.id },
-                        {
-                          onSuccess: (data) => {
-                            console.log(
-                              'data?.response?.data',
-                              JSON.stringify(data, null, 2)
-                            );
+              Alert.alert('Confirmation', 'Are you sure? you want to delete this job ', [
+                {
+                  text: 'Cancel',
+                  onPress: () => console.log('Cancel Pressed'),
+                  style: 'cancel',
+                },
+                {
+                  text: 'Delete',
+                  onPress: () => {
+                    deletePost(
+                      { id: selectedVacancy?.id },
+                      {
+                        onSuccess: (data) => {
+                          console.log('data?.response?.data', JSON.stringify(data, null, 2));
 
-                            if (data?.response?.status === 200) {
-                              queryClient.invalidateQueries(
-                                useVacancies.getKey()
-                              );
-                              handleDismissOptionsModalPress();
-                            } else {
-                              //@ts-ignore
-                              showErrorMessage(data?.response?.message);
-                            }
-                          },
-                          onError: (error) => {
-                            // An error happened!
-                            console.log(`error`, error?.response?.data);
-                          },
-                        }
-                      );
-                    },
+                          if (data?.response?.status === 200) {
+                            queryClient.invalidateQueries(useVacancies.getKey());
+                            handleDismissOptionsModalPress();
+                          } else {
+                            //@ts-ignore
+                            showErrorMessage(data?.response?.message);
+                          }
+                        },
+                        onError: (error) => {
+                          // An error happened!
+                          console.log(`error`, error?.response?.data);
+                        },
+                      }
+                    );
                   },
-                ]
-              );
+                },
+              ]);
             }
           }}
         />
@@ -287,11 +263,7 @@ export const MyJobs = () => {
   };
 
   return (
-    <Screen
-      edges={['top']}
-      backgroundColor={colors.white}
-      barStyle="dark-content"
-    >
+    <Screen edges={['top']} backgroundColor={colors.white} barStyle="dark-content">
       <ScreenHeader title="My Jobs" />
 
       <TabView

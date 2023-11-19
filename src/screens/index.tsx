@@ -64,3 +64,5 @@ export * from './profile';
 export * from './choose-location';
 export * from './choose-degree-fields';
 export * from './choose-school';
+export * from './new-job-details';
+export * from './new-company-details';

@@ -1,31 +1,46 @@
 import React, { useCallback } from 'react';
-import { FlashList } from '@shopify/flash-list';
-import CadidateItem from '@/components/candidate-item';
 import { View, Text } from '@/ui';
 import {
   useAllCandidates,
   useSaveCandidate,
-  useSavedCandidates,
   useUnsaveSaveCandidate,
-  useAddContactCandidate,
+  useSavedCandidates,
   useMyNetworks,
+  useAddContactCandidate,
 } from '@/services/api/candidate';
-import ActivityIndicator from '@/components/activity-indicator';
-import { useUser } from '@/store/user';
+import CadidateItem from '@/components/candidate-item';
 import { queryClient } from '@/services/api/api-provider';
+import { useUser } from '@/store/user';
+import { FlashList } from '@shopify/flash-list';
 import { scale } from 'react-native-size-matters';
 
-const Explore = () => {
+type StatsProps = {
+  data: any;
+};
+
+const InfoRow = ({ label, value, isGrey = true }) => {
+  return (
+    <View
+      flexDirection={'row'}
+      paddingVertical={'medium'}
+      alignItems={'center'}
+      justifyContent={'space-between'}
+      paddingHorizontal={'large'}
+      borderBottomColor={'grey500'}
+      borderBottomWidth={1}
+    >
+      <Text variant={'regular14'} color={'grey200'}>
+        {label}
+      </Text>
+      <Text variant={'medium14'} color={isGrey ? 'grey100' : 'info'}>
+        {value}
+      </Text>
+    </View>
+  );
+};
+
+const Stats = ({ data }: StatsProps) => {
   const user = useUser((state) => state?.user);
-
-  const { isLoading, data } = useAllCandidates({
-    variables: {
-      person_id: user?.id,
-    },
-  });
-
-  //console.log('useAllCandidates', JSON.stringify(data, null, 2));
-
   const { mutate: saveCandidateApi, isLoading: isSaving } = useSaveCandidate();
   const { mutate: saveUnCandidateApi, isLoading: isUnSaving } = useUnsaveSaveCandidate();
   const { mutate: addHandShakeApi, isLoading: isHandShaking } = useAddContactCandidate();
@@ -41,8 +56,6 @@ const Explore = () => {
                 { company_id: 0, person_id: person?.id, emails: person?.email },
                 {
                   onSuccess: (data) => {
-                    console.log('addHandShakeApi', data);
-
                     if (data?.response?.status === 200) {
                       queryClient.invalidateQueries(useAllCandidates.getKey());
                       queryClient.invalidateQueries(useMyNetworks.getKey());
@@ -106,21 +119,17 @@ const Explore = () => {
     [user]
   );
 
-  const renderLoading = () => {
-    return (
-      <View flex={1} justifyContent={'center'} alignItems={'center'}>
-        <ActivityIndicator size={'large'} />
-      </View>
-    );
-  };
-
   return (
-    <View flex={1} backgroundColor={'grey500'}>
-      {isLoading ? (
-        renderLoading()
-      ) : (
+    <View>
+      <InfoRow label={'Views'} value={data?.salary_max} isGrey={true} />
+      <InfoRow label={'Applicants'} value={data?.applicants?.length} isGrey={true} />
+      <View paddingHorizontal={'large'} paddingVertical={'large'}>
+        <Text variant={'medium20'} color={'black'}>
+          Applicants
+        </Text>
+
         <FlashList
-          data={data?.response?.data}
+          data={data?.applicants}
           numColumns={2}
           estimatedItemSize={100}
           renderItem={renderItem}
@@ -130,13 +139,13 @@ const Explore = () => {
           }}
           ListEmptyComponent={
             <View height={scale(300)} justifyContent={'center'} alignItems={'center'}>
-              <Text>No Network Found</Text>
+              <Text>No Candidate Found</Text>
             </View>
           }
         />
-      )}
+      </View>
     </View>
   );
 };
 
-export default Explore;
+export default Stats;

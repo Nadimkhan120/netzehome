@@ -1,38 +1,28 @@
-import React, { useCallback, useEffect } from 'react';
-import { useTheme } from '@shopify/restyle';
-import { TopHeader } from '@/components/top-header';
-import type { Theme } from '@/theme';
-import { Screen, View } from '@/ui';
-import { HomeSliderContainer } from './home-slider';
-import { PersonItem } from '@/components/person-item';
-import { FlashList } from '@shopify/flash-list';
-import {
-  useSuggestedJobs,
-  useSaveJob,
-  useUnSaveJob,
-} from '@/services/api/home';
-import { useUser } from '@/store/user';
-import ActivityIndicator from '@/components/activity-indicator';
+import React, { useCallback } from 'react';
+import { View, Text } from '@/ui';
 import { queryClient } from '@/services/api/api-provider';
-import { useRefreshOnFocus } from '@/hooks';
+import { useUser } from '@/store/user';
+import { FlashList } from '@shopify/flash-list';
+import { scale } from 'react-native-size-matters';
+import { useTopVacancies } from '@/services/api/vacancies';
+import { useGetJobByCompany, useSaveJob, useSuggestedJobs, useUnSaveJob } from '@/services/api/home';
+import { PersonItem } from '@/components/person-item';
 
-const renderHeader = () => {
-  return <HomeSliderContainer />;
+type JobsProps = {
+  data: any;
 };
 
-export function Home() {
-  const { colors } = useTheme<Theme>();
-
+const Jobs = ({ data }: JobsProps) => {
   const user = useUser((state) => state?.user);
 
-  const { data, isLoading, refetch } = useSuggestedJobs({
+  const { data: jobs, isLoading } = useGetJobByCompany({
     variables: {
       person_id: user?.id,
+      company_id: data?.id,
     },
-    enabled: user?.id ? true : false,
   });
 
-  useRefreshOnFocus(refetch);
+  console.log('Jobs', JSON.stringify(jobs, null, 2));
 
   const { mutate: saveJobApi, isLoading: isSaving } = useSaveJob();
   const { mutate: saveUnJobApi, isLoading: isUnSaving } = useUnSaveJob();
@@ -84,35 +74,27 @@ export function Home() {
     );
   };
 
-  const renderLoading = () => {
-    return (
-      <View flex={1} justifyContent={'center'} alignItems={'center'}>
-        <ActivityIndicator size={'large'} />
-      </View>
-    );
-  };
+  if (isLoading) return;
 
   return (
-    <Screen
-      edges={['top']}
-      backgroundColor={colors.white}
-      statusBarColor={colors.white}
-      barStyle="dark-content"
-    >
-      <TopHeader />
-      {isLoading ? (
-        renderLoading()
-      ) : (
-        <FlashList
-          data={data?.response?.data}
-          ListHeaderComponent={renderHeader}
-          estimatedItemSize={100}
-          renderItem={renderItem}
-          contentContainerStyle={{
-            paddingBottom: 100,
-          }}
-        />
-      )}
-    </Screen>
+    <View>
+      <FlashList
+        data={jobs?.response?.data}
+        numColumns={2}
+        estimatedItemSize={100}
+        renderItem={renderItem}
+        contentContainerStyle={{
+          paddingTop: 20,
+          paddingBottom: 100,
+        }}
+        ListEmptyComponent={
+          <View height={scale(300)} justifyContent={'center'} alignItems={'center'}>
+            <Text>No Jobs Found</Text>
+          </View>
+        }
+      />
+    </View>
   );
-}
+};
+
+export default Jobs;

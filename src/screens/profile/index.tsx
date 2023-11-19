@@ -6,11 +6,13 @@ import { ScreenHeader } from '@/components/screen-header';
 import { useUser } from '@/store/user';
 import type { Theme } from '@/theme';
 import { PressableScale, Screen, Text, View } from '@/ui';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { useTheme } from '@shopify/restyle';
 import { Image } from 'expo-image';
 import { useGetCompanyDetails } from '@/services/api/company';
+
 import { Avatar } from '@/components/avatar';
+import { useGetUserProfileDetails } from '@/services/api/home';
 
 const InfoRow = ({ label, onPress }) => {
   return (
@@ -42,13 +44,17 @@ export const Profile = () => {
   const { navigate } = useNavigation();
   const { width } = useWindowDimensions();
 
-  const company = useUser((state) => state?.company);
+  const route = useRoute<any>();
 
-  const { data } = useGetCompanyDetails({
+  const { data, isLoading } = useGetUserProfileDetails({
     variables: {
-      id: company?.id,
+      id: route?.params?.id,
     },
   });
+
+  console.log('data', JSON.stringify(data, null, 2));
+
+  const profileData = data?.response?.data;
 
   return (
     <Screen backgroundColor={colors.white} edges={['top']}>
@@ -81,13 +87,13 @@ export const Profile = () => {
             textTransform={'capitalize'}
             color={'black'}
           >
-            Rifaat Sarkar
+            {profileData?.full_name}
           </Text>
           <Text variant={'regular13'} color={'grey200'}>
-            MEARN Stack Developer
+            {profileData?.job_title}
           </Text>
           <Text variant={'regular13'} color={'grey200'}>
-            Lahore, Pakistan
+            {profileData?.city_name}, {profileData?.country_name}
           </Text>
         </View>
 

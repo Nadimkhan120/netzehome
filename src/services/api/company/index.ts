@@ -1,9 +1,17 @@
-import type { AxiosError } from "axios";
-import { createMutation, createQuery } from "react-query-kit";
-import { NetWorkService } from "@/services/apinetworkservice";
+import type { AxiosError } from 'axios';
+import { createMutation, createQuery } from 'react-query-kit';
+import { NetWorkService } from '@/services/apinetworkservice';
 
 type Variables = void;
 type CompanyVariables = { id: number };
+type SaveCompany = { company_id: number };
+type AddContactCompany = {
+  emails: number;
+  person_id: number;
+  company_id: number;
+};
+
+type Variables2 = { person_id: number };
 
 type EditCompanyVariables = {
   name: string;
@@ -133,8 +141,10 @@ type Response = {
   status: number;
 };
 
+type Response3 = any;
+
 export const useCompanies = createQuery<Response, Variables, AxiosError>({
-  primaryKey: "company/user",
+  primaryKey: 'company/user',
   queryFn: ({ queryKey: [primaryKey] }) => {
     return NetWorkService.Get({ url: primaryKey }).then(
       //@ts-ignore
@@ -144,7 +154,7 @@ export const useCompanies = createQuery<Response, Variables, AxiosError>({
 });
 
 export const useGetCompanyDetails = createQuery<SingleCompany, CompanyVariables, AxiosError>({
-  primaryKey: "company/detail/",
+  primaryKey: 'company/detail/',
   queryFn: ({ queryKey: [primaryKey, variables] }) => {
     return NetWorkService.Get({ url: `${primaryKey}company_id/${variables?.id}` }).then(
       //@ts-ignore
@@ -156,8 +166,74 @@ export const useGetCompanyDetails = createQuery<SingleCompany, CompanyVariables,
 export const useEditCompany = createMutation<Response, EditCompanyVariables, AxiosError>({
   mutationFn: async (variables) =>
     NetWorkService.Post({
-      url: "company/update-profile",
+      url: 'company/update-profile',
       body: variables,
+      // @ts-ignore
+    }).then((response) => response?.data),
+});
+
+export const useCompaniesList = createQuery<Response, Variables2, AxiosError>({
+  primaryKey: 'companies-list',
+  queryFn: ({ queryKey: [primaryKey, variables] }) => {
+    return NetWorkService.Get({ url: `${primaryKey}?person_id=${variables?.person_id}` }).then(
+      //@ts-ignore
+      (response) => response.data
+    );
+  },
+});
+
+export const useFollowedCompanies = createQuery<Response, Variables, AxiosError>({
+  primaryKey: 'applicant/my-followed-companies',
+  queryFn: ({ queryKey: [primaryKey] }) => {
+    return NetWorkService.Get({ url: primaryKey }).then((response) => {
+      // @ts-ignore
+      return response.data;
+    });
+  },
+});
+
+export const useSavedCompanies = createQuery<Response, Variables2, AxiosError>({
+  primaryKey: 'saved-companies',
+  queryFn: ({ queryKey: [primaryKey, variables] }) => {
+    return (
+      NetWorkService.Get({ url: `${primaryKey}?person_id=${variables?.person_id}` })
+        // @ts-ignore
+        .then((response) => response.data)
+    );
+  },
+});
+
+export const useSaveCompany = createMutation<Response3, SaveCompany, AxiosError>({
+  mutationFn: async (variables) =>
+    NetWorkService.Post({
+      url: 'company/save',
+      body: {
+        company_id: variables?.company_id,
+      },
+      // @ts-ignore
+    }).then((response) => response?.data),
+});
+
+export const useUnsaveSaveCompany = createMutation<Response3, SaveCompany, AxiosError>({
+  mutationFn: async (variables) =>
+    NetWorkService.Post({
+      url: 'company/unsave',
+      body: {
+        company_id: variables?.company_id,
+      },
+      // @ts-ignore
+    }).then((response) => response?.data),
+});
+
+export const useAddContactCompany = createMutation<Response3, AddContactCompany, AxiosError>({
+  mutationFn: async (variables) =>
+    NetWorkService.Post({
+      url: 'applicant/add-contact-candidate',
+      body: {
+        emails: variables?.emails,
+        person_id: variables?.person_id,
+        company_id: variables?.company_id,
+      },
       // @ts-ignore
     }).then((response) => response?.data),
 });

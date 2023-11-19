@@ -115,7 +115,6 @@ export const AddCompany = () => {
           <View height={scale(24)} />
           <Button
             label="Add"
-            //onPress={() => navigate("SendInvite")}
             onPress={handleSubmit(onSubmit)}
             loading={isLoading}
           />

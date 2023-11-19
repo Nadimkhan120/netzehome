@@ -10,21 +10,19 @@ import ActivityIndicator from '@/components/activity-indicator';
 import { BottomModal } from '@/components/bottom-modal';
 import SelectionBox from '@/components/drop-down';
 import { SearchWithFilter } from '@/components/search-with-filter';
-import {
-  useAllCandidates,
-  useCandidateByName,
-  useFilterCandidates,
-} from '@/services/api/candidate';
+import { useAllCandidates, useCandidateByName, useFilterCandidates } from '@/services/api/candidate';
 import type { Theme } from '@/theme';
 import { Button, Screen, Text, View } from '@/ui';
 import { useIndustries, useSkills } from '@/services/api/settings';
 import { useDebounce } from '@/hooks';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import Explore from './explore';
+import Follow from './followed';
+import Saved from './saved';
 
 const FirstRoute = () => <Explore />;
-const SecondRoute = () => <Explore />;
-const ThirdRoute = () => <Explore />;
+const SecondRoute = () => <Follow />;
+const ThirdRoute = () => <Saved />;
 
 const renderScene = SceneMap({
   first: FirstRoute,
@@ -32,18 +30,9 @@ const renderScene = SceneMap({
   third: ThirdRoute,
 });
 
-const renderLabel = ({
-  focused,
-  route,
-}: {
-  focused: boolean;
-  route: { title: string };
-}) => {
+const renderLabel = ({ focused, route }: { focused: boolean; route: { title: string } }) => {
   return (
-    <Text
-      color={focused ? 'primary' : 'grey300'}
-      variant={focused ? 'medium14' : 'regular14'}
-    >
+    <Text color={focused ? 'primary' : 'grey300'} variant={focused ? 'medium14' : 'regular14'}>
       {route.title}
     </Text>
   );
@@ -125,11 +114,7 @@ export const Settings = () => {
   const renderFooter = useCallback(
     (props) => (
       <BottomSheetFooter {...props} bottomInset={bottom}>
-        <View
-          paddingVertical={'large'}
-          borderTopWidth={1}
-          borderTopColor={'grey400'}
-        >
+        <View paddingVertical={'large'} borderTopWidth={1} borderTopColor={'grey400'}>
           <Button
             marginHorizontal={'large'}
             label="Show Results"

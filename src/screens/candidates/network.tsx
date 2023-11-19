@@ -1,47 +1,46 @@
 import React, { useCallback } from 'react';
 import { FlashList } from '@shopify/flash-list';
-import { PersonItem } from '@/components/person-item';
-import {
-  useSaveJob,
-  useSuggestedJobs,
-  useUnSaveJob,
-  useSavedJobs,
-} from '@/services/api/home';
-import { useUser } from '@/store/user';
+import CadidateItem from '@/components/candidate-item';
+import { View, Text } from '@/ui';
+import { useAllCandidates, useSaveCandidate, useUnsaveSaveCandidate, useMyNetworks } from '@/services/api/candidate';
 import ActivityIndicator from '@/components/activity-indicator';
-import { View } from '@/ui';
-import { useRefreshOnFocus } from '@/hooks';
+import { useUser } from '@/store/user';
 import { queryClient } from '@/services/api/api-provider';
+import { scale } from 'react-native-size-matters';
 
-const Explore = () => {
+const Network = () => {
   const user = useUser((state) => state?.user);
-
-  const { data, isLoading, refetch } = useSuggestedJobs({
+  const { isLoading, data } = useMyNetworks({
     variables: {
       person_id: user?.id,
     },
   });
 
-  const { mutate: saveJobApi, isLoading: isSaving } = useSaveJob();
-  const { mutate: saveUnJobApi, isLoading: isUnSaving } = useUnSaveJob();
+  const { mutate: saveCandidateApi, isLoading: isSaving } = useSaveCandidate();
+  const { mutate: saveUnCandidateApi, isLoading: isUnSaving } = useUnsaveSaveCandidate();
 
-  useRefreshOnFocus(refetch);
+  console.log('useMyNetworks', JSON.stringify(data, null, 2));
 
   const renderItem = useCallback(({ item }) => {
     return (
-      <PersonItem
+      <CadidateItem
         data={item}
-        onStartPress={(job) => {
-          if (job?.isSaved === 0) {
-            saveJobApi(
-              { job_id: job?.id },
+        onHandShake={(person) => {
+          console.log('person', person);
+        }}
+        onSavePress={(person) => {
+          console.log('person', person);
+
+          if (person?.isSaved === 0) {
+            saveCandidateApi(
+              { candidate_id: person?.id, person_id: user?.id },
               {
                 onSuccess: (data) => {
                   console.log('data', data);
 
                   if (data?.response?.status === 200) {
-                    queryClient.invalidateQueries(useSuggestedJobs.getKey());
-                    queryClient.invalidateQueries(useSavedJobs.getKey());
+                    queryClient.invalidateQueries(useAllCandidates.getKey());
+                    // queryClient.invalidateQueries(useSavedJobs.getKey());
                   } else {
                   }
                 },
@@ -52,14 +51,14 @@ const Explore = () => {
               }
             );
           } else {
-            saveUnJobApi(
-              { job_id: job?.id },
+            saveUnCandidateApi(
+              { candidate_id: person?.id, person_id: user?.id },
               {
                 onSuccess: (data) => {
                   console.log('data', data);
 
                   if (data?.response?.status === 200) {
-                    queryClient.invalidateQueries(useSuggestedJobs.getKey());
+                    queryClient.invalidateQueries(useAllCandidates.getKey());
                   } else {
                   }
                 },
@@ -84,22 +83,28 @@ const Explore = () => {
   };
 
   return (
-    <View flex={1}>
+    <View flex={1} backgroundColor={'grey500'}>
       {isLoading ? (
         renderLoading()
       ) : (
         <FlashList
           data={data?.response?.data}
+          numColumns={2}
           estimatedItemSize={100}
           renderItem={renderItem}
           contentContainerStyle={{
             paddingTop: 20,
             paddingBottom: 100,
           }}
+          ListEmptyComponent={
+            <View height={scale(300)} justifyContent={'center'} alignItems={'center'}>
+              <Text>No Network Found</Text>
+            </View>
+          }
         />
       )}
     </View>
   );
 };
 
-export default Explore;
+export default Network;

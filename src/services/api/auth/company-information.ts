@@ -4,11 +4,14 @@ import { createMutation } from 'react-query-kit';
 import { NetWorkService } from '@/services/apinetworkservice';
 
 type Variables = {
-  company_name: string;
-  company_description: string;
-  google_location: string;
-  country_id: string;
   city_id: string;
+  country_id: string;
+  job_title_id: string;
+  google_location: string;
+  experience_level_id: number;
+  education_level_id: number;
+  skills: string;
+  user_id: number;
 };
 
 type Response = {
@@ -25,13 +28,16 @@ export const useCompanyInformation = createMutation<
 >({
   mutationFn: async (variables) =>
     NetWorkService.Post({
-      url: 'applicant/company/registration',
+      url: 'applicant/profiles/information',
       body: variables,
-    }).then((response) => {
-      // @ts-ignore
-      return response?.data;
-    }),
-  // .catch((error) => {
-  //   console.log("error1", error?.response);
-  // }),
+    })
+      .then((response) => {
+        console.log('response', response?.data);
+
+        // @ts-ignore
+        return response?.data;
+      })
+      .catch((error) => {
+        console.log('error1', error?.response);
+      }),
 });

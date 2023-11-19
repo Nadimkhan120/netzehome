@@ -9,10 +9,8 @@ import {
   BottomSheetView,
 } from '@gorhom/bottom-sheet';
 import { useTheme } from '@shopify/restyle';
-import ActivityIndicator from '@/components/activity-indicator';
 import { BottomModal } from '@/components/bottom-modal';
 import SelectionBox from '@/components/drop-down';
-import { ScrollMenu } from '@/components/scroll-menu';
 import { SearchWithFilter } from '@/components/search-with-filter';
 import { SelectModalItem } from '@/components/select-modal-item';
 import { useDebounce, useRefreshOnFocus } from '@/hooks';
@@ -28,7 +26,6 @@ import { useUser } from '@/store/user';
 import type { Theme } from '@/theme';
 import { Button, Screen, Text, View } from '@/ui';
 import Header from './header';
-import VecanciesList from './vacancies-list';
 import { useNavigation } from '@react-navigation/native';
 import { SelectOptionButton } from '@/components/select-option-button';
 import { format } from 'date-fns';
@@ -37,6 +34,8 @@ import { showErrorMessage } from '@/utils';
 import { queryClient } from '@/services/api/api-provider';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import Explore from './explore';
+import Applied from './applied';
+import Saved from './saved';
 
 const data2 = [
   {
@@ -54,8 +53,8 @@ const data2 = [
 ];
 
 const FirstRoute = () => <Explore />;
-const SecondRoute = () => <Explore />;
-const ThirdRoute = () => <Explore />;
+const SecondRoute = () => <Applied />;
+const ThirdRoute = () => <Saved />;
 
 const renderScene = SceneMap({
   first: FirstRoute,
@@ -279,24 +278,6 @@ export const Vacancies = () => {
       );
     },
     [selectedVacancy]
-  );
-
-  const RenderLoader = () => {
-    return (
-      <View flex={1} justifyContent={'center'} alignItems={'center'}>
-        <ActivityIndicator size={'large'} />
-      </View>
-    );
-  };
-
-  const renderVacancyItem = ({ item }: any) => (
-    <VecanciesList
-      data={item}
-      onOptionPress={(data) => {
-        setSelectedVacancy(data);
-        handlePresentOptionsModalPress();
-      }}
-    />
   );
 
   return (

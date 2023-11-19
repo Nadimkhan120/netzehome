@@ -1,28 +1,16 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { FlashList } from '@shopify/flash-list';
 import { useTheme } from '@shopify/restyle';
 import { scale } from 'react-native-size-matters';
 import { ScreenHeader } from '@/components/screen-header';
 import { SearchField } from '@/components/search-field';
-import { useGetUser } from '@/services/api/user';
 import { useUser } from '@/store/user';
 import type { Theme } from '@/theme';
 import { PressableScale, Screen, Text, View } from '@/ui';
 import SkillsItem from './skill-item';
-
-const employees = [
-  { id: 1, name: 'JavaScript', selected: false },
-  { id: 2, name: 'Python', selected: false },
-  { id: 3, name: 'Java', selected: false },
-  { id: 4, name: 'C++', selected: false },
-  { id: 5, name: 'C#', selected: false },
-  { id: 6, name: 'Ruby', selected: false },
-  { id: 7, name: 'PHP', selected: false },
-  { id: 8, name: 'Swift', selected: false },
-  { id: 9, name: 'Go', selected: false },
-  { id: 10, name: 'SQL', selected: false },
-];
+import { useSkills } from '@/services/api/settings';
+import ActivityIndicator from '@/components/activity-indicator';
 
 export const ChooseSkills = () => {
   const { colors } = useTheme<Theme>();
@@ -30,13 +18,23 @@ export const ChooseSkills = () => {
   const { goBack } = useNavigation();
 
   const company = useUser((state) => state?.company);
-  const [skills, setSkills] = useState(employees);
+  const [skills, setSkills] = useState([]);
 
-  const { data, isLoading } = useGetUser({
-    variables: {
-      id: company?.id,
-    },
-  });
+  const { data, isLoading } = useSkills();
+
+  useEffect(() => {
+    if (data) {
+      // @ts-ignore
+      const makeSikills = data?.map((element) => {
+        return {
+          ...element,
+          selected: false,
+        };
+      });
+
+      setSkills(makeSikills);
+    }
+  }, [data]);
 
   const renderItem = useCallback(
     ({ item }) => {
@@ -44,8 +42,6 @@ export const ChooseSkills = () => {
         <SkillsItem
           data={item}
           onPress={(data) => {
-            console.log('data', data);
-
             let prev = [...skills];
 
             let changeData = prev.map((element) => {
@@ -65,6 +61,14 @@ export const ChooseSkills = () => {
     },
     [skills, setSkills]
   );
+
+  const renderLoading = () => {
+    return (
+      <View flex={1} justifyContent={'center'} alignItems={'center'}>
+        <ActivityIndicator size={'large'} />
+      </View>
+    );
+  };
 
   return (
     <Screen backgroundColor={colors.white} edges={['top']}>
@@ -113,23 +117,27 @@ export const ChooseSkills = () => {
         </View>
       </View>
 
-      <View flex={1} backgroundColor={'grey500'}>
-        <FlashList
-          //@ts-ignore
-          data={skills}
-          renderItem={renderItem}
-          estimatedItemSize={150}
-          ListEmptyComponent={
-            <View
-              height={scale(300)}
-              justifyContent={'center'}
-              alignItems={'center'}
-            >
-              <Text>No Users Found</Text>
-            </View>
-          }
-        />
-      </View>
+      {isLoading ? (
+        renderLoading()
+      ) : (
+        <View flex={1} backgroundColor={'grey500'}>
+          <FlashList
+            //@ts-ignore
+            data={skills}
+            renderItem={renderItem}
+            estimatedItemSize={150}
+            ListEmptyComponent={
+              <View
+                height={scale(300)}
+                justifyContent={'center'}
+                alignItems={'center'}
+              >
+                <Text>No Users Found</Text>
+              </View>
+            }
+          />
+        </View>
+      )}
     </Screen>
   );
 };

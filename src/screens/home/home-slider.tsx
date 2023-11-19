@@ -10,18 +10,19 @@ import { HomeSliderItem } from './slider-item';
 import { useRefreshOnFocus } from '@/hooks';
 import { ImageButton } from '@/components';
 import { useNavigation } from '@react-navigation/native';
+import { useGetProfile } from '@/services/api/home';
 
 export const HomeSliderContainer = ({}) => {
-  const company = useUser((state) => state?.company);
+  const user = useUser((state) => state?.user);
   const { navigate } = useNavigation();
 
-  const { data, refetch } = useTopVacancies({
-    variables: {
-      id: company?.id,
-    },
-  });
+  const { data, isLoading } = useGetProfile();
 
-  useRefreshOnFocus(refetch);
+  console.log('useGetProfile', JSON.stringify(data, null, 2));
+
+  // useRefreshOnFocus(refetch);
+
+  if (isLoading) return;
 
   return (
     <View
@@ -34,7 +35,7 @@ export const HomeSliderContainer = ({}) => {
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.container}
       >
-        {[{ name: 'Jhon Wick' }, { name: 'Jhon Wick' }, { name: 'Add' }]?.map(
+        {[...data?.response?.data, { full_name: 'Add' }]?.map(
           (element, index) => {
             return <HomeSliderItem data={element} key={index} />;
           }
