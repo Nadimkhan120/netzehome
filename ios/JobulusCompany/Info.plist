@@ -5,11 +5,11 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>JobulusCompany</string>
+	<string>Jobulus</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
-	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	<string>com.jubulus.candidate</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -46,6 +46,17 @@
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>
+	</array>
+	<key>GIDClientID</key>
+	<string>1056415638644-vu2fbrmnkgcmki8toton39h2pqfj23jd.apps.googleusercontent.com</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+	<dict>
+		<key>CFBundleURLSchemes</key>
+		<array>
+		<string>com.googleusercontent.apps.1056415638644-vu2fbrmnkgcmki8toton39h2pqfj23jd</string>
+		</array>
+	</dict>
 	</array>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>

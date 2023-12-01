@@ -15,6 +15,19 @@ import { setUserData } from '@/store/user';
 import type { Theme } from '@/theme';
 import { Button, ControlledInput, PressableScale, Screen, Text, View } from '@/ui';
 import { showErrorMessage } from '@/utils';
+import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
+
+GoogleSignin.configure({
+  offlineAccess: false, // if you want to access Google API on behalf of the user FROM YOUR SERVER
+  hostedDomain: '', // specifies a hosted domain restriction
+  forceCodeForRefreshToken: true, // [Android] related to `serverAuthCode`, read the docs link below *.
+  accountName: '', // [Android] specifies an account name on the device that should be used
+  iosClientId:
+    '1056415638644-vu2fbrmnkgcmki8toton39h2pqfj23jd.apps.googleusercontent.com', // [iOS] if you want to specify the client ID of type iOS (otherwise, it is taken from GoogleService-Info.plist)
+
+  openIdRealm: '', // [iOS] The OpenID2 realm of the home web server. This allows Google to include the user's OpenID Identifier in the OpenID Connect ID token.
+  profileImageSize: 120, // [iOS] The desired height (and width) of the profile image. Defaults to 120px
+});
 
 const schema = z.object({
   email: z
@@ -64,6 +77,24 @@ export const Login = () => {
     );
   };
 
+  const googleLogin = async () => {
+    try {
+      await GoogleSignin.hasPlayServices();
+      const userInfo = await GoogleSignin.signIn();
+      console.log('userInfo', userInfo);
+    } catch (error) {
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        // user cancelled the login flow
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+        // operation (e.g. sign in) is in progress already
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        // play services not available or outdated
+      } else {
+        // some other error happened
+      }
+    }
+  };
+
   return (
     <Screen backgroundColor={colors.white}>
       <View flex={1} paddingHorizontal={'large'}>
@@ -79,7 +110,12 @@ export const Login = () => {
         </View>
 
         <View paddingTop={'large'}>
-          <ControlledInput placeholder="Enter email address" label="Email" control={control} name="email" />
+          <ControlledInput
+            placeholder="Enter email address"
+            label="Email"
+            control={control}
+            name="email"
+          />
           <View height={scale(8)} />
           <ControlledInput
             placeholder="Enter password"
@@ -98,7 +134,11 @@ export const Login = () => {
           </PressableScale>
         </View>
 
-        <Image source={icons.continue} style={{ height: scale(24), width: '100%' }} contentFit="contain" />
+        <Image
+          source={icons.continue}
+          style={{ height: scale(24), width: '100%' }}
+          contentFit="contain"
+        />
 
         <View
           flexDirection={'row'}
@@ -108,7 +148,7 @@ export const Login = () => {
           marginVertical={'large'}
         >
           <IconButton icon="apple" onPress={() => null} color={'grey500'} />
-          <IconButton icon="google" onPress={() => null} color={'grey500'} />
+          <IconButton icon="google" onPress={googleLogin} color={'grey500'} />
           <IconButton icon="facebook" onPress={() => null} color={'grey500'} />
         </View>
 
