@@ -6,11 +6,7 @@ import { Screen, View } from '@/ui';
 import { HomeSliderContainer } from './home-slider';
 import { PersonItem } from '@/components/person-item';
 import { FlashList } from '@shopify/flash-list';
-import {
-  useSuggestedJobs,
-  useSaveJob,
-  useUnSaveJob,
-} from '@/services/api/home';
+import { useSuggestedJobs, useSaveJob, useUnSaveJob } from '@/services/api/home';
 import { useUser } from '@/store/user';
 import ActivityIndicator from '@/components/activity-indicator';
 import { queryClient } from '@/services/api/api-provider';

@@ -12,31 +12,22 @@ import { useUser } from '@/store/user';
 import type { Theme } from '@/theme';
 import { Screen, Text, View } from '@/ui';
 import CompanyItem from './company-item';
-
-const employees = [
-  { id: 1, name: 'Bachelor of Science (B.Sc.)' },
-  { id: 2, name: 'Bachelor of Arts (B.A.)' },
-  { id: 3, name: 'Master of Business Administration (MBA)' },
-  { id: 4, name: 'Doctor of Medicine (M.D.)' },
-  { id: 5, name: 'Master of Science (M.Sc.)' },
-  { id: 6, name: 'Bachelor of Engineering (B.Eng.)' },
-  { id: 7, name: 'Bachelor of Fine Arts (B.F.A.)' },
-  { id: 8, name: 'Doctor of Philosophy (Ph.D.)' },
-  { id: 9, name: 'Master of Education (M.Ed.)' },
-  { id: 10, name: 'Juris Doctor (J.D.)' },
-];
+import { useCompaniesList } from '@/services/api/company';
+import ActivityIndicator from '@/components/activity-indicator';
+import { setSelectedCompany } from '@/store/experience';
 
 export const ChooseCompany = () => {
   const { colors } = useTheme<Theme>();
 
   const { goBack } = useNavigation();
 
-  const company = useUser((state) => state?.company);
   const [selectUser, setSelectUser] = useState<User | null>(null);
 
-  const { data, isLoading } = useGetUser({
+  const user = useUser((state) => state?.user);
+
+  const { isLoading, data } = useCompaniesList({
     variables: {
-      id: company?.id,
+      person_id: user?.id,
     },
   });
 
@@ -47,14 +38,25 @@ export const ChooseCompany = () => {
       return (
         <CompanyItem
           data={item}
-          onPress={() => {
-            console.log('hello');
+          onPress={(company) => {
+            console.log('hello', company);
+
+            setSelectedCompany(company?.name);
+            goBack();
           }}
         />
       );
     },
-    [data, bottomSheetModalRef, selectUser, setSelectUser]
+    [data, goBack]
   );
+
+  const renderLoading = () => {
+    return (
+      <View flex={1} justifyContent={'center'} alignItems={'center'}>
+        <ActivityIndicator size={'large'} />
+      </View>
+    );
+  };
 
   return (
     <Screen backgroundColor={colors.white} edges={['top']}>
@@ -69,23 +71,23 @@ export const ChooseCompany = () => {
         <SearchField placeholder="Search by name" showBorder={true} />
       </View>
 
-      <View flex={1} backgroundColor={'grey500'}>
-        <FlashList
-          //@ts-ignore
-          data={employees}
-          renderItem={renderItem}
-          estimatedItemSize={150}
-          ListEmptyComponent={
-            <View
-              height={scale(300)}
-              justifyContent={'center'}
-              alignItems={'center'}
-            >
-              <Text>No Users Found</Text>
-            </View>
-          }
-        />
-      </View>
+      {isLoading ? (
+        renderLoading()
+      ) : (
+        <View flex={1} backgroundColor={'grey500'}>
+          <FlashList
+            //@ts-ignore
+            data={data?.response?.data}
+            renderItem={renderItem}
+            estimatedItemSize={150}
+            ListEmptyComponent={
+              <View height={scale(300)} justifyContent={'center'} alignItems={'center'}>
+                <Text>No Users Found</Text>
+              </View>
+            }
+          />
+        </View>
+      )}
     </Screen>
   );
 };

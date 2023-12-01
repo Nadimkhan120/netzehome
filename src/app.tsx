@@ -11,6 +11,7 @@ import { APIProvider } from '@/services/api/api-provider';
 import { getToken } from '@/storage';
 import { login } from '@/store/auth';
 import { theme } from '@/theme';
+import { ActionSheetProvider } from '@expo/react-native-action-sheet';
 
 const App = () => {
   const appFontsLoaded = useAppFonts();
@@ -36,14 +37,16 @@ const App = () => {
   return (
     <GestureHandlerRootView style={styles.appContainer}>
       <ThemeProvider theme={theme}>
-        <NavigationContainer>
-          <APIProvider>
-            <BottomSheetModalProvider>
-              <Root />
-              <FlashMessage position="bottom" />
-            </BottomSheetModalProvider>
-          </APIProvider>
-        </NavigationContainer>
+        <ActionSheetProvider>
+          <NavigationContainer>
+            <APIProvider>
+              <BottomSheetModalProvider>
+                <Root />
+                <FlashMessage position="bottom" />
+              </BottomSheetModalProvider>
+            </APIProvider>
+          </NavigationContainer>
+        </ActionSheetProvider>
       </ThemeProvider>
     </GestureHandlerRootView>
   );

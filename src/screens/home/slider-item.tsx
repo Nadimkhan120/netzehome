@@ -13,7 +13,7 @@ type HomeSliderItemProps = {
 export const HomeSliderItem = ({ data }: HomeSliderItemProps) => {
   const { navigate } = useNavigation();
 
-  console.log('data', data);
+  console.log('data==//', data?.unique_id);
 
   if (data?.full_name === 'Add') {
     return (
@@ -41,9 +41,7 @@ export const HomeSliderItem = ({ data }: HomeSliderItemProps) => {
   }
 
   return (
-    <PressableScale
-      onPress={() => navigate('Profile', { id: data?.unique_id })}
-    >
+    <PressableScale onPress={() => navigate('Profile', { id: data?.unique_id })}>
       <View
         marginRight={'medium'}
         borderRadius={scale(8)}
@@ -56,10 +54,7 @@ export const HomeSliderItem = ({ data }: HomeSliderItemProps) => {
       >
         <View position={'absolute'} left={scale(16)} top={scale(16)}>
           <PressableScale>
-            <Image
-              source={icons['qr']}
-              style={{ height: scale(24), width: scale(24) }}
-            />
+            <Image source={icons['qr']} style={{ height: scale(24), width: scale(24) }} />
           </PressableScale>
         </View>
         <View position={'absolute'} right={scale(16)} top={scale(16)}>

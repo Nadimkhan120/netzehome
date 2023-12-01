@@ -104,10 +104,10 @@ export type AppStackParamList = {
   MyJobDetail: undefined;
   ChatList: undefined;
   Chats: undefined;
-  AddEducation: undefined;
-  AddExperience: undefined;
+  AddEducation: { id: any };
+  AddExperience: { id: any };
   ChooseCompany: undefined;
-  ChooseSkills: undefined;
+  ChooseSkills: { id: any };
   ChooseDegree: undefined;
   Notifications: undefined;
   Profile: { id: number };

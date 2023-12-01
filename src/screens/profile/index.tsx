@@ -9,32 +9,34 @@ import { PressableScale, Screen, Text, View } from '@/ui';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useTheme } from '@shopify/restyle';
 import { Image } from 'expo-image';
-import { useGetCompanyDetails } from '@/services/api/company';
 
 import { Avatar } from '@/components/avatar';
 import { useGetUserProfileDetails } from '@/services/api/home';
+import { useRefreshOnFocus } from '@/hooks';
+import { ExperienceItem } from './experience-item';
 
-const InfoRow = ({ label, onPress }) => {
+const InfoRow = ({ label, onPress, children }) => {
   return (
-    <View
-      flexDirection={'row'}
-      paddingVertical={'medium'}
-      alignItems={'center'}
-      justifyContent={'space-between'}
-      paddingHorizontal={'large'}
-      borderBottomColor={'grey500'}
-      borderBottomWidth={1}
-    >
-      <Text variant={'regular14'} color={'grey200'}>
-        {label}
-      </Text>
-      <PressableScale onPress={onPress}>
-        <Image
-          source={icons['plus2']}
-          style={{ width: scale(24), height: scale(24) }}
-          contentFit="contain"
-        />
-      </PressableScale>
+    <View borderBottomColor={'grey500'} paddingVertical={'medium'} borderBottomWidth={1}>
+      <View
+        flexDirection={'row'}
+        //  paddingVertical={'medium'}
+        alignItems={'center'}
+        justifyContent={'space-between'}
+        paddingHorizontal={'large'}
+      >
+        <Text variant={'regular14'} color={'grey200'}>
+          {label}
+        </Text>
+        <PressableScale onPress={onPress}>
+          <Image
+            source={icons['plus2']}
+            style={{ width: scale(24), height: scale(24) }}
+            contentFit="contain"
+          />
+        </PressableScale>
+      </View>
+      {children}
     </View>
   );
 };
@@ -46,13 +48,15 @@ export const Profile = () => {
 
   const route = useRoute<any>();
 
-  const { data, isLoading } = useGetUserProfileDetails({
+  const { data, isLoading, refetch } = useGetUserProfileDetails({
     variables: {
       id: route?.params?.id,
     },
   });
 
-  console.log('data', JSON.stringify(data, null, 2));
+  console.log('==data==', JSON.stringify(data, null, 2));
+
+  useRefreshOnFocus(refetch);
 
   const profileData = data?.response?.data;
 
@@ -82,11 +86,7 @@ export const Profile = () => {
         <View height={scale(19)} />
 
         <View paddingHorizontal={'large'} paddingVertical={'large'}>
-          <Text
-            variant={'semiBold20'}
-            textTransform={'capitalize'}
-            color={'black'}
-          >
+          <Text variant={'semiBold20'} textTransform={'capitalize'} color={'black'}>
             {profileData?.full_name}
           </Text>
           <Text variant={'regular13'} color={'grey200'}>
@@ -110,12 +110,11 @@ export const Profile = () => {
             color={'grey200'}
             lineHeight={21}
           >
-            I’m a strategist who constantly strives to achieve success through
-            in-depth research and constant learning. Creating an optimal flow
-            from the beginning of the process to the end is critical to any
-            campaign’s outcome regardless of what mediums it occupies. My work
-            helps both the team and the client to keep the user’s motivations,
-            goals, and roles top of mind.
+            I’m a strategist who constantly strives to achieve success through in-depth
+            research and constant learning. Creating an optimal flow from the beginning of
+            the process to the end is critical to any campaign’s outcome regardless of
+            what mediums it occupies. My work helps both the team and the client to keep
+            the user’s motivations, goals, and roles top of mind.
           </Text>
         </View>
 
@@ -125,22 +124,51 @@ export const Profile = () => {
           <InfoRow
             label={'Experience'}
             onPress={() => {
-              navigate('AddExperience');
+              navigate('AddExperience', { id: route?.params?.id });
             }}
-          />
+          >
+            <View paddingTop={'medium'}>
+              {profileData?.experience?.map((element, index) => {
+                return <ExperienceItem key={index} data={element} />;
+              })}
+            </View>
+          </InfoRow>
 
           <InfoRow
             label={'Education'}
             onPress={() => {
-              navigate('AddEducation');
+              navigate('AddEducation', { id: route?.params?.id });
             }}
-          />
+          ></InfoRow>
           <InfoRow
             label={'Skills'}
             onPress={() => {
-              navigate('ChooseSkills');
+              navigate('ChooseSkills', { id: route?.params?.id });
             }}
-          />
+          >
+            <View
+              flexDirection={'row'}
+              alignItems={'center'}
+              flexWrap={'wrap'}
+              gap={'small'}
+              paddingHorizontal={'large'}
+              paddingTop={'medium'}
+            >
+              {profileData?.skills?.map((element, index) => {
+                return (
+                  <View
+                    paddingHorizontal={'large'}
+                    backgroundColor={'primary'}
+                    paddingVertical={'small'}
+                    key={index}
+                    borderRadius={44}
+                  >
+                    <Text color={'white'}>{element?.name}</Text>
+                  </View>
+                );
+              })}
+            </View>
+          </InfoRow>
         </View>
       </ScrollView>
     </Screen>

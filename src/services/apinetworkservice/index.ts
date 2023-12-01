@@ -129,7 +129,11 @@ function Request(config: ParamsNetwork) {
 
   return new Promise((rs, reject) => {
     AxiosInstance.request(
-      StyleSheet.flatten([defaultConfig, config, { signal: config?.controller?.signal || controller.current?.signal }])
+      StyleSheet.flatten([
+        defaultConfig,
+        config,
+        { signal: config?.controller?.signal || controller.current?.signal },
+      ])
     )
       .then((res) => {
         rs(res);
@@ -182,7 +186,9 @@ async function Delete(params: ParamsNetwork) {
   return Request(handleParameter(params, 'DELETE'));
 }
 
-export type NetWorkResponseType<T> = (params: ParamsNetwork) => Promise<ResponseBase<T> | null>;
+export type NetWorkResponseType<T> = (
+  params: ParamsNetwork
+) => Promise<ResponseBase<T> | null>;
 
 export const NetWorkService = {
   Get,

@@ -76,12 +76,8 @@ export const ChooseDegree = () => {
           renderItem={renderItem}
           estimatedItemSize={150}
           ListEmptyComponent={
-            <View
-              height={scale(300)}
-              justifyContent={'center'}
-              alignItems={'center'}
-            >
-              <Text>No Users Found</Text>
+            <View height={scale(300)} justifyContent={'center'} alignItems={'center'}>
+              <Text>No Skills Found</Text>
             </View>
           }
         />

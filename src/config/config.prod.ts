@@ -7,4 +7,5 @@
  */
 export default {
   API_URL: 'https://jobulusapi.t6ve.com/public/api/',
+  GOOGLE_PLACES: 'AIzaSyDn5Fr_WLmX1QRRnMM9npTFUwJ_tmwJK1U',
 };

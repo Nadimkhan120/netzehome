@@ -1,10 +1,4 @@
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { ScrollView, StyleSheet, useWindowDimensions } from 'react-native';
 import { scale } from 'react-native-size-matters';
@@ -12,26 +6,14 @@ import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useTheme } from '@shopify/restyle';
-import { Image } from 'expo-image';
-import { icons } from '@/assets/icons';
+
 import { ScreenHeader } from '@/components/screen-header';
 import { useSoftKeyboardEffect } from '@/hooks';
 import { queryClient } from '@/services/api/api-provider';
-import {
-  useCompanies,
-  useEditCompany,
-  useGetCompanyDetails,
-} from '@/services/api/company';
+import { useEditCompany } from '@/services/api/company';
 import { useUser } from '@/store/user';
 import { palette, type Theme } from '@/theme';
-import {
-  Button,
-  ControlledInput,
-  PressableScale,
-  Screen,
-  Text,
-  View,
-} from '@/ui';
+import { Button, ControlledInput, PressableScale, Screen, Text, View } from '@/ui';
 import { DescriptionField } from '@/ui/description-field';
 import { showErrorMessage, showSuccessMessage } from '@/utils';
 import { Avatar } from '@/components/avatar';
@@ -49,27 +31,40 @@ import {
 import { SelectModalItem } from '@/components/select-modal-item';
 import { format } from 'date-fns';
 import DatePicker from 'react-native-date-picker';
+import { useExperience } from '@/store/experience';
+import { useUpdateExperience } from '@/services/api/profile';
+import { useGetUserProfileDetails } from '@/services/api/home';
 
 const schema = z.object({
   name: z.string({
     required_error: 'Profile name is required',
   }),
-  email: z
-    .string({
-      required_error: 'Email is required',
-    })
-    .email('Invalid email format'),
-  cover: z.string({
-    required_error: 'Cover Letter is required',
+
+  employeType: z.string({
+    required_error: 'Employee Type is required',
   }),
-  location: z.string().optional(),
-  salary: z.string().optional(),
-  languages: z.string().optional(),
+
+  comapnyName: z.string({
+    required_error: 'Company name is required',
+  }),
+
+  location: z.string({
+    required_error: 'Location is required',
+  }),
+  description: z.string({
+    required_error: 'Description is required',
+  }),
+
   startDate: z.string({
     required_error: 'Start date is required',
   }),
-  endDate: z.string({
-    required_error: 'End date is required',
+  endDate: z
+    .string({
+      required_error: 'End date is required',
+    })
+    .optional(),
+  isPresent: z.boolean({
+    required_error: 'Present is required',
   }),
 });
 
@@ -88,7 +83,6 @@ export const AddExperience = () => {
   const { colors } = useTheme<Theme>();
   const { goBack, navigate } = useNavigation();
   const route = useRoute<any>();
-  const { width } = useWindowDimensions();
 
   useSoftKeyboardEffect();
 
@@ -97,10 +91,11 @@ export const AddExperience = () => {
   const [openStartDate, setOpenStartDate] = useState(false);
   const [endDate, setEndDate] = useState(new Date());
   const [openEndDate, setOpenEndDate] = useState(false);
+  const [isPresent, setIsPresent] = useState(false);
 
-  const company = useUser((state) => state?.company);
+  const selectedCompany = useExperience((state) => state?.selectedCompany);
 
-  const { mutate: editCompanyApi, isLoading } = useEditCompany();
+  const { mutate: updateExperienceApi, isLoading } = useUpdateExperience();
 
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   // variables
@@ -116,31 +111,87 @@ export const AddExperience = () => {
     bottomSheetModalRef.current?.dismiss();
   }, []);
 
-  const data = route?.params?.data;
+  const data = route?.params;
 
-  const { handleSubmit, control, setValue, watch } =
-    useForm<AddExperienceFormType>({
-      resolver: zodResolver(schema),
-    });
+  console.log('route?.params?.data;', data);
 
-  const onSubmit = (data: AddExperienceFormType) => {
+  const {
+    handleSubmit,
+    control,
+    setValue,
+    watch,
+    trigger,
+    formState: { errors },
+  } = useForm<AddExperienceFormType>({
+    resolver: zodResolver(schema),
+  });
+
+  const onSubmit = (formData: AddExperienceFormType) => {
+    console.log('formData', formData);
+    console.log('route?.params?.id,', route?.params?.id);
+
+    updateExperienceApi(
+      {
+        unique_id: route?.params?.id,
+        from_date: formData?.startDate,
+        to_date: formData?.isPresent ? formData?.startDate : formData?.endDate,
+        is_current: formData?.isPresent ? '1' : '0',
+        employee_type: formData?.employeType,
+        description: formData?.description,
+        company_name: formData?.comapnyName,
+        company_description: formData?.description,
+        job_title: formData?.name,
+        job_category_id: '1',
+        location: formData?.location,
+      },
+      {
+        onSuccess: (response) => {
+          console.log('response', response);
+          if (response?.status === 200) {
+            queryClient.invalidateQueries(useGetUserProfileDetails.getKey());
+            goBack();
+            showSuccessMessage('Experience Updated successfully');
+          } else {
+          }
+        },
+        onError: (error) => {
+          // An error happened!
+          console.log(`error`, error);
+        },
+      }
+    );
+
     return;
   };
 
   const watchStartDate = watch('startDate');
   const watchEndDate = watch('endDate');
+  const watchEmployeeType = watch('employeType');
+  const watchCompanyName = watch('comapnyName');
 
-  const renderItem = useCallback(({ item }: any) => {
-    return (
-      <SelectModalItem
-        title={item?.title}
-        item={item}
-        onPress={(data) => {
-          handleDismissModalPress();
-        }}
-      />
-    );
-  }, []);
+  useEffect(() => {
+    if (selectedCompany) {
+      setValue('comapnyName', selectedCompany);
+      trigger('comapnyName');
+    }
+  }, [selectedCompany]);
+
+  const renderItem = useCallback(
+    ({ item }: any) => {
+      return (
+        <SelectModalItem
+          title={item?.title}
+          item={item}
+          onPress={(data) => {
+            setValue('employeType', data?.name);
+            trigger('employeType');
+            handleDismissModalPress();
+          }}
+        />
+      );
+    },
+    [setValue]
+  );
 
   return (
     <Screen backgroundColor={colors.white} edges={['top']}>
@@ -158,8 +209,8 @@ export const AddExperience = () => {
               Notify network
             </Text>
             <Text variant={'regular13'} paddingTop={'small'} color={'grey300'}>
-              Turn on to notify your network of key profile changes (such as new
-              job) and work anniversaries. Updates can take up to 2 hours.
+              Turn on to notify your network of key profile changes (such as new job) and
+              work anniversaries. Updates can take up to 2 hours.
             </Text>
           </View>
           <SwitchToggle
@@ -182,30 +233,42 @@ export const AddExperience = () => {
 
           <SelectOptionButton
             label="Employee Type"
-            isSelected={false}
-            selectedText="Please Select"
+            isSelected={watchEmployeeType ? true : false}
+            selectedText={watchEmployeeType ? watchEmployeeType : 'Please Select'}
             icon={'chevron-down'}
             onPress={handlePresentModalPress}
           />
 
+          {errors?.employeType?.message ? (
+            <Text variant={'regular13'} color={'error'}>
+              {errors?.employeType?.message}
+            </Text>
+          ) : null}
+
           <SelectOptionButton
             label="Company Name"
-            isSelected={false}
-            selectedText="Please Select"
+            isSelected={watchCompanyName ? true : false}
+            selectedText={watchCompanyName ? watchCompanyName : 'Please Select'}
             icon={'chevron-down'}
             onPress={() => {
               navigate('ChooseCompany');
             }}
           />
 
+          {errors?.comapnyName?.message ? (
+            <Text variant={'regular13'} color={'error'}>
+              {errors?.comapnyName?.message}
+            </Text>
+          ) : null}
+
           <ControlledInput
             placeholder="ex. dubai, united arab emirates"
             label="Location"
             control={control}
-            name="email"
+            name="location"
           />
 
-          <SelectOptionButton
+          {/* <SelectOptionButton
             label="Location Type"
             isSelected={false}
             selectedText="Please Select"
@@ -213,18 +276,27 @@ export const AddExperience = () => {
             onPress={() => {
               navigate('ChooseLocation');
             }}
-          />
+          /> */}
 
-          <View
-            flexDirection={'row'}
-            paddingTop={'medium'}
-            alignItems={'center'}
-          >
-            <CheckBox />
+          <View flexDirection={'row'} paddingTop={'medium'} alignItems={'center'}>
+            <CheckBox
+              value={isPresent}
+              onToggle={(data) => {
+                setIsPresent(data);
+                setValue('isPresent', data);
+                trigger('isPresent');
+              }}
+            />
             <Text variant={'regular14'} color={'black'} marginLeft={'medium'}>
               Currently working in this role
             </Text>
           </View>
+
+          {errors?.isPresent?.message ? (
+            <Text variant={'regular13'} color={'error'}>
+              {errors?.isPresent?.message}
+            </Text>
+          ) : null}
 
           <SelectOptionButton
             label="Start Date"
@@ -235,31 +307,40 @@ export const AddExperience = () => {
               setOpenStartDate(true);
             }}
           />
-          <SelectOptionButton
-            label="End Date"
-            isSelected={watchEndDate ? true : false}
-            selectedText={watchEndDate ? watchEndDate : 'Please Select'}
-            icon={'chevron-down'}
-            onPress={() => {
-              setOpenEndDate(true);
-            }}
-          />
+
+          {errors?.startDate?.message ? (
+            <Text variant={'regular13'} color={'error'}>
+              {errors?.startDate?.message}
+            </Text>
+          ) : null}
+
+          {isPresent ? null : (
+            <SelectOptionButton
+              label="End Date"
+              isSelected={watchEndDate ? true : false}
+              selectedText={watchEndDate ? watchEndDate : 'Please Select'}
+              icon={'chevron-down'}
+              onPress={() => {
+                setOpenEndDate(true);
+              }}
+            />
+          )}
 
           <DescriptionField
             placeholder="Enter company details"
             label="About Company"
             control={control}
-            name="cover"
+            name="description"
           />
 
-          <ControlledInput
+          {/* <ControlledInput
             placeholder="ex. react native developer"
             label="Profile Headline"
             control={control}
             name="salary"
-          />
+          /> */}
 
-          <Text variant={'regular12'}>
+          {/* <Text variant={'regular12'}>
             Appears below your name at the top of the profile
           </Text>
 
@@ -268,11 +349,11 @@ export const AddExperience = () => {
           </Text>
 
           <Text variant={'regular13'} color={'grey300'}>
-            We recommend adding your top 5 used in this role. They’ll also
-            appear in your Skills section.
-          </Text>
+            We recommend adding your top 5 used in this role. They’ll also appear in your
+            Skills section.
+          </Text> */}
 
-          <PressableScale
+          {/* <PressableScale
             onPress={() => {
               navigate('ChooseSkills');
             }}
@@ -300,14 +381,13 @@ export const AddExperience = () => {
                 Add Skills
               </Text>
             </View>
-          </PressableScale>
+          </PressableScale> */}
         </View>
         <View height={scale(24)} />
         <View flex={1} justifyContent={'flex-end'} paddingHorizontal={'large'}>
           <Button
             label="Save Profile"
-            // onPress={handleSubmit(onSubmit)}
-            onPress={() => {}}
+            onPress={handleSubmit(onSubmit)}
             loading={isLoading}
           />
         </View>

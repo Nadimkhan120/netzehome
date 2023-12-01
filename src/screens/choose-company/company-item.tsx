@@ -6,12 +6,12 @@ import { PressableScale, Text, View } from '@/ui';
 
 type CompanyItem = {
   data: any;
-  onPress: () => void;
+  onPress: (data: any) => void;
 };
 
 const CompanyItem = ({ onPress, data }: CompanyItem) => {
   return (
-    <PressableScale onPress={onPress}>
+    <PressableScale onPress={() => onPress?.(data)}>
       <View
         flexDirection={'row'}
         paddingHorizontal={'large'}
@@ -50,7 +50,7 @@ const CompanyItem = ({ onPress, data }: CompanyItem) => {
             marginVertical={'tiny'}
             color={'grey100'}
           >
-            IT service and consulting
+            {data?.city_name} {data?.country_name}
           </Text>
         </View>
       </View>

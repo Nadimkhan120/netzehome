@@ -14,14 +14,7 @@ type SelectModalItemProps = {
   item?: any;
 };
 
-export const SelectModalItem = ({
-  title,
-  icon,
-  onPress,
-  item,
-}: SelectModalItemProps) => {
-  console.log('title', title);
-
+export const SelectModalItem = ({ title, icon, onPress, item }: SelectModalItemProps) => {
   return (
     <Pressable
       onPress={() => onPress?.(item ? item : title)}

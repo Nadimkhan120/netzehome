@@ -7,9 +7,12 @@ import { Avatar } from '../avatar';
 import { icons } from '@/assets/icons';
 import { useNavigation } from '@react-navigation/native';
 import { Image } from 'expo-image';
+import { useUser } from '@/store/user';
 
 export const TopHeader = () => {
   const { navigate } = useNavigation();
+
+  const user = useUser((state) => state?.user);
 
   return (
     <View

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { ScrollView, StyleSheet, useWindowDimensions } from 'react-native';
 import { scale } from 'react-native-size-matters';
@@ -22,6 +22,8 @@ import { Button, ControlledInput, Screen, View } from '@/ui';
 import { DescriptionField } from '@/ui/description-field';
 import { showErrorMessage, showSuccessMessage } from '@/utils';
 import { Avatar } from '@/components/avatar';
+import { useActionSheet } from '@expo/react-native-action-sheet';
+import * as ImagePicker from 'expo-image-picker';
 
 const schema = z.object({
   name: z.string({
@@ -49,12 +51,14 @@ export const EditProfile = () => {
   const { width } = useWindowDimensions();
 
   useSoftKeyboardEffect();
-
+  const { showActionSheetWithOptions } = useActionSheet();
   const company = useUser((state) => state?.company);
 
   const { mutate: editCompanyApi, isLoading } = useEditCompany();
 
   const data = route?.params?.data;
+
+  const [image, setImage] = useState(null);
 
   const { handleSubmit, control, setValue } = useForm<EditProfileFormType>({
     resolver: zodResolver(schema),
@@ -130,6 +134,69 @@ export const EditProfile = () => {
     //setValue('bio', data?.short_description);
   }, []);
 
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
+  };
+
+  const takeImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchCameraAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
+  };
+
+  const onPress = () => {
+    const options = ['Gallery', 'Camera', 'Cancel'];
+    const destructiveButtonIndex = 2;
+    const cancelButtonIndex = 2;
+
+    showActionSheetWithOptions(
+      {
+        options,
+        cancelButtonIndex,
+        destructiveButtonIndex,
+      },
+      (selectedIndex: number) => {
+        switch (selectedIndex) {
+          case 0:
+            // Save
+            pickImage();
+            break;
+          case 1:
+            // Save
+            takeImage();
+            break;
+          case destructiveButtonIndex:
+            // Delete
+            break;
+
+          case cancelButtonIndex:
+          // Canceled
+        }
+      }
+    );
+  };
+
   return (
     <Screen backgroundColor={colors.white} edges={['top']}>
       <ScreenHeader title="Edit Profile" showBorder={true} icon="close" />
@@ -149,7 +216,11 @@ export const EditProfile = () => {
               bottom: -scale(28),
             }}
           >
-            <Avatar source={icons['avatar-2']} size="large" />
+            <Avatar
+              source={image ? { uri: image } : icons['avatar-2']}
+              size="large"
+              onPress={onPress}
+            />
           </View>
         </View>
 
@@ -206,11 +277,7 @@ export const EditProfile = () => {
         </View>
         <View height={scale(24)} />
         <View flex={1} justifyContent={'flex-end'} paddingHorizontal={'large'}>
-          <Button
-            label="Update"
-            onPress={handleSubmit(onSubmit)}
-            loading={isLoading}
-          />
+          <Button label="Update" onPress={handleSubmit(onSubmit)} loading={isLoading} />
         </View>
       </ScrollView>
     </Screen>
