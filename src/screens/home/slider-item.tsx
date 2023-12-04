@@ -13,8 +13,6 @@ type HomeSliderItemProps = {
 export const HomeSliderItem = ({ data }: HomeSliderItemProps) => {
   const { navigate } = useNavigation();
 
-  console.log('data==//', data?.unique_id);
-
   if (data?.full_name === 'Add') {
     return (
       <PressableScale onPress={() => navigate('AddProfile')}>
@@ -67,15 +65,19 @@ export const HomeSliderItem = ({ data }: HomeSliderItemProps) => {
         </View>
 
         <View alignItems={'center'} justifyContent={'center'}>
-          <Avatar source={icons['avatar-2']} />
+          <Avatar
+            source={{ uri: data?.profile_pic }}
+            transition={1000}
+            placeholder={'https://fakeimg.pl/400x400/cccccc/cccccc'}
+          />
           <Text variant={'medium24'} paddingTop={'tiny'} color={'white'}>
-            {data?.name}
+            {data?.full_name}
           </Text>
           <Text variant={'regular12'} color={'white'} paddingTop={'tiny'}>
-            User Experience Designer at Conrad labs
+            {data?.job_title}
           </Text>
           <Text variant={'regular12'} color={'white'} paddingTop={'tiny'}>
-            Rawalpindi, Pakistan
+            {data?.city_name}, {data?.country_name}
           </Text>
         </View>
       </View>

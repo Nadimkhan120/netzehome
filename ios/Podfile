@@ -26,7 +26,7 @@ if linkage != nil
   use_frameworks! :linkage => linkage.to_sym
 end
 
-target 'JobulusCompany' do
+target 'Jobulus' do
   use_expo_modules!
   post_integrate do |installer|
     begin
@@ -54,7 +54,7 @@ target 'JobulusCompany' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
-  target 'JobulusCompanyTests' do
+  target 'JobulusTests' do
     inherit! :complete
     # Pods for testing
   end

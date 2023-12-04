@@ -1,33 +1,25 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { ScrollView, StyleSheet, useWindowDimensions } from 'react-native';
+import { ScrollView, StyleSheet } from 'react-native';
 import { scale } from 'react-native-size-matters';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useTheme } from '@shopify/restyle';
-
 import { ScreenHeader } from '@/components/screen-header';
 import { useSoftKeyboardEffect } from '@/hooks';
 import { queryClient } from '@/services/api/api-provider';
-import { useEditCompany } from '@/services/api/company';
-import { useUser } from '@/store/user';
 import { palette, type Theme } from '@/theme';
-import { Button, ControlledInput, PressableScale, Screen, Text, View } from '@/ui';
+import { Button, ControlledInput, Screen, Text, View } from '@/ui';
 import { DescriptionField } from '@/ui/description-field';
 import { showErrorMessage, showSuccessMessage } from '@/utils';
-import { Avatar } from '@/components/avatar';
 import SwitchToggle from 'react-native-switch-toggle';
 import SelectionBox from '@/components/drop-down';
 import { SelectOptionButton } from '@/components/select-option-button';
 import { CheckBox } from '@/components/checkbox';
 import { BottomModal } from '@/components/bottom-modal';
 import type { BottomSheetModal } from '@gorhom/bottom-sheet';
-import {
-  BottomSheetFlatList,
-  BottomSheetFooter,
-  BottomSheetView,
-} from '@gorhom/bottom-sheet';
+import { BottomSheetFlatList } from '@gorhom/bottom-sheet';
 import { SelectModalItem } from '@/components/select-modal-item';
 import { format } from 'date-fns';
 import DatePicker from 'react-native-date-picker';
@@ -94,6 +86,7 @@ export const AddExperience = () => {
   const [isPresent, setIsPresent] = useState(false);
 
   const selectedCompany = useExperience((state) => state?.selectedCompany);
+  const selectedLocation = useExperience((state) => state?.selectedLocation);
 
   const { mutate: updateExperienceApi, isLoading } = useUpdateExperience();
 
@@ -113,8 +106,6 @@ export const AddExperience = () => {
 
   const data = route?.params;
 
-  console.log('route?.params?.data;', data);
-
   const {
     handleSubmit,
     control,
@@ -127,9 +118,6 @@ export const AddExperience = () => {
   });
 
   const onSubmit = (formData: AddExperienceFormType) => {
-    console.log('formData', formData);
-    console.log('route?.params?.id,', route?.params?.id);
-
     updateExperienceApi(
       {
         unique_id: route?.params?.id,
@@ -143,6 +131,9 @@ export const AddExperience = () => {
         job_title: formData?.name,
         job_category_id: '1',
         location: formData?.location,
+        //@ts-ignore
+        city_id: selectedLocation?.city,
+        country_id: selectedLocation?.country,
       },
       {
         onSuccess: (response) => {
@@ -168,6 +159,7 @@ export const AddExperience = () => {
   const watchEndDate = watch('endDate');
   const watchEmployeeType = watch('employeType');
   const watchCompanyName = watch('comapnyName');
+  const watchLocation = watch('location');
 
   useEffect(() => {
     if (selectedCompany) {
@@ -175,6 +167,13 @@ export const AddExperience = () => {
       trigger('comapnyName');
     }
   }, [selectedCompany]);
+
+  useEffect(() => {
+    if (selectedLocation) {
+      setValue('location', selectedLocation?.address);
+      trigger('location');
+    }
+  }, [selectedLocation]);
 
   const renderItem = useCallback(
     ({ item }: any) => {
@@ -261,12 +260,28 @@ export const AddExperience = () => {
             </Text>
           ) : null}
 
-          <ControlledInput
+          <SelectOptionButton
+            label="Location"
+            isSelected={watchLocation ? true : false}
+            selectedText={watchLocation ? watchLocation : 'Choose Location'}
+            icon={'chevron-down'}
+            onPress={() => {
+              navigate('ChooseLocation', { from: 'Experience' });
+            }}
+          />
+
+          {errors?.location?.message ? (
+            <Text variant={'regular13'} color={'error'}>
+              {errors?.location?.message}
+            </Text>
+          ) : null}
+
+          {/* <ControlledInput
             placeholder="ex. dubai, united arab emirates"
             label="Location"
             control={control}
             name="location"
-          />
+          /> */}
 
           {/* <SelectOptionButton
             label="Location Type"

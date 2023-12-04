@@ -9,7 +9,6 @@ import { logOut } from '@/store/auth';
 import { useUser, removeUserData } from '@/store/user';
 import { PressableScale, Screen, Text, View } from '@/ui';
 import { Avatar } from '../avatar';
-
 import { useNavigation } from '@react-navigation/native';
 import { useRefreshOnFocus } from '@/hooks';
 import { Image } from 'expo-image';
@@ -59,9 +58,11 @@ export function AppDrawer({ children }: AppDrawer) {
                 borderBottomWidth={1}
               >
                 <Avatar
-                  source={icons.avatar}
+                  source={{ uri: user?.profile_pic }}
+                  transition={1000}
+                  placeholder={'https://fakeimg.pl/400x400/cccccc/cccccc'}
                   size="medium"
-                  onPress={() => navigate('EditProfile')}
+                  onPress={() => navigate('EditProfile', { user })}
                 />
                 <View>
                   <Text
@@ -102,11 +103,7 @@ export function AppDrawer({ children }: AppDrawer) {
                       style={{ height: scale(24), width: scale(24) }}
                       contentFit="contain"
                     />
-                    <Text
-                      variant={'medium14'}
-                      color={'grey200'}
-                      paddingLeft={'large'}
-                    >
+                    <Text variant={'medium14'} color={'grey200'} paddingLeft={'large'}>
                       My Jobs
                     </Text>
                   </View>
@@ -127,11 +124,7 @@ export function AppDrawer({ children }: AppDrawer) {
                       style={{ height: scale(24), width: scale(24) }}
                       contentFit="contain"
                     />
-                    <Text
-                      variant={'medium14'}
-                      color={'grey200'}
-                      paddingLeft={'large'}
-                    >
+                    <Text variant={'medium14'} color={'grey200'} paddingLeft={'large'}>
                       My Contacts
                     </Text>
                   </View>
@@ -152,11 +145,7 @@ export function AppDrawer({ children }: AppDrawer) {
                       contentFit="contain"
                       style={{ height: scale(24), width: scale(24) }}
                     />
-                    <Text
-                      variant={'medium14'}
-                      color={'grey200'}
-                      paddingLeft={'large'}
-                    >
+                    <Text variant={'medium14'} color={'grey200'} paddingLeft={'large'}>
                       My Companies
                     </Text>
                   </View>
@@ -176,22 +165,14 @@ export function AppDrawer({ children }: AppDrawer) {
                       source={icons.settings}
                       style={{ height: scale(24), width: scale(24) }}
                     />
-                    <Text
-                      variant={'medium14'}
-                      color={'grey200'}
-                      paddingLeft={'large'}
-                    >
+                    <Text variant={'medium14'} color={'grey200'} paddingLeft={'large'}>
                       My Account
                     </Text>
                   </View>
                 </PressableScale>
               </View>
 
-              <View
-                flex={1}
-                paddingBottom={'large'}
-                justifyContent={'flex-end'}
-              >
+              <View flex={1} paddingBottom={'large'} justifyContent={'flex-end'}>
                 <PressableScale
                   onPress={() => {
                     removeUserData();
@@ -211,11 +192,7 @@ export function AppDrawer({ children }: AppDrawer) {
                       source={icons['log-out']}
                       style={{ height: scale(24), width: scale(24) }}
                     />
-                    <Text
-                      variant={'medium14'}
-                      color={'error'}
-                      paddingLeft={'large'}
-                    >
+                    <Text variant={'medium14'} color={'error'} paddingLeft={'large'}>
                       Sign Out
                     </Text>
                   </View>

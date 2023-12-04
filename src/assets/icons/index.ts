@@ -79,6 +79,7 @@ export const icons = {
   send: require('../images/send.png'),
   'chat-plus': require('../images/chat-plus.png'),
   link: require('../images/link.png'),
+  camera: require('../images/camera.png'),
 };
 
 export type IconTypes = keyof typeof icons;

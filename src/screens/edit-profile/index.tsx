@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { ScrollView, StyleSheet, useWindowDimensions } from 'react-native';
+import {
+  Platform,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  useWindowDimensions,
+} from 'react-native';
 import { scale } from 'react-native-size-matters';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -9,21 +15,20 @@ import { useTheme } from '@shopify/restyle';
 import { Image } from 'expo-image';
 import { icons } from '@/assets/icons';
 import { ScreenHeader } from '@/components/screen-header';
-import { useSoftKeyboardEffect } from '@/hooks';
+import { useRefreshOnFocus, useSoftKeyboardEffect } from '@/hooks';
 import { queryClient } from '@/services/api/api-provider';
-import {
-  useCompanies,
-  useEditCompany,
-  useGetCompanyDetails,
-} from '@/services/api/company';
-import { useUser } from '@/store/user';
+import { setProfilePic, useUser } from '@/store/user';
 import type { Theme } from '@/theme';
-import { Button, ControlledInput, Screen, View } from '@/ui';
+import { Button, ControlledInput, Screen, View, Text } from '@/ui';
 import { DescriptionField } from '@/ui/description-field';
 import { showErrorMessage, showSuccessMessage } from '@/utils';
 import { Avatar } from '@/components/avatar';
 import { useActionSheet } from '@expo/react-native-action-sheet';
 import * as ImagePicker from 'expo-image-picker';
+import { useGetUserProfileDetails, useGetProfile } from '@/services/api/home';
+import { useUpdatePicture } from '@/services/api/profile';
+import * as mime from 'react-native-mime-types';
+import Loader from '@/components/loader';
 
 const schema = z.object({
   name: z.string({
@@ -49,16 +54,23 @@ export const EditProfile = () => {
   const { goBack } = useNavigation();
   const route = useRoute<any>();
   const { width } = useWindowDimensions();
+  const user = useUser((state) => state.profile);
 
   useSoftKeyboardEffect();
   const { showActionSheetWithOptions } = useActionSheet();
-  const company = useUser((state) => state?.company);
-
-  const { mutate: editCompanyApi, isLoading } = useEditCompany();
-
-  const data = route?.params?.data;
 
   const [image, setImage] = useState(null);
+  const [picTyp, setPicType] = useState(null);
+
+  const { data, isLoading, refetch } = useGetUserProfileDetails({
+    variables: {
+      id: route?.params?.user?.unique_id,
+    },
+  });
+
+  useRefreshOnFocus(refetch);
+
+  const profileData = data?.response?.data;
 
   const { handleSubmit, control, setValue } = useForm<EditProfileFormType>({
     resolver: zodResolver(schema),
@@ -79,93 +91,95 @@ export const EditProfile = () => {
     // },
   });
 
+  const { mutate: updateProfilePic, isLoading: savingPic } = useUpdatePicture();
+
   const onSubmit = (data: EditProfileFormType) => {
     return;
-    editCompanyApi(
-      {
-        name: data?.companyName,
-        email: data?.email,
-        contact_number: data?.phone,
-        no_of_employees: parseInt(data?.employees),
-        start_time: '9 am',
-        end_time: '6 pm',
-        average_wage: parseInt(data?.wage),
-        languages: [1, 2],
-        categories: [1, 2],
-        company_id: company?.id,
-        short_description: data?.bio,
-        facebook_link: data?.facebook,
-        instagram_link: data?.instgram,
-        twitter_link: data?.whatsapp,
-        locations: {
-          address_1: data?.address,
-          address_2: '',
-          city_id: '1',
-          country_id: '1',
-          phone: data?.phone,
-          email: data?.email,
-          website: data?.website,
-          web_location: '',
-          longitude: '0.00000',
-          latitude: '0.0000',
-          google_location: data?.location,
-        },
-      },
-      {
-        onSuccess: (responseData) => {
-          if (responseData?.status === 200) {
-            showSuccessMessage(responseData?.message ?? '');
-            queryClient.invalidateQueries(useCompanies.getKey());
-            queryClient.invalidateQueries(useGetCompanyDetails.getKey());
-            goBack();
-          } else {
-            showErrorMessage(responseData?.message ?? '');
-          }
-        },
-        onError: (error) => {
-          //@ts-ignore
-          showErrorMessage(error?.response?.data?.message ?? '');
-        },
-      }
-    );
   };
 
   useEffect(() => {
     //setValue('bio', data?.short_description);
   }, []);
 
-  const pickImage = async () => {
+  const updateProfilePicApiCall = ({
+    asset,
+    picType,
+  }: {
+    asset: any;
+    picType: 'pic' | 'cover';
+  }) => {
+    const data = new FormData();
+
+    let fileName;
+    if (asset.fileName === null) {
+      const uriParts = asset.uri.split('/');
+      fileName = uriParts[uriParts.length - 1];
+    } else {
+      fileName = asset.fileName;
+    }
+
+    data.append('file', {
+      name: fileName,
+      type: mime.lookup(asset?.uri?.replace('file://', '')),
+      uri: Platform.OS === 'ios' ? asset?.uri?.replace('file://', '') : asset?.uri,
+    });
+
+    data?.append('id', route?.params?.user?.unique_id);
+    data?.append('type', picType);
+
+    updateProfilePic(data, {
+      onSuccess: (response) => {
+        if (response?.response?.status === 200) {
+          queryClient.invalidateQueries(useGetProfile.getKey());
+          if (user?.unique_id === route?.params?.user?.unique_id) {
+            setProfilePic(response?.response?.path);
+          }
+          // goBack();
+          showSuccessMessage('Experience Updated successfully');
+        } else {
+        }
+      },
+      onError: (error) => {
+        // An error happened!
+        // @ts-ignore
+        console.log(`error`, error?.response?.data?.message);
+      },
+    });
+  };
+
+  const pickImage = async (picType) => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
-      aspect: [4, 3],
+      aspect: picType === 'cover' ? [4, 2] : [4, 4],
       quality: 1,
     });
 
-    console.log(result);
-
     if (!result.canceled) {
       setImage(result.assets[0].uri);
+      setPicType(picType);
+      const asset = result?.assets[0];
+      updateProfilePicApiCall({ asset, picType });
     }
   };
 
-  const takeImage = async () => {
+  const takeImage = async (picType) => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchCameraAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-
       quality: 1,
     });
 
-    console.log(result);
-
     if (!result.canceled) {
       setImage(result.assets[0].uri);
+      setPicType(picType);
+      const asset = result?.assets[0];
+      updateProfilePicApiCall({ asset, picType });
     }
   };
 
-  const onPress = () => {
+  const takeProfilePic = ({ picType }: { picType: 'pic' | 'cover' }) => {
     const options = ['Gallery', 'Camera', 'Cancel'];
     const destructiveButtonIndex = 2;
     const cancelButtonIndex = 2;
@@ -180,11 +194,11 @@ export const EditProfile = () => {
         switch (selectedIndex) {
           case 0:
             // Save
-            pickImage();
+            pickImage(picType);
             break;
           case 1:
             // Save
-            takeImage();
+            takeImage(picType);
             break;
           case destructiveButtonIndex:
             // Delete
@@ -202,29 +216,72 @@ export const EditProfile = () => {
       <ScreenHeader title="Edit Profile" showBorder={true} icon="close" />
 
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <View height={scale(119)}>
-          <Image
-            source={icons['back-cover']}
-            style={{ height: scale(119), width: width }}
-          />
+        <View>
+          <View>
+            <Image
+              cachePolicy="memory-disk"
+              source={picTyp === 'cover' ? image : profileData?.cover_pic}
+              style={{ height: scale(119), width: width }}
+              transition={1000}
+              placeholder={`https://fakeimg.pl/${width}x400/cccccc/cccccc`}
+            />
+
+            <View position={'absolute'} right={16} top={16}>
+              <TouchableOpacity onPress={() => takeProfilePic({ picType: 'cover' })}>
+                <View
+                  height={scale(24)}
+                  justifyContent={'center'}
+                  alignItems={'center'}
+                  width={scale(24)}
+                  backgroundColor={'white'}
+                  borderRadius={scale(12)}
+                >
+                  <Image
+                    source={icons['camera']}
+                    style={{ height: scale(16), width: scale(16) }}
+                  />
+                </View>
+              </TouchableOpacity>
+            </View>
+          </View>
+
           <View
-            alignSelf={'flex-start'}
-            position={'absolute'}
-            // bottom={0}
             marginLeft={'large'}
             style={{
-              bottom: -scale(28),
+              marginTop: -28,
             }}
           >
-            <Avatar
-              source={image ? { uri: image } : icons['avatar-2']}
-              size="large"
-              onPress={onPress}
-            />
+            <View alignSelf={'baseline'}>
+              <Avatar
+                cachePolicy="none"
+                source={picTyp === 'pic' ? image : profileData?.profile_pic}
+                size="large"
+                onPress={() => takeProfilePic({ picType: 'pic' })}
+                transition={1000}
+                placeholder={'https://fakeimg.pl/400x400/cccccc/cccccc'}
+              />
+              <View position={'absolute'} right={0} top={0}>
+                <TouchableOpacity onPress={() => takeProfilePic({ picType: 'pic' })}>
+                  <View
+                    height={scale(24)}
+                    justifyContent={'center'}
+                    alignItems={'center'}
+                    width={scale(24)}
+                    backgroundColor={'white'}
+                    borderRadius={scale(12)}
+                  >
+                    <Image
+                      source={icons['camera']}
+                      style={{ height: scale(16), width: scale(16) }}
+                    />
+                  </View>
+                </TouchableOpacity>
+              </View>
+            </View>
           </View>
         </View>
 
-        <View height={scale(44)} />
+        {/* <View height={scale(44)} /> */}
 
         <View paddingTop={'large'} paddingHorizontal={'large'} rowGap={'small'}>
           <ControlledInput
@@ -280,6 +337,8 @@ export const EditProfile = () => {
           <Button label="Update" onPress={handleSubmit(onSubmit)} loading={isLoading} />
         </View>
       </ScrollView>
+
+      <Loader isVisible={savingPic} />
     </Screen>
   );
 };

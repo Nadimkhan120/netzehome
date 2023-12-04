@@ -11,6 +11,7 @@ import {
   ResetPassword,
   SendInvite,
   VerifyCode,
+  ChooseLocation,
 } from '@/screens';
 
 export type AuthStackParamList = {
@@ -23,6 +24,7 @@ export type AuthStackParamList = {
   AgencyInformation: undefined;
   ForgotPassword: undefined;
   ResetPassword: { email: string; token: string };
+  ChooseAuthLocation: { from: any };
 };
 
 const Stack = createNativeStackNavigator<AuthStackParamList>();
@@ -90,6 +92,13 @@ export const AuthNavigator = () => {
       <Stack.Screen
         name="AgencyInformation"
         component={AgencyInformation}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="ChooseAuthLocation"
+        component={ChooseLocation}
         options={{
           headerShown: false,
         }}

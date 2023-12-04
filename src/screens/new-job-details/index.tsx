@@ -9,24 +9,64 @@ import type { Route } from '@showtime-xyz/tab-view';
 import { TabScrollView, TabView } from '@showtime-xyz/tab-view';
 import ActivityIndicator from '@/components/activity-indicator';
 import { ScreenHeader } from '@/components/screen-header';
-import { useCandidateDetail } from '@/services/api/candidate';
 import type { Theme } from '@/theme';
 import OverView from './overview';
 import Company from './company';
 import Details from './details';
 import Stats from './stats';
-import { Image } from 'expo-image';
-import { icons } from '@/assets/icons';
-import { Text, View, Screen } from '@/ui';
+import { Text, View, Screen, PressableScale } from '@/ui';
 import Header from './header';
-import { useJobDetail } from '@/services/api/vacancies';
+import { useJobDetail, useApplyJob } from '@/services/api/vacancies';
+import { useUser } from '@/store/user';
+import { queryClient } from '@/services/api/api-provider';
+import { showErrorMessage, showSuccessMessage } from '@/utils';
+import { useAppliedJobs } from '@/services/api/home';
 
 const OverViewTab = ({ route, data }: any) => {
+  const user = useUser((state) => state.user);
+  const profile = useUser((state) => state.profile);
+
+  const { mutate: applyJobApi, isLoading } = useApplyJob();
+
+  const applyJob = () => {
+    let body = { unique_id: profile?.unique_id, person_id: user?.id, job_id: data?.id };
+
+    applyJobApi(body, {
+      onSuccess: (data) => {
+        if (data?.response?.status === 200) {
+          queryClient.invalidateQueries(useAppliedJobs.getKey());
+          showSuccessMessage('Job applied successfully.');
+        } else {
+          showErrorMessage(data?.response?.message);
+        }
+      },
+      onError: (error) => {
+        // An error happened!
+        console.log(`error`, error?.response?.data);
+      },
+    });
+  };
+
   return (
     <>
       <TabScrollView index={route?.index}>
-        <OverView data={data} />
+        <OverView data={data?.data} />
       </TabScrollView>
+      <View paddingVertical={'large'} paddingHorizontal={'large'}>
+        <PressableScale onPress={applyJob}>
+          <View
+            backgroundColor={'secondary'}
+            height={scale(44)}
+            borderRadius={scale(8)}
+            justifyContent={'center'}
+            alignItems={'center'}
+          >
+            <Text color={'primary'} variant={'medium14'}>
+              {isLoading ? '...Applying' : 'Apply Job'}
+            </Text>
+          </View>
+        </PressableScale>
+      </View>
     </>
   );
 };
@@ -55,7 +95,13 @@ const StatsTab = ({ route, data }: any) => {
   );
 };
 
-const renderLabel = ({ focused, route }: { focused: boolean; route: { title: string } }) => {
+const renderLabel = ({
+  focused,
+  route,
+}: {
+  focused: boolean;
+  route: { title: string };
+}) => {
   return (
     <Text color={focused ? 'primary' : 'black'} variant="medium14" numberOfLines={1}>
       {route.title}
@@ -111,13 +157,32 @@ export function NewJobDetails() {
     ({ route }: any) => {
       switch (route.key) {
         case 'Overview':
-          return <OverViewTab route={route} index={0} data={jobDetailsData?.response?.data?.long_description} />;
+          return (
+            <OverViewTab
+              route={route}
+              index={0}
+              data={{
+                data: jobDetailsData?.response?.data?.long_description,
+                id: jobDetailsData?.response?.data?.id,
+              }}
+            />
+          );
         case 'Company':
-          return <CompanyTab route={route} index={1} data={jobDetailsData?.response?.data?.company_id} />;
+          return (
+            <CompanyTab
+              route={route}
+              index={1}
+              data={jobDetailsData?.response?.data?.company_id}
+            />
+          );
         case 'Details':
-          return <DetailsTab route={route} index={2} data={jobDetailsData?.response?.data} />;
+          return (
+            <DetailsTab route={route} index={2} data={jobDetailsData?.response?.data} />
+          );
         case 'Stats':
-          return <StatsTab route={route} index={2} data={jobDetailsData?.response?.data} />;
+          return (
+            <StatsTab route={route} index={2} data={jobDetailsData?.response?.data} />
+          );
 
         default:
           return null;
@@ -146,7 +211,12 @@ export function NewJobDetails() {
     <Screen backgroundColor={colors.white}>
       <ScreenHeader showBorder={true} icon="close" />
       {isLoading ? (
-        <View flex={1} height={scale(300)} justifyContent={'center'} alignItems={'center'}>
+        <View
+          flex={1}
+          height={scale(300)}
+          justifyContent={'center'}
+          alignItems={'center'}
+        >
           <ActivityIndicator size={'large'} />
         </View>
       ) : (

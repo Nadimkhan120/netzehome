@@ -7,13 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		00E356F31AD99517003FC87E /* JobulusCompanyTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* JobulusCompanyTests.m */; };
-		0C80B921A6F3F58F76C31292 /* libPods-JobulusCompany.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-JobulusCompany.a */; };
+		00E356F31AD99517003FC87E /* JobulusTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* JobulusTests.m */; };
+		0C80B921A6F3F58F76C31292 /* libPods-Jobulus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-Jobulus.a */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		533A4E572EE2D49B178BCD17 /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3B74F08F03D7BC283315BF /* ExpoModulesProvider.swift */; };
-		7699B88040F8A987B510C191 /* libPods-JobulusCompany-JobulusCompanyTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-JobulusCompany-JobulusCompanyTests.a */; };
+		7699B88040F8A987B510C191 /* libPods-Jobulus-JobulusTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-Jobulus-JobulusTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		C53E7EDAA9C8748612545EC4 /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 886E594D73F6290E36B1F979 /* ExpoModulesProvider.swift */; };
 		FAAE44612AD93AB300749D5E /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FAAE44602AD93AB300749D5E /* BootSplash.storyboard */; };
@@ -25,31 +25,31 @@
 			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
-			remoteInfo = JobulusCompany;
+			remoteInfo = Jobulus;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		00E356EE1AD99517003FC87E /* JobulusCompanyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JobulusCompanyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		00E356EE1AD99517003FC87E /* JobulusTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JobulusTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		00E356F21AD99517003FC87E /* JobulusCompanyTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JobulusCompanyTests.m; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* JobulusCompany.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JobulusCompany.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = JobulusCompany/AppDelegate.h; sourceTree = "<group>"; };
-		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = JobulusCompany/AppDelegate.mm; sourceTree = "<group>"; };
-		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = JobulusCompany/Images.xcassets; sourceTree = "<group>"; };
-		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = JobulusCompany/Info.plist; sourceTree = "<group>"; };
-		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = JobulusCompany/main.m; sourceTree = "<group>"; };
-		19F6CBCC0A4E27FBF8BF4A61 /* libPods-JobulusCompany-JobulusCompanyTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-JobulusCompany-JobulusCompanyTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		3B4392A12AC88292D35C810B /* Pods-JobulusCompany.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JobulusCompany.debug.xcconfig"; path = "Target Support Files/Pods-JobulusCompany/Pods-JobulusCompany.debug.xcconfig"; sourceTree = "<group>"; };
-		5709B34CF0A7D63546082F79 /* Pods-JobulusCompany.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JobulusCompany.release.xcconfig"; path = "Target Support Files/Pods-JobulusCompany/Pods-JobulusCompany.release.xcconfig"; sourceTree = "<group>"; };
-		5B7EB9410499542E8C5724F5 /* Pods-JobulusCompany-JobulusCompanyTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JobulusCompany-JobulusCompanyTests.debug.xcconfig"; path = "Target Support Files/Pods-JobulusCompany-JobulusCompanyTests/Pods-JobulusCompany-JobulusCompanyTests.debug.xcconfig"; sourceTree = "<group>"; };
-		5DCACB8F33CDC322A6C60F78 /* libPods-JobulusCompany.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-JobulusCompany.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = JobulusCompany/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		886E594D73F6290E36B1F979 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-JobulusCompany-JobulusCompanyTests/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
-		89C6BE57DB24E9ADA2F236DE /* Pods-JobulusCompany-JobulusCompanyTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JobulusCompany-JobulusCompanyTests.release.xcconfig"; path = "Target Support Files/Pods-JobulusCompany-JobulusCompanyTests/Pods-JobulusCompany-JobulusCompanyTests.release.xcconfig"; sourceTree = "<group>"; };
-		BF3B74F08F03D7BC283315BF /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-JobulusCompany/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
+		00E356F21AD99517003FC87E /* JobulusTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JobulusTests.m; sourceTree = "<group>"; };
+		13B07F961A680F5B00A75B9A /* Jobulus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Jobulus.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Jobulus/AppDelegate.h; sourceTree = "<group>"; };
+		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = Jobulus/AppDelegate.mm; sourceTree = "<group>"; };
+		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = Jobulus/Images.xcassets; sourceTree = "<group>"; };
+		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Jobulus/Info.plist; sourceTree = "<group>"; };
+		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Jobulus/main.m; sourceTree = "<group>"; };
+		19F6CBCC0A4E27FBF8BF4A61 /* libPods-Jobulus-JobulusTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Jobulus-JobulusTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3B4392A12AC88292D35C810B /* Pods-Jobulus.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Jobulus.debug.xcconfig"; path = "Target Support Files/Pods-Jobulus/Pods-Jobulus.debug.xcconfig"; sourceTree = "<group>"; };
+		5709B34CF0A7D63546082F79 /* Pods-Jobulus.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Jobulus.release.xcconfig"; path = "Target Support Files/Pods-Jobulus/Pods-Jobulus.release.xcconfig"; sourceTree = "<group>"; };
+		5B7EB9410499542E8C5724F5 /* Pods-Jobulus-JobulusTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Jobulus-JobulusTests.debug.xcconfig"; path = "Target Support Files/Pods-Jobulus-JobulusTests/Pods-Jobulus-JobulusTests.debug.xcconfig"; sourceTree = "<group>"; };
+		5DCACB8F33CDC322A6C60F78 /* libPods-Jobulus.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Jobulus.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Jobulus/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		886E594D73F6290E36B1F979 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-Jobulus-JobulusTests/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
+		89C6BE57DB24E9ADA2F236DE /* Pods-Jobulus-JobulusTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Jobulus-JobulusTests.release.xcconfig"; path = "Target Support Files/Pods-Jobulus-JobulusTests/Pods-Jobulus-JobulusTests.release.xcconfig"; sourceTree = "<group>"; };
+		BF3B74F08F03D7BC283315BF /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-Jobulus/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		FAAE44602AD93AB300749D5E /* BootSplash.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = BootSplash.storyboard; path = JobulusCompany/BootSplash.storyboard; sourceTree = "<group>"; };
+		FAAE44602AD93AB300749D5E /* BootSplash.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = BootSplash.storyboard; path = Jobulus/BootSplash.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,7 +57,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7699B88040F8A987B510C191 /* libPods-JobulusCompany-JobulusCompanyTests.a in Frameworks */,
+				7699B88040F8A987B510C191 /* libPods-Jobulus-JobulusTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,20 +65,20 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0C80B921A6F3F58F76C31292 /* libPods-JobulusCompany.a in Frameworks */,
+				0C80B921A6F3F58F76C31292 /* libPods-Jobulus.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		00E356EF1AD99517003FC87E /* JobulusCompanyTests */ = {
+		00E356EF1AD99517003FC87E /* JobulusTests */ = {
 			isa = PBXGroup;
 			children = (
-				00E356F21AD99517003FC87E /* JobulusCompanyTests.m */,
+				00E356F21AD99517003FC87E /* JobulusTests.m */,
 				00E356F01AD99517003FC87E /* Supporting Files */,
 			);
-			path = JobulusCompanyTests;
+			path = JobulusTests;
 			sourceTree = "<group>";
 		};
 		00E356F01AD99517003FC87E /* Supporting Files */ = {
@@ -92,21 +92,21 @@
 		0A50A756AF0AE5523BE67CE0 /* ExpoModulesProviders */ = {
 			isa = PBXGroup;
 			children = (
-				0E48A4053F61C35C1C138AAC /* JobulusCompany */,
-				CC73B3C1592A1FB18885B80E /* JobulusCompanyTests */,
+				0E48A4053F61C35C1C138AAC /* Jobulus */,
+				CC73B3C1592A1FB18885B80E /* JobulusTests */,
 			);
 			name = ExpoModulesProviders;
 			sourceTree = "<group>";
 		};
-		0E48A4053F61C35C1C138AAC /* JobulusCompany */ = {
+		0E48A4053F61C35C1C138AAC /* Jobulus */ = {
 			isa = PBXGroup;
 			children = (
 				BF3B74F08F03D7BC283315BF /* ExpoModulesProvider.swift */,
 			);
-			name = JobulusCompany;
+			name = Jobulus;
 			sourceTree = "<group>";
 		};
-		13B07FAE1A68108700A75B9A /* JobulusCompany */ = {
+		13B07FAE1A68108700A75B9A /* Jobulus */ = {
 			isa = PBXGroup;
 			children = (
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -117,15 +117,15 @@
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
 			);
-			name = JobulusCompany;
+			name = Jobulus;
 			sourceTree = "<group>";
 		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				5DCACB8F33CDC322A6C60F78 /* libPods-JobulusCompany.a */,
-				19F6CBCC0A4E27FBF8BF4A61 /* libPods-JobulusCompany-JobulusCompanyTests.a */,
+				5DCACB8F33CDC322A6C60F78 /* libPods-Jobulus.a */,
+				19F6CBCC0A4E27FBF8BF4A61 /* libPods-Jobulus-JobulusTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -140,9 +140,9 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				13B07FAE1A68108700A75B9A /* JobulusCompany */,
+				13B07FAE1A68108700A75B9A /* Jobulus */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
-				00E356EF1AD99517003FC87E /* JobulusCompanyTests */,
+				00E356EF1AD99517003FC87E /* JobulusTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
@@ -156,8 +156,8 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* JobulusCompany.app */,
-				00E356EE1AD99517003FC87E /* JobulusCompanyTests.xctest */,
+				13B07F961A680F5B00A75B9A /* Jobulus.app */,
+				00E356EE1AD99517003FC87E /* JobulusTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -165,28 +165,28 @@
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				3B4392A12AC88292D35C810B /* Pods-JobulusCompany.debug.xcconfig */,
-				5709B34CF0A7D63546082F79 /* Pods-JobulusCompany.release.xcconfig */,
-				5B7EB9410499542E8C5724F5 /* Pods-JobulusCompany-JobulusCompanyTests.debug.xcconfig */,
-				89C6BE57DB24E9ADA2F236DE /* Pods-JobulusCompany-JobulusCompanyTests.release.xcconfig */,
+				3B4392A12AC88292D35C810B /* Pods-Jobulus.debug.xcconfig */,
+				5709B34CF0A7D63546082F79 /* Pods-Jobulus.release.xcconfig */,
+				5B7EB9410499542E8C5724F5 /* Pods-Jobulus-JobulusTests.debug.xcconfig */,
+				89C6BE57DB24E9ADA2F236DE /* Pods-Jobulus-JobulusTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
 		};
-		CC73B3C1592A1FB18885B80E /* JobulusCompanyTests */ = {
+		CC73B3C1592A1FB18885B80E /* JobulusTests */ = {
 			isa = PBXGroup;
 			children = (
 				886E594D73F6290E36B1F979 /* ExpoModulesProvider.swift */,
 			);
-			name = JobulusCompanyTests;
+			name = JobulusTests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		00E356ED1AD99517003FC87E /* JobulusCompanyTests */ = {
+		00E356ED1AD99517003FC87E /* JobulusTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "JobulusCompanyTests" */;
+			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "JobulusTests" */;
 			buildPhases = (
 				A55EABD7B0C7F3A422A6CC61 /* [CP] Check Pods Manifest.lock */,
 				71237F4AA612178131B3EF7D /* [Expo] Configure project */,
@@ -201,14 +201,13 @@
 			dependencies = (
 				00E356F51AD99517003FC87E /* PBXTargetDependency */,
 			);
-			name = JobulusCompanyTests;
-			productName = JobulusCompanyTests;
-			productReference = 00E356EE1AD99517003FC87E /* JobulusCompanyTests.xctest */;
+			name = JobulusTests;
+			productReference = 00E356EE1AD99517003FC87E /* JobulusTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		13B07F861A680F5B00A75B9A /* JobulusCompany */ = {
+		13B07F861A680F5B00A75B9A /* Jobulus */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "JobulusCompany" */;
+			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Jobulus" */;
 			buildPhases = (
 				C38B50BA6285516D6DCD4F65 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
@@ -224,9 +223,9 @@
 			);
 			dependencies = (
 			);
-			name = JobulusCompany;
-			productName = JobulusCompany;
-			productReference = 13B07F961A680F5B00A75B9A /* JobulusCompany.app */;
+			name = Jobulus;
+			productName = Jobulus;
+			productReference = 13B07F961A680F5B00A75B9A /* Jobulus.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -246,7 +245,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "JobulusCompany" */;
+			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "Jobulus" */;
 			compatibilityVersion = "Xcode 12.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -259,8 +258,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				13B07F861A680F5B00A75B9A /* JobulusCompany */,
-				00E356ED1AD99517003FC87E /* JobulusCompanyTests */,
+				13B07F861A680F5B00A75B9A /* Jobulus */,
+				00E356ED1AD99517003FC87E /* JobulusTests */,
 			);
 		};
 /* End PBXProject section */
@@ -308,15 +307,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-JobulusCompany/Pods-JobulusCompany-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Jobulus/Pods-Jobulus-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-JobulusCompany/Pods-JobulusCompany-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Jobulus/Pods-Jobulus-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-JobulusCompany/Pods-JobulusCompany-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Jobulus/Pods-Jobulus-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		2D48014C79F9DE787FA5C6B9 /* [Expo] Configure project */ = {
@@ -336,7 +335,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# This script configures Expo modules and generates the modules provider file.\nbash -l -c \"./Pods/Target\\ Support\\ Files/Pods-JobulusCompany/expo-configure-project.sh\"\n";
+			shellScript = "# This script configures Expo modules and generates the modules provider file.\nbash -l -c \"./Pods/Target\\ Support\\ Files/Pods-Jobulus/expo-configure-project.sh\"\n";
 		};
 		71237F4AA612178131B3EF7D /* [Expo] Configure project */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -355,7 +354,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# This script configures Expo modules and generates the modules provider file.\nbash -l -c \"./Pods/Target\\ Support\\ Files/Pods-JobulusCompany-JobulusCompanyTests/expo-configure-project.sh\"\n";
+			shellScript = "# This script configures Expo modules and generates the modules provider file.\nbash -l -c \"./Pods/Target\\ Support\\ Files/Pods-Jobulus-JobulusTests/expo-configure-project.sh\"\n";
 		};
 		A55EABD7B0C7F3A422A6CC61 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -372,7 +371,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-JobulusCompany-JobulusCompanyTests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-Jobulus-JobulusTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -394,7 +393,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-JobulusCompany-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-Jobulus-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -407,15 +406,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-JobulusCompany-JobulusCompanyTests/Pods-JobulusCompany-JobulusCompanyTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Jobulus-JobulusTests/Pods-Jobulus-JobulusTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-JobulusCompany-JobulusCompanyTests/Pods-JobulusCompany-JobulusCompanyTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Jobulus-JobulusTests/Pods-Jobulus-JobulusTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-JobulusCompany-JobulusCompanyTests/Pods-JobulusCompany-JobulusCompanyTests-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Jobulus-JobulusTests/Pods-Jobulus-JobulusTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		E235C05ADACE081382539298 /* [CP] Copy Pods Resources */ = {
@@ -424,15 +423,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-JobulusCompany/Pods-JobulusCompany-resources-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Jobulus/Pods-Jobulus-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-JobulusCompany/Pods-JobulusCompany-resources-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Jobulus/Pods-Jobulus-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-JobulusCompany/Pods-JobulusCompany-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Jobulus/Pods-Jobulus-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		F6A41C54EA430FDDC6A6ED99 /* [CP] Copy Pods Resources */ = {
@@ -441,15 +440,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-JobulusCompany-JobulusCompanyTests/Pods-JobulusCompany-JobulusCompanyTests-resources-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Jobulus-JobulusTests/Pods-Jobulus-JobulusTests-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-JobulusCompany-JobulusCompanyTests/Pods-JobulusCompany-JobulusCompanyTests-resources-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Jobulus-JobulusTests/Pods-Jobulus-JobulusTests-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-JobulusCompany-JobulusCompanyTests/Pods-JobulusCompany-JobulusCompanyTests-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Jobulus-JobulusTests/Pods-Jobulus-JobulusTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
@@ -478,7 +477,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				00E356F31AD99517003FC87E /* JobulusCompanyTests.m in Sources */,
+				00E356F31AD99517003FC87E /* JobulusTests.m in Sources */,
 				C53E7EDAA9C8748612545EC4 /* ExpoModulesProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -498,7 +497,7 @@
 /* Begin PBXTargetDependency section */
 		00E356F51AD99517003FC87E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 13B07F861A680F5B00A75B9A /* JobulusCompany */;
+			target = 13B07F861A680F5B00A75B9A /* Jobulus */;
 			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -506,14 +505,14 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5B7EB9410499542E8C5724F5 /* Pods-JobulusCompany-JobulusCompanyTests.debug.xcconfig */;
+			baseConfigurationReference = 5B7EB9410499542E8C5724F5 /* Pods-Jobulus-JobulusTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = JobulusCompanyTests/Info.plist;
+				INFOPLIST_FILE = JobulusTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -526,19 +525,19 @@
 					"$(inherited)",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.jubulus.candidate;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/JobulusCompany.app/JobulusCompany";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Jobulus.app/Jobulus";
 			};
 			name = Debug;
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 89C6BE57DB24E9ADA2F236DE /* Pods-JobulusCompany-JobulusCompanyTests.release.xcconfig */;
+			baseConfigurationReference = 89C6BE57DB24E9ADA2F236DE /* Pods-Jobulus-JobulusTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
-				INFOPLIST_FILE = JobulusCompanyTests/Info.plist;
+				INFOPLIST_FILE = JobulusTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -551,22 +550,23 @@
 					"$(inherited)",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.jubulus.candidate;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/JobulusCompany.app/JobulusCompany";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Jobulus.app/Jobulus";
 			};
 			name = Release;
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3B4392A12AC88292D35C810B /* Pods-JobulusCompany.debug.xcconfig */;
+			baseConfigurationReference = 3B4392A12AC88292D35C810B /* Pods-Jobulus.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = R59XWWAK38;
 				ENABLE_BITCODE = NO;
-				INFOPLIST_FILE = JobulusCompany/Info.plist;
+				INFOPLIST_FILE = Jobulus/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Jobulus;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -579,7 +579,7 @@
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
 				"PRODUCT_BUNDLE_IDENTIFIER[sdk=iphoneos*]" = com.jubulus.candidate;
-				PRODUCT_NAME = JobulusCompany;
+				PRODUCT_NAME = Jobulus;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -588,13 +588,14 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5709B34CF0A7D63546082F79 /* Pods-JobulusCompany.release.xcconfig */;
+			baseConfigurationReference = 5709B34CF0A7D63546082F79 /* Pods-Jobulus.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = R59XWWAK38;
-				INFOPLIST_FILE = JobulusCompany/Info.plist;
+				INFOPLIST_FILE = Jobulus/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Jobulus;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -607,7 +608,7 @@
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				"PRODUCT_BUNDLE_IDENTIFIER[sdk=iphoneos*]" = com.jubulus.candidate;
-				PRODUCT_NAME = JobulusCompany;
+				PRODUCT_NAME = Jobulus;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -755,7 +756,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "JobulusCompanyTests" */ = {
+		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "JobulusTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				00E356F61AD99517003FC87E /* Debug */,
@@ -764,7 +765,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "JobulusCompany" */ = {
+		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Jobulus" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
@@ -773,7 +774,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "JobulusCompany" */ = {
+		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "Jobulus" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,

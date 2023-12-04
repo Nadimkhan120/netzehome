@@ -38,7 +38,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Please  your camera permission so that you can update your profile</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string/>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Please your gallary permission so that you can update your profile</string>
 	<key>UILaunchStoryboardName</key>

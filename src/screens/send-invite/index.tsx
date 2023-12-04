@@ -5,14 +5,7 @@ import * as z from 'zod';
 import StepIndicator from '@/components/indicator-2';
 import { ScreenHeader } from '@/components/screen-header';
 import type { Theme } from '@/theme';
-import {
-  Button,
-  ControlledInput,
-  PressableScale,
-  Screen,
-  Text,
-  View,
-} from '@/ui';
+import { Button, ControlledInput, PressableScale, Screen, Text, View } from '@/ui';
 import { loginFromVerifyCode } from '@/store/auth';
 import { useUser } from '@/store/user';
 import { useSendInviteLink } from '@/services/api/auth';
@@ -44,8 +37,7 @@ export const SendInvite = () => {
   });
 
   const user = useUser((state) => state?.user);
-  const { mutate: sendInviteApi, isLoading: isLoadingInvite } =
-    useSendInviteLink();
+  const { mutate: sendInviteApi, isLoading: isLoadingInvite } = useSendInviteLink();
 
   const [selectedInvites, setSelectedInvites] = useState([]);
 
@@ -72,6 +64,7 @@ export const SendInvite = () => {
 
     if (body?.emails?.length === 0) {
       showErrorMessage('Please enter email and select role first');
+      return;
     }
 
     sendInviteApi(body, {

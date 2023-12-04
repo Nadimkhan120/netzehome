@@ -1,11 +1,8 @@
 import React from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import { scale } from 'react-native-size-matters';
-
-import { useTopVacancies } from '@/services/api/vacancies';
 import { useUser } from '@/store/user';
-import { PressableScale, Text, View } from '@/ui';
-
+import { Text, View } from '@/ui';
 import { HomeSliderItem } from './slider-item';
 import { useRefreshOnFocus } from '@/hooks';
 import { ImageButton } from '@/components';
@@ -16,30 +13,22 @@ export const HomeSliderContainer = ({}) => {
   const user = useUser((state) => state?.user);
   const { navigate } = useNavigation();
 
-  const { data, isLoading } = useGetProfile();
+  const { data, isLoading, refetch } = useGetProfile();
 
-  console.log('useGetProfile', JSON.stringify(data, null, 2));
-
-  // useRefreshOnFocus(refetch);
+  useRefreshOnFocus(refetch);
 
   if (isLoading) return;
 
   return (
-    <View
-      backgroundColor={'grey500'}
-      marginBottom={'medium'}
-      paddingTop={'large'}
-    >
+    <View backgroundColor={'grey500'} marginBottom={'medium'} paddingTop={'large'}>
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.container}
       >
-        {[...data?.response?.data, { full_name: 'Add' }]?.map(
-          (element, index) => {
-            return <HomeSliderItem data={element} key={index} />;
-          }
-        )}
+        {[...data?.response?.data, { full_name: 'Add' }]?.map((element, index) => {
+          return <HomeSliderItem data={element} key={index} />;
+        })}
       </ScrollView>
 
       <View

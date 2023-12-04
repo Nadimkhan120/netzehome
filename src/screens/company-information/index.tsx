@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useNavigation } from '@react-navigation/native';
 import { useTheme } from '@shopify/restyle';
@@ -14,11 +14,10 @@ import type { Theme } from '@/theme';
 import { Button, ControlledInput, Screen, Text, View } from '@/ui';
 import { showErrorMessage } from '@/utils';
 import { useUser } from '@/store/user';
-import {
-  useEducationLevels,
-  useExperienceLevels,
-} from '@/services/api/settings';
+import { useEducationLevels, useExperienceLevels } from '@/services/api/settings';
 import SelectionBox from '@/components/drop-down';
+import { SelectOptionButton } from '@/components/select-option-button';
+import { useExperience, setSelectedLocation } from '@/store/experience';
 
 const labels = ['Registration', 'Information', 'Invite'];
 
@@ -50,15 +49,18 @@ export const CompanyInformation = () => {
   useSoftKeyboardEffect();
 
   const user = useUser((state) => state?.user);
+  const selectedLocation = useExperience((state) => state.selectedLocation);
 
   const { mutate: companyInformationApi, isLoading } = useCompanyInformation();
   const { data: experienceLevels } = useExperienceLevels();
   const { data: educationLevels } = useEducationLevels();
 
-  const { handleSubmit, control, formState, setValue } =
+  const { handleSubmit, control, formState, setValue, watch, trigger } =
     useForm<CompanyInformationFormType>({
       resolver: zodResolver(schema),
     });
+
+  const watchLocation = watch('location');
 
   const onSubmit = (data: CompanyInformationFormType) => {
     let body = {
@@ -77,8 +79,8 @@ export const CompanyInformation = () => {
 
     companyInformationApi(
       {
-        city_id: 'Islamabad',
-        country_id: 'Pakistan',
+        city_id: selectedLocation?.city,
+        country_id: selectedLocation?.country,
         job_title_id: data?.title,
         education_level_id: parseInt(data.education),
         experience_level_id: parseInt(data.experience),
@@ -91,11 +93,12 @@ export const CompanyInformation = () => {
         onSuccess: (data: any) => {
           console.log('data', JSON.stringify(data, null, 2));
 
-          // if (data?.response?.status === 200) {
-          //   navigate('SendInvite');
-          // } else {
-          //   showErrorMessage(data?.response?.message);
-          // }
+          if (data?.response?.status === 200) {
+            navigate('SendInvite');
+            setSelectedLocation('');
+          } else {
+            showErrorMessage(data?.response?.message);
+          }
         },
         onError: (error) => {
           // An error happened!
@@ -104,6 +107,13 @@ export const CompanyInformation = () => {
       }
     );
   };
+
+  useEffect(() => {
+    if (selectedLocation) {
+      setValue('location', selectedLocation?.address);
+      trigger('location');
+    }
+  }, [selectedLocation]);
 
   return (
     <Screen backgroundColor={colors.white} edges={['top']}>
@@ -180,19 +190,25 @@ export const CompanyInformation = () => {
               name="skills"
             />
 
-            <ControlledInput
+            <SelectOptionButton
+              label="Location"
+              isSelected={watchLocation ? true : false}
+              selectedText={watchLocation ? watchLocation : 'Choose Location'}
+              icon={'chevron-down'}
+              onPress={() => {
+                navigate('ChooseAuthLocation', { from: 'Register' });
+              }}
+            />
+
+            {/* <ControlledInput
               placeholder="Enter location"
               label="Location"
               control={control}
               name="location"
-            />
+            /> */}
           </View>
           <View height={scale(24)} />
-          <Button
-            label="Next"
-            onPress={handleSubmit(onSubmit)}
-            loading={isLoading}
-          />
+          <Button label="Next" onPress={handleSubmit(onSubmit)} loading={isLoading} />
         </View>
       </ScrollView>
     </Screen>

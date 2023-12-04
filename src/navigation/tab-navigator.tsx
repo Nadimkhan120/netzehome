@@ -46,13 +46,13 @@ export const TabNavigator = () => {
               title: 'Jobs',
             }}
           />
-          <Tab.Screen
+          {/* <Tab.Screen
             name={'AddPost'}
             component={AddPost}
             options={{
               title: 'Post A Job',
             }}
-          />
+          /> */}
           <Tab.Screen
             name={'Candidates'}
             component={Candidates}

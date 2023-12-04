@@ -99,7 +99,7 @@ export type AppStackParamList = {
   MyJobs: undefined;
   MyCompanies: undefined;
   Search: undefined;
-  EditProfile: undefined;
+  EditProfile: { user: any };
   AddProfile: undefined;
   MyJobDetail: undefined;
   ChatList: undefined;
@@ -111,7 +111,7 @@ export type AppStackParamList = {
   ChooseDegree: undefined;
   Notifications: undefined;
   Profile: { id: number };
-  ChooseLocation: undefined;
+  ChooseLocation: { from: any };
   ChooseDegreeField: undefined;
   ChooseSchool: undefined;
 };

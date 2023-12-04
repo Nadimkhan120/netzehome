@@ -1,15 +1,18 @@
 import React from 'react';
-import { ScrollView, StyleSheet, useWindowDimensions } from 'react-native';
+import {
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  useWindowDimensions,
+} from 'react-native';
 import { scale } from 'react-native-size-matters';
 import { icons } from '@/assets/icons';
 import { ScreenHeader } from '@/components/screen-header';
-import { useUser } from '@/store/user';
 import type { Theme } from '@/theme';
 import { PressableScale, Screen, Text, View } from '@/ui';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useTheme } from '@shopify/restyle';
 import { Image } from 'expo-image';
-
 import { Avatar } from '@/components/avatar';
 import { useGetUserProfileDetails } from '@/services/api/home';
 import { useRefreshOnFocus } from '@/hooks';
@@ -20,7 +23,6 @@ const InfoRow = ({ label, onPress, children }) => {
     <View borderBottomColor={'grey500'} paddingVertical={'medium'} borderBottomWidth={1}>
       <View
         flexDirection={'row'}
-        //  paddingVertical={'medium'}
         alignItems={'center'}
         justifyContent={'space-between'}
         paddingHorizontal={'large'}
@@ -54,21 +56,23 @@ export const Profile = () => {
     },
   });
 
-  console.log('==data==', JSON.stringify(data, null, 2));
-
   useRefreshOnFocus(refetch);
 
   const profileData = data?.response?.data;
 
+  console.log('profileData', JSON.stringify(profileData, null, 2));
+
   return (
     <Screen backgroundColor={colors.white} edges={['top']}>
-      <ScreenHeader title={'Rifaat Sarkar'} showBorder={true} />
+      <ScreenHeader title={profileData?.full_name} showBorder={true} />
 
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View height={scale(119)}>
           <Image
-            source={icons['back-cover']}
+            source={{ uri: profileData?.cover_pic }}
             style={{ height: scale(119), width: width }}
+            transition={1000}
+            placeholder={`https://fakeimg.pl/${width}x200/cccccc/cccccc`}
           />
           <View
             alignSelf={'flex-start'}
@@ -79,11 +83,25 @@ export const Profile = () => {
               bottom: -scale(28),
             }}
           >
-            <Avatar source={icons['avatar-2']} size="large" />
+            <Avatar
+              source={{ uri: profileData?.profile_pic }}
+              transition={1000}
+              placeholder={'https://fakeimg.pl/400x400/cccccc/cccccc'}
+              size="large"
+            />
           </View>
         </View>
 
         <View height={scale(19)} />
+
+        <TouchableOpacity
+          style={styles.editButton}
+          onPress={() =>
+            navigate('EditProfile', { user: { unique_id: profileData?.unique_id } })
+          }
+        >
+          <Image source={icons['pencl']} style={styles.editImage} contentFit="contain" />
+        </TouchableOpacity>
 
         <View paddingHorizontal={'large'} paddingVertical={'large'}>
           <Text variant={'semiBold20'} textTransform={'capitalize'} color={'black'}>
@@ -134,12 +152,12 @@ export const Profile = () => {
             </View>
           </InfoRow>
 
-          <InfoRow
+          {/* <InfoRow
             label={'Education'}
             onPress={() => {
               navigate('AddEducation', { id: route?.params?.id });
             }}
-          ></InfoRow>
+          ></InfoRow> */}
           <InfoRow
             label={'Skills'}
             onPress={() => {
@@ -178,5 +196,15 @@ export const Profile = () => {
 const styles = StyleSheet.create({
   scrollContainer: {
     paddingBottom: scale(160),
+  },
+  editButton: {
+    alignItems: 'flex-end',
+    position: 'absolute',
+    right: scale(16),
+    top: scale(130),
+  },
+  editImage: {
+    height: scale(24),
+    width: scale(24),
   },
 });

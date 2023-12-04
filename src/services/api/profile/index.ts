@@ -2,6 +2,7 @@ import type { AxiosError } from 'axios';
 import { createMutation } from 'react-query-kit';
 
 import { NetWorkService } from '@/services/apinetworkservice';
+import { getAuthToken } from '@/store/auth';
 
 type UpdateSkills = { unique_id: number; skills: number[] };
 type UpdateExperience = {
@@ -18,11 +19,7 @@ type UpdateExperience = {
   company_description: string;
 };
 
-type UpdateProfile = {
-  file: any;
-  id: any;
-  type: string;
-};
+type UpdateProfile = any;
 
 type Response = any;
 
@@ -52,12 +49,17 @@ export const useUpdateExperience = createMutation<Response, UpdateExperience, Ax
 
 export const useUpdatePicture = createMutation<Response, UpdateProfile, AxiosError>({
   mutationFn: async (variables) => {
+    const token = getAuthToken();
+
+    let headers = {
+      'Content-Type': 'multipart/form-data',
+      authorization: 'Bearer ' + token ?? '',
+    };
+
     return NetWorkService.Post({
-      transformRequest: (data) => {
-        return data;
-      },
       url: 'applicant/profiles/update/file',
       body: variables,
+      headers: headers,
       // @ts-ignore
     }).then((response) => response?.data);
   },

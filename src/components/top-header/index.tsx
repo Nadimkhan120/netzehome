@@ -12,7 +12,7 @@ import { useUser } from '@/store/user';
 export const TopHeader = () => {
   const { navigate } = useNavigation();
 
-  const user = useUser((state) => state?.user);
+  const user = useUser((state) => state?.profile);
 
   return (
     <View
@@ -24,14 +24,19 @@ export const TopHeader = () => {
       paddingHorizontal={'large'}
     >
       <View flexDirection={'row'} alignItems={'center'}>
-        <Avatar source={icons['avatar-3']} onPress={openDrawer} />
+        <Avatar
+          source={{ uri: user?.profile_pic }}
+          transition={1000}
+          placeholder={'https://fakeimg.pl/400x400/cccccc/cccccc'}
+          onPress={openDrawer}
+        />
 
         <View flex={1} marginHorizontal={'medium'}>
-          <Text>Rifat Sarkar 👋</Text>
+          <Text>{user?.full_name} 👋</Text>
         </View>
 
         <View flexDirection={'row'} alignItems={'center'} gap={'small'}>
-          <PressableScale onPress={() => navigate('Search')}>
+          {/* <PressableScale onPress={() => navigate('Search')}>
             <View>
               <Image
                 source={icons['search']}
@@ -39,7 +44,7 @@ export const TopHeader = () => {
                 contentFit="contain"
               />
             </View>
-          </PressableScale>
+          </PressableScale> */}
           <PressableScale onPress={() => navigate('ChatList')}>
             <View>
               <Image

@@ -9,14 +9,7 @@ import { ScreenHeader } from '@/components/screen-header';
 import { useSoftKeyboardEffect } from '@/hooks';
 import { useRegisterCompany } from '@/services/api/auth/register-company';
 import type { Theme } from '@/theme';
-import {
-  Button,
-  ControlledInput,
-  PressableScale,
-  Screen,
-  Text,
-  View,
-} from '@/ui';
+import { Button, ControlledInput, PressableScale, Screen, Text, View } from '@/ui';
 import { showErrorMessage } from '@/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useNavigation } from '@react-navigation/native';
@@ -77,9 +70,7 @@ export const Register = () => {
               password: data?.password,
             });
           } else {
-            showErrorMessage(
-              responseData?.response?.message ?? 'Something went wrong'
-            );
+            showErrorMessage(responseData?.response?.message ?? 'Something went wrong');
           }
         },
         onError: (error) => {
@@ -130,11 +121,7 @@ export const Register = () => {
           />
         </View>
         <View height={scale(24)} />
-        <Button
-          label="Register"
-          onPress={handleSubmit(onSubmit)}
-          loading={isLoading}
-        />
+        <Button label="Register" onPress={handleSubmit(onSubmit)} loading={isLoading} />
 
         <Image
           source={icons.continue}
@@ -155,7 +142,9 @@ export const Register = () => {
         </View>
 
         {/* <View paddingVertical={'2xl'} alignSelf={'center'}>
-          <PressableScale onPress={() => navigate('RegisterOptions')}>
+          <PressableScale
+            onPress={() => navigate('ChooseAuthLocation', { from: 'Register' })}
+          >
             <Text variant={'regular14'} color={'grey200'}>
               Haven't an account?{' '}
               <Text variant={'semiBold14'} color={'primary'}>

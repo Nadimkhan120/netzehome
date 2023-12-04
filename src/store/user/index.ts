@@ -1,7 +1,7 @@
-import { MMKV } from "react-native-mmkv";
-import { create } from "zustand";
-import type { StateStorage } from "zustand/middleware";
-import { createJSONStorage, persist } from "zustand/middleware";
+import { MMKV } from 'react-native-mmkv';
+import { create } from 'zustand';
+import type { StateStorage } from 'zustand/middleware';
+import { createJSONStorage, persist } from 'zustand/middleware';
 const storage = new MMKV();
 
 const zustandStorage: StateStorage = {
@@ -34,7 +34,7 @@ type User = {
   person_bio: string | null;
   is_block: string | null;
   email: string;
-  phone: string | "";
+  phone: string | '';
   is_current: string;
   company_name: string | null;
   company_short_description: string | null;
@@ -95,11 +95,13 @@ interface UserState {
   removeUserData: () => void;
   setUserWithProfile: (data: any) => void;
   setUserCompanyWithRoles: (data: any) => void;
+  setProfilePic: (data: any) => void;
+  setCoverPic: (data: any) => void;
 }
 
 export const useUser = create<UserState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       profile: null,
       user: null,
       company: null,
@@ -126,6 +128,24 @@ export const useUser = create<UserState>()(
           user: data?.user,
         });
       },
+      setProfilePic: (data: any) => {
+        console.log('data', data);
+
+        set({
+          profile: {
+            ...get().profile,
+            profile_pic: data,
+          },
+        });
+      },
+      setCoverPic: (data: any) => {
+        set({
+          profile: {
+            ...get().profile,
+            cover_pic: data,
+          },
+        });
+      },
       setUserCompanyWithRoles: (data: any) => {
         set({
           company: data?.company,
@@ -133,7 +153,7 @@ export const useUser = create<UserState>()(
       },
     }),
     {
-      name: "user-storage", // name of item in the storage (must be unique)
+      name: 'user-storage', // name of item in the storage (must be unique)
       storage: createJSONStorage(() => zustandStorage), // (optional) by default the 'localStorage' is used
     }
   )
@@ -157,4 +177,14 @@ export const setUserCompanyWithRoles = (data: any) => {
 // set user data
 export const removeUserData = () => {
   return useUser.getState().removeUserData();
+};
+
+// set user data
+export const setProfilePic = (data) => {
+  return useUser.getState().setProfilePic(data);
+};
+
+// set user data
+export const setCoverPic = (data) => {
+  return useUser.getState().setCoverPic(data);
 };

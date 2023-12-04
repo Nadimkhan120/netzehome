@@ -1,12 +1,13 @@
-import type { AxiosError } from "axios";
-import { createMutation, createQuery } from "react-query-kit";
+import type { AxiosError } from 'axios';
+import { createMutation, createQuery } from 'react-query-kit';
 
-import { NetWorkService } from "@/services/apinetworkservice";
+import { NetWorkService } from '@/services/apinetworkservice';
 
 type Variables = { status: string; id: number };
 type TopVariables = { id: number };
 type JobVariables = { id: number };
 type SearchVariable = { id: number; keyword: string };
+type ApplyJob = { unique_id: any; job_id: number; person_id: number };
 
 type FilterVariable = {
   id: number;
@@ -26,15 +27,15 @@ export type Job = {
   company_member_since: string;
   experience_level: string;
   job_level: string | null;
-  job_type: "Software Engineer";
-  job_category: "App developer";
-  job_address_1: "";
-  job_address_2: "";
-  web_location: "";
-  latitude: "0.0000000";
-  longitude: "0.0000000";
-  city_name: "islamabad";
-  country_name: "pakistan";
+  job_type: 'Software Engineer';
+  job_category: 'App developer';
+  job_address_1: '';
+  job_address_2: '';
+  web_location: '';
+  latitude: '0.0000000';
+  longitude: '0.0000000';
+  city_name: 'islamabad';
+  country_name: 'pakistan';
   image_type: null;
   file_name: string | null;
   file_description: string | null;
@@ -113,8 +114,10 @@ type DeleteResponse = {
   };
 };
 
+type ApplyJobResponse = any;
+
 export const useVacancies = createQuery<Response, Variables, AxiosError>({
-  primaryKey: "company-jobs",
+  primaryKey: 'company-jobs',
   queryFn: ({ queryKey: [primaryKey, variables] }) => {
     return NetWorkService.Get({
       url: `${primaryKey}/company_id/${variables?.id}/status/${variables?.status}`,
@@ -124,7 +127,7 @@ export const useVacancies = createQuery<Response, Variables, AxiosError>({
 });
 
 export const useTopVacancies = createQuery<Response4, TopVariables, AxiosError>({
-  primaryKey: "company-top-jobs",
+  primaryKey: 'company-top-jobs',
   queryFn: ({ queryKey: [primaryKey, variables] }) => {
     return NetWorkService.Get({
       url: `${primaryKey}/company_id/${variables?.id}`,
@@ -134,7 +137,7 @@ export const useTopVacancies = createQuery<Response4, TopVariables, AxiosError>(
 });
 
 export const useJobStatuses = createQuery<Response2, Variables, AxiosError>({
-  primaryKey: "job-statuses",
+  primaryKey: 'job-statuses',
   queryFn: ({ queryKey: [primaryKey] }) => {
     //@ts-ignore
     return NetWorkService.Get({ url: primaryKey }).then(
@@ -145,7 +148,7 @@ export const useJobStatuses = createQuery<Response2, Variables, AxiosError>({
 });
 
 export const useJobDetail = createQuery<Response3, JobVariables, AxiosError>({
-  primaryKey: "jobs/job_id",
+  primaryKey: 'jobs/job_id',
   queryFn: ({ queryKey: [primaryKey, variables] }) => {
     return NetWorkService.Get({
       url: `${primaryKey}/${variables?.id}`,
@@ -155,7 +158,7 @@ export const useJobDetail = createQuery<Response3, JobVariables, AxiosError>({
 });
 
 export const useSearchVacancies = createQuery<Response3, SearchVariable, AxiosError>({
-  primaryKey: "find-jobs",
+  primaryKey: 'find-jobs',
   queryFn: ({ queryKey: [primaryKey, variables] }) => {
     return NetWorkService.Get({
       url: `${primaryKey}?keyword=${variables.keyword}&company_id=${variables?.id}`,
@@ -165,7 +168,7 @@ export const useSearchVacancies = createQuery<Response3, SearchVariable, AxiosEr
 });
 
 export const useFilterVacancies = createQuery<Response3, FilterVariable, AxiosError>({
-  primaryKey: "find-jobs",
+  primaryKey: 'find-jobs',
   queryFn: ({ queryKey: [primaryKey, variables] }) => {
     return NetWorkService.Get({
       url: `${primaryKey}?company_id=${variables?.id}&date_posted=${variables?.date_posted}&job_status=${variables?.job_status}&job_type_id=${variables?.job_type_id}&job_category_id=${variables?.job_category_id}`,
@@ -179,6 +182,15 @@ export const useDeleteVacancy = createMutation<DeleteResponse, TopVariables, Axi
     NetWorkService.Delete({
       url: `companies/job/delete/${variables?.id}`,
       body: {},
+      // @ts-ignore
+    }).then((response) => response?.data),
+});
+
+export const useApplyJob = createMutation<ApplyJobResponse, ApplyJob, AxiosError>({
+  mutationFn: async (variables) =>
+    NetWorkService.Post({
+      url: `job/apply`,
+      body: variables,
       // @ts-ignore
     }).then((response) => response?.data),
 });

@@ -3,7 +3,6 @@ import { StyleSheet } from 'react-native';
 import { scale } from 'react-native-size-matters';
 import { useNavigation } from '@react-navigation/native';
 import { Image } from 'expo-image';
-import { icons } from '@/assets/icons';
 import { PressableScale, Text, View } from '@/ui';
 
 type ExperienceItemProps = {
@@ -24,7 +23,7 @@ export const ExperienceItem = ({ data, onStartPress }: ExperienceItemProps) => {
         <View>
           <Image
             source={{ uri: 'https://fakeimg.pl/400x400/cccccc/cccccc' }}
-            placeholder={{ uri: 'https://fakeimg.pl/400x400/cccccc/cccccc' }}
+            placeholder={'https://fakeimg.pl/400x400/cccccc/cccccc'}
             transition={1000}
             style={{
               height: scale(72),
@@ -37,16 +36,26 @@ export const ExperienceItem = ({ data, onStartPress }: ExperienceItemProps) => {
           <Text textTransform={'capitalize'} variant={'medium16'} color={'black'}>
             {data?.job_title}
           </Text>
-          <View flexDirection={'row'} alignItems={'center'}>
+          <View paddingTop={'xSmall'} flexDirection={'row'} alignItems={'center'}>
             <Text textTransform={'capitalize'} variant={'medium12'} color={'grey100'}>
               {data?.location}
             </Text>
           </View>
-          <View flexDirection={'row'} alignItems={'center'}>
+          <View paddingTop={'xSmall'} flexDirection={'row'} alignItems={'center'}>
             <Text textTransform={'capitalize'} variant={'medium12'} color={'grey100'}>
               {data?.from_date}- {data?.is_current === '1' ? 'Present' : data?.to_date}
             </Text>
           </View>
+          {/* <View>
+            <Text
+              paddingTop={'xSmall'}
+              textTransform={'capitalize'}
+              variant={'medium12'}
+              color={'grey100'}
+            >
+              {data?.company_description}
+            </Text>
+          </View> */}
         </View>
       </View>
     </PressableScale>

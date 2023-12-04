@@ -1,4 +1,4 @@
-package com.jobuluscompany;
+package com.jubulus.candidate;
 import expo.modules.ReactActivityDelegateWrapper;
 
 import com.facebook.react.ReactActivity;
@@ -22,7 +22,7 @@ public class MainActivity extends ReactActivity {
    */
   @Override
   protected String getMainComponentName() {
-    return "JobulusCompany";
+    return "Jobulus";
   }
 
   /**
