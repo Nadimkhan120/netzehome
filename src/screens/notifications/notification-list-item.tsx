@@ -1,12 +1,19 @@
-import { icons } from '@/assets/icons';
-import { Avatar } from '@/components/avatar';
-import { PressableScale, Text, View } from '@/ui';
-import { Image } from 'expo-image';
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import { scale } from 'react-native-size-matters';
+import { icons } from '@/assets/icons';
+import { Notification } from '@/services/api/notification';
+import { PressableScale, Text, View } from '@/ui';
+import { timeAgo } from '@/utils';
+import { Image } from 'expo-image';
 
-const NotificationListItem = () => {
+type NotificationListItemProps = {
+  item: Notification;
+};
+
+const NotificationListItem = ({ item }: NotificationListItemProps) => {
+  const time = timeAgo(new Date(item?.created_at));
+
   return (
     <PressableScale onPress={null}>
       <View
@@ -27,6 +34,7 @@ const NotificationListItem = () => {
         >
           <Image
             transition={1000}
+            //@ts-ignore
             source={icons.zapier}
             contentFit="contain"
             style={style.image}
@@ -39,9 +47,9 @@ const NotificationListItem = () => {
             justifyContent={'space-between'}
             paddingTop={'tiny'}
           >
-            <View gap={'small'}>
-              <Text variant={'medium14'} color={'black'}>
-                Gojek Indonesia
+            <View gap={'small'} flex={1}>
+              <Text variant={'medium14'} flex={1} color={'black'}>
+                {item?.notification_name}
               </Text>
               <Text
                 variant={'regular13'}
@@ -49,13 +57,13 @@ const NotificationListItem = () => {
                 marginVertical={'tiny'}
                 color={'grey200'}
               >
-                Posted new design jobs
+                {item?.mobile_text}
               </Text>
             </View>
 
-            <View alignItems={'flex-end'} gap={'tiny'}>
+            <View>
               <Text variant={'regular12'} color={'grey300'}>
-                Just Now
+                {time}
               </Text>
             </View>
           </View>

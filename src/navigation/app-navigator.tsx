@@ -103,7 +103,6 @@ export type AppStackParamList = {
   AddProfile: undefined;
   MyJobDetail: undefined;
   ChatList: undefined;
-  Chats: undefined;
   AddEducation: { id: any };
   AddExperience: { id: any };
   ChooseCompany: undefined;
@@ -114,6 +113,7 @@ export type AppStackParamList = {
   ChooseLocation: { from: any };
   ChooseDegreeField: undefined;
   ChooseSchool: undefined;
+  Chats: { person_id?: any; chat_id: any; profile_pic: any; name: any };
 };
 
 const Stack = createNativeStackNavigator<AppStackParamList>();

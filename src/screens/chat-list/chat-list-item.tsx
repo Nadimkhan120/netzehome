@@ -4,12 +4,37 @@ import { scale } from 'react-native-size-matters';
 import { Avatar } from '@/components/avatar';
 import { PressableScale, Text, View } from '@/ui';
 import { useNavigation } from '@react-navigation/native';
+import { ChatListItems } from '@/services/api/chats';
+import { timeAgo } from '@/utils';
+import { useUser } from '@/store/user';
 
-const ChatListItem = () => {
+type ChatListItemProps = {
+  item: ChatListItems;
+};
+
+const ChatListItem = ({ item }: ChatListItemProps) => {
   const { navigate } = useNavigation();
 
+  const myUser = useUser((state) => state?.user);
+  const time = item?.lastMessage ? timeAgo(new Date(item?.lastMessage?.created_at)) : '';
+
+  const checkUser = `${myUser?.id}` === item?.person_id;
+
   return (
-    <PressableScale onPress={() => navigate('Chats')}>
+    <PressableScale
+      onPress={() =>
+        navigate('Chats', {
+          person_id: checkUser ? item?.Reciever_Detail?.id : item?.Person_Detail?.id,
+          chat_id: item?.lastMessage?.chat_id,
+          profile_pic: checkUser
+            ? item?.Reciever_Detail?.profile_pic
+            : item?.Person_Detail?.profile_pic,
+          name: checkUser
+            ? item?.Reciever_Detail?.full_name
+            : item?.Person_Detail?.full_name,
+        })
+      }
+    >
       <View
         flexDirection={'row'}
         paddingHorizontal={'large'}
@@ -21,7 +46,11 @@ const ChatListItem = () => {
         <View>
           <Avatar
             transition={1000}
-            source={{ uri: 'https://fakeimg.pl/400x400/cccccc/cccccc' }}
+            source={
+              checkUser
+                ? item?.Reciever_Detail?.profile_pic
+                : item?.Person_Detail?.profile_pic
+            }
             placeholder={{ uri: 'https://fakeimg.pl/400x400/cccccc/cccccc' }}
           />
         </View>
@@ -35,7 +64,9 @@ const ChatListItem = () => {
           >
             <View gap={'small'}>
               <Text variant={'medium14'} color={'black'}>
-                Wade Warren
+                {checkUser
+                  ? item?.Reciever_Detail?.full_name
+                  : item?.Person_Detail?.full_name}
               </Text>
               <Text
                 variant={'regular13'}
@@ -43,21 +74,22 @@ const ChatListItem = () => {
                 marginVertical={'tiny'}
                 color={'grey100'}
               >
-                Do you agree with the salary?{' '}
+                {item?.lastMessage?.message}{' '}
               </Text>
             </View>
 
             <View alignItems={'flex-end'} gap={'tiny'}>
               <Text variant={'regular12'} color={'black'}>
-                Just Now
+                {time}
               </Text>
-              <PressableScale onPress={() => null}>
+
+              {item?.unreadMessages !== 0 ? (
                 <View style={style.count} backgroundColor={'danger'}>
                   <Text color={'white'} variant={'medium12'}>
-                    1
+                    {item?.unreadMessages}
                   </Text>
                 </View>
-              </PressableScale>
+              ) : null}
             </View>
           </View>
         </View>

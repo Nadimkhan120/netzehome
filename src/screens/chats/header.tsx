@@ -13,14 +13,10 @@ type HeaderProps = {
   title?: string;
   showBorder?: boolean;
   onRightPress: () => void;
+  data: any;
 };
 
-export const Header = ({
-  icon,
-  title,
-  showBorder,
-  onRightPress,
-}: HeaderProps) => {
+export const Header = ({ icon, showBorder, onRightPress, data }: HeaderProps) => {
   const { goBack } = useNavigation();
 
   return (
@@ -42,14 +38,15 @@ export const Header = ({
           />
         </PressableScale>
 
-        <View
-          paddingLeft={'medium'}
-          flexDirection={'row'}
-          alignItems={'center'}
-        >
-          <Avatar source={icons['avatar-3']} size="small" />
+        <View paddingLeft={'medium'} flexDirection={'row'} alignItems={'center'}>
+          <Avatar
+            transition={1000}
+            source={data?.profilePic}
+            placeholder={{ uri: 'https://fakeimg.pl/400x400/cccccc/cccccc' }}
+            size="small"
+          />
           <Text variant={'medium17'} color={'grey100'} paddingLeft={'large'}>
-            {title}
+            {data?.name}
           </Text>
         </View>
       </View>

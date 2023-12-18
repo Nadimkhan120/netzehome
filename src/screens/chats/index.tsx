@@ -21,6 +21,18 @@ import { Chat, MessageType } from '@flyerhq/react-native-chat-ui';
 import { AvoidSoftInput } from 'react-native-avoid-softinput';
 import { icons } from '@/assets/icons';
 import { SelectModalItem } from '@/components/select-modal-item';
+import { useRoute } from '@react-navigation/native';
+import {
+  useSendChatMessage,
+  useChatLists,
+  useGetChatMessages,
+  usePersonOnline,
+} from '@/services/api/chats';
+import { showErrorMessage } from '@/utils';
+import { queryClient } from '@/services/api/api-provider';
+import { useRefreshOnFocus } from '@/hooks';
+import ActivityIndicator from '@/components/activity-indicator';
+import { NetWorkService } from '@/services/apinetworkservice';
 
 // For the testing purposes, you should probably use https://github.com/uuidjs/uuid
 const uuidv4 = () => {
@@ -39,13 +51,41 @@ const employees = [
 
 export const Chats = () => {
   const { colors } = useTheme<Theme>();
+  const route = useRoute<any>();
 
   const [messages, setMessages] = useState<MessageType.Any[]>([]);
   const [message, setMessage] = useState<string>('');
 
-  const user = { id: '06c33e8b-e835-4736-80f4-63f44b66666c' };
-
   const company = useUser((state) => state?.company);
+  const myUser = useUser((state) => state?.user);
+  const {
+    data: chatMessage,
+    isLoading,
+    refetch,
+  } = useGetChatMessages({
+    variables: {
+      chat_id: route?.params?.chat_id,
+    },
+    enabled: route?.params?.chat_id ? true : false,
+    //  refetchInterval: 5000,
+  });
+
+  const { data: onlineData } = usePersonOnline({
+    variables: {
+      person_id: myUser?.id,
+    },
+  });
+
+  const { mutate: sendMessage, isLoading: sendingMessage } = useSendChatMessage();
+
+  const user = { id: `${myUser?.id}` };
+
+  useRefreshOnFocus(refetch);
+
+  const chatHeaderData = {
+    name: route?.params?.name,
+    profilePic: route?.params?.profile_pic,
+  };
 
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   // variables
@@ -61,6 +101,25 @@ export const Chats = () => {
     bottomSheetModalRef.current?.dismiss();
   }, []);
 
+  useEffect(() => {
+    if (chatMessage?.messages?.length) {
+      let makeMessage = chatMessage?.messages?.map((item, index) => {
+        return {
+          author: {
+            id: item?.person_id,
+          },
+          createdAt: item?.created_at,
+          id: `${item?.id}`,
+          text: item?.message,
+          type: 'text',
+        };
+      });
+
+      //@ts-ignore
+      setMessages(makeMessage);
+    }
+  }, [chatMessage]);
+
   const addMessage = (message: MessageType.Any) => {
     setMessages([message, ...messages]);
   };
@@ -73,7 +132,31 @@ export const Chats = () => {
       text: message,
       type: 'text',
     };
+
     addMessage(textMessage);
+
+    const body = {
+      person_id: myUser?.id,
+      receiver_id: route?.params?.person_id,
+      message: message,
+      chat_id: route?.params?.chat_id ?? 0,
+    };
+
+    sendMessage(body, {
+      onSuccess: (data) => {
+        console.log('data', data);
+        if (data?.message?.chat_id) {
+          queryClient.invalidateQueries(useChatLists.getKey());
+        } else {
+          showErrorMessage(data?.response?.message);
+        }
+      },
+      onError: (error) => {
+        console.log('error', error?.response);
+        // An error happened!
+      },
+    });
+
     setMessage('');
   };
 
@@ -88,6 +171,13 @@ export const Chats = () => {
     AvoidSoftInput.setHideAnimationDuration(300);
     AvoidSoftInput.setShowAnimationDelay(100);
     AvoidSoftInput.setShowAnimationDuration(800);
+
+    return () => {
+      NetWorkService.Get({ url: `company/offline/${myUser?.id}` }).then((response) => {
+        //@ts-ignore
+        console.log('going offline', response?.data);
+      });
+    };
   }, []);
 
   const renderItem = useCallback(({ item }: any) => {
@@ -115,7 +205,7 @@ export const Chats = () => {
       <View
         style={{
           backgroundColor:
-            user.id !== message.author.id ? '#ffffff' : colors.primary,
+            user.id !== message.author.id ? colors.grey500 : colors.primary,
           borderBottomLeftRadius: 10,
           borderBottomRightRadius: 10,
           borderTopLeftRadius: 10,
@@ -140,11 +230,7 @@ export const Chats = () => {
         marginHorizontal={'large'}
       >
         <PressableScale>
-          <Image
-            source={icons['voice']}
-            style={styles.icon}
-            contentFit="contain"
-          />
+          <Image source={icons['voice']} style={styles.icon} contentFit="contain" />
         </PressableScale>
         <View flex={1}>
           <TextInput
@@ -158,11 +244,7 @@ export const Chats = () => {
           />
         </View>
         <PressableScale>
-          <Image
-            source={icons['chat-plus']}
-            style={styles.icon}
-            contentFit="contain"
-          />
+          <Image source={icons['chat-plus']} style={styles.icon} contentFit="contain" />
         </PressableScale>
         <PressableScale onPress={() => handleSendPress(message)}>
           <Image
@@ -178,18 +260,33 @@ export const Chats = () => {
     );
   };
 
+  const RenderLoader = () => {
+    return (
+      <View flex={1} justifyContent={'center'} alignItems={'center'}>
+        <ActivityIndicator size={'large'} />
+      </View>
+    );
+  };
+
   return (
     <Screen backgroundColor={colors.white}>
-      <Header title="Users" onRightPress={handlePresentModalPress} />
+      <Header onRightPress={handlePresentModalPress} data={chatHeaderData} />
 
-      <View flex={1} backgroundColor={'grey500'}>
-        <Chat
-          messages={messages}
-          renderBubble={renderBubble}
-          user={user}
-          customBottomComponent={renderBottomComponent}
-        />
-      </View>
+      {isLoading ? (
+        <RenderLoader />
+      ) : (
+        <View flex={1} backgroundColor={'grey500'}>
+          <Chat
+            messages={messages}
+            renderBubble={renderBubble}
+            user={{ id: `${myUser?.id}` }}
+            customBottomComponent={renderBottomComponent}
+            onSendPress={function (message: MessageType.PartialText): void {
+              //throw new Error("Function not implemented.");
+            }}
+          />
+        </View>
+      )}
 
       <BottomModal
         ref={bottomSheetModalRef}

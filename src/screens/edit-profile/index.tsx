@@ -61,6 +61,10 @@ export const EditProfile = () => {
 
   const [image, setImage] = useState(null);
   const [picTyp, setPicType] = useState(null);
+  const [cameraPermissionStatus, requestCameraPermission] =
+    ImagePicker.useCameraPermissions();
+  const [galleryPermission, requestGallaryPermission] =
+    ImagePicker.useMediaLibraryPermissions();
 
   const { data, isLoading, refetch } = useGetUserProfileDetails({
     variables: {
@@ -97,8 +101,15 @@ export const EditProfile = () => {
     return;
   };
 
+  useEffect(() => {}, []);
+
   useEffect(() => {
-    //setValue('bio', data?.short_description);
+    if (!cameraPermissionStatus?.granted) {
+      requestCameraPermission();
+    }
+    if (!galleryPermission?.granted) {
+      requestGallaryPermission();
+    }
   }, []);
 
   const updateProfilePicApiCall = ({
