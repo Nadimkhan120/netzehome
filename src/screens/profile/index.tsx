@@ -97,7 +97,9 @@ export const Profile = () => {
         <TouchableOpacity
           style={styles.editButton}
           onPress={() =>
-            navigate('EditProfile', { user: { unique_id: profileData?.unique_id } })
+            navigate('EditProfile', {
+              user: { unique_id: profileData?.unique_id, ...profileData },
+            })
           }
         >
           <Image source={icons['pencl']} style={styles.editImage} contentFit="contain" />

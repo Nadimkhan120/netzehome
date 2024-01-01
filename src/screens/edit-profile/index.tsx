@@ -29,6 +29,9 @@ import { useGetUserProfileDetails, useGetProfile } from '@/services/api/home';
 import { useUpdatePicture } from '@/services/api/profile';
 import * as mime from 'react-native-mime-types';
 import Loader from '@/components/loader';
+import { useUpdateCandidateProfile } from '@/services/api/candidate';
+import { useExperience, setSelectedLocation } from '@/store/experience';
+import { SelectOptionButton } from '@/components/select-option-button';
 
 const schema = z.object({
   name: z.string({
@@ -39,8 +42,12 @@ const schema = z.object({
       required_error: 'Email is required',
     })
     .email('Invalid email format'),
+  jobTitle: z.string({
+    required_error: 'Job title is required',
+  }),
+
   cover: z.string({
-    required_error: 'Cover Letter is required',
+    required_error: 'Bio is required',
   }),
   location: z.string().optional(),
   salary: z.string().optional(),
@@ -51,10 +58,11 @@ export type EditProfileFormType = z.infer<typeof schema>;
 
 export const EditProfile = () => {
   const { colors } = useTheme<Theme>();
-  const { goBack } = useNavigation();
+  const { goBack, navigate } = useNavigation();
   const route = useRoute<any>();
   const { width } = useWindowDimensions();
   const user = useUser((state) => state.profile);
+  const selectedLocation = useExperience((state) => state.selectedLocation);
 
   useSoftKeyboardEffect();
   const { showActionSheetWithOptions } = useActionSheet();
@@ -74,34 +82,70 @@ export const EditProfile = () => {
 
   useRefreshOnFocus(refetch);
 
+  const { mutate: updateProfile, isLoading: updating } = useUpdateCandidateProfile();
+
   const profileData = data?.response?.data;
 
-  const { handleSubmit, control, setValue } = useForm<EditProfileFormType>({
-    resolver: zodResolver(schema),
-    // defaultValues: {
-    //   companyName: data?.name,
-    //   email: data?.email,
-    //   phone: data?.location?.phone,
-    //   website: data?.location?.website,
-    //   bio: data?.short_description,
-    //   employees: data?.no_of_employees,
-    //   wage: data?.average_wage,
-    //   address: data?.location?.address_1,
-    //   city: data?.location?.city_name,
-    //   country: data?.location?.country_name,
-    //   facebook: data?.facebook_link,
-    //   instgram: data?.instagram_link,
-    //   whatsapp: data?.twitter_link,
-    // },
-  });
+  console.log('route', JSON.stringify(route, null, 2));
+
+  const profile = route?.params?.user;
+
+  const { handleSubmit, control, setValue, watch, trigger } =
+    useForm<EditProfileFormType>({
+      resolver: zodResolver(schema),
+      defaultValues: {
+        name: profile?.full_name,
+        email: profile?.contact?.email,
+        jobTitle: profile?.job_titles,
+        cover: profile?.resume_bio ? profile?.resume_bio : '',
+        location: profile?.contact?.google_location,
+        salary: profile?.expected_salary,
+      },
+    });
 
   const { mutate: updateProfilePic, isLoading: savingPic } = useUpdatePicture();
 
-  const onSubmit = (data: EditProfileFormType) => {
-    return;
-  };
+  const watchLocation = watch('location');
 
-  useEffect(() => {}, []);
+  const onSubmit = (data: EditProfileFormType) => {
+    const body: any = {
+      email: data?.email,
+      full_name: data?.name,
+      job_title_id: data?.jobTitle,
+      expected_salary: data?.salary,
+      resume_bio: data?.cover,
+      unique_id: profile?.unique_id,
+      location_id: data?.location,
+      experience_level_id: '0',
+      education_level_id: '0',
+    };
+
+    if (selectedLocation) {
+      body.city_id = selectedLocation?.city;
+    }
+    if (selectedLocation) {
+      body.country_id = selectedLocation?.country;
+    }
+
+    console.log('body', JSON.stringify(body, null, 2));
+
+    updateProfile(body, {
+      onSuccess: (responseData) => {
+        if (responseData?.status === 200) {
+          showSuccessMessage(responseData?.message ?? '');
+          queryClient.invalidateQueries(useGetProfile.getKey());
+          setSelectedLocation('');
+          goBack();
+        } else {
+          showErrorMessage(responseData?.message ?? '');
+        }
+      },
+      onError: (error) => {
+        //@ts-ignore
+        showErrorMessage(error?.response?.data?.message ?? '');
+      },
+    });
+  };
 
   useEffect(() => {
     if (!cameraPermissionStatus?.granted) {
@@ -111,6 +155,13 @@ export const EditProfile = () => {
       requestGallaryPermission();
     }
   }, []);
+
+  useEffect(() => {
+    if (selectedLocation) {
+      setValue('location', selectedLocation?.address);
+      trigger('location');
+    }
+  }, [selectedLocation]);
 
   const updateProfilePicApiCall = ({
     asset,
@@ -292,8 +343,6 @@ export const EditProfile = () => {
           </View>
         </View>
 
-        {/* <View height={scale(44)} /> */}
-
         <View paddingTop={'large'} paddingHorizontal={'large'} rowGap={'small'}>
           <ControlledInput
             placeholder="Enter  name"
@@ -306,7 +355,7 @@ export const EditProfile = () => {
             placeholder="Enter job tilte"
             label="Job Title"
             control={control}
-            name="email"
+            name="jobTitle"
           />
 
           <ControlledInput
@@ -315,12 +364,12 @@ export const EditProfile = () => {
             control={control}
             name="salary"
           />
-          <ControlledInput
+          {/* <ControlledInput
             placeholder="e.g Urdu, English"
             label="Languages"
             control={control}
             name="languages"
-          />
+          /> */}
 
           <ControlledInput
             placeholder="Enter email"
@@ -329,23 +378,26 @@ export const EditProfile = () => {
             name="email"
           />
 
-          <ControlledInput
-            placeholder="Enter location."
+          <SelectOptionButton
             label="Location"
-            control={control}
-            name="location"
+            isSelected={watchLocation ? true : false}
+            selectedText={watchLocation ? watchLocation : 'Choose Location'}
+            icon={'chevron-down'}
+            onPress={() => {
+              navigate('ChooseLocation', { from: 'Profile' });
+            }}
           />
 
-          <DescriptionField
+          <ControlledInput
             placeholder="Write here"
-            label="Cover Letter"
+            label="Bio"
             control={control}
             name="cover"
           />
         </View>
         <View height={scale(24)} />
         <View flex={1} justifyContent={'flex-end'} paddingHorizontal={'large'}>
-          <Button label="Update" onPress={handleSubmit(onSubmit)} loading={isLoading} />
+          <Button label="Update" onPress={handleSubmit(onSubmit)} loading={updating} />
         </View>
       </ScrollView>
 

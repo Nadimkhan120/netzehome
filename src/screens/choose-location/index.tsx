@@ -38,8 +38,11 @@ export const ChooseLocation = () => {
       <View flex={1} paddingHorizontal={'large'} backgroundColor={'grey500'}>
         <View height={10} />
         <GooglePlacesAutocomplete
-          placeholder="Search"
+          placeholder="Search here"
           fetchDetails={true}
+          textInputProps={{
+            placeholderTextColor: 'black',
+          }}
           onPress={(data, details = null) => {
             // 'details' is provided when fetchDetails = true
 
@@ -102,7 +105,9 @@ export const ChooseLocation = () => {
               height: 0.5,
               backgroundColor: '#c8c7cc',
             },
-            description: {},
+            description: {
+              color: 'black',
+            },
             loader: {
               flexDirection: 'row',
               justifyContent: 'flex-end',

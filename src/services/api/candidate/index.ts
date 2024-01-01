@@ -8,6 +8,18 @@ type Variables2 = { person_id: number };
 type VariablesVoid = void;
 type SaveCandidate = { candidate_id: number; person_id: number };
 
+type UpdateCandidatePaylaod = {
+  job_title_id: any;
+  expected_salary: any;
+  unique_id?: string;
+  location_id: string;
+  resume_bio: string;
+  full_name: string;
+  email: string;
+  city_id?: string;
+  country_id?: string;
+};
+
 type AddContactCandidate = {
   emails: number;
   person_id: number;
@@ -289,7 +301,11 @@ export const useSaveCandidate = createMutation<Response3, SaveCandidate, AxiosEr
     }).then((response) => response?.data),
 });
 
-export const useUnsaveSaveCandidate = createMutation<Response3, SaveCandidate, AxiosError>({
+export const useUnsaveSaveCandidate = createMutation<
+  Response3,
+  SaveCandidate,
+  AxiosError
+>({
   mutationFn: async (variables) =>
     NetWorkService.Post({
       url: 'candidate/unsave',
@@ -301,7 +317,11 @@ export const useUnsaveSaveCandidate = createMutation<Response3, SaveCandidate, A
     }).then((response) => response?.data),
 });
 
-export const useAddContactCandidate = createMutation<Response3, AddContactCandidate, AxiosError>({
+export const useAddContactCandidate = createMutation<
+  Response3,
+  AddContactCandidate,
+  AxiosError
+>({
   mutationFn: async (variables) =>
     NetWorkService.Post({
       url: 'applicant/add-contact-candidate',
@@ -310,6 +330,32 @@ export const useAddContactCandidate = createMutation<Response3, AddContactCandid
         person_id: variables?.person_id,
         company_id: variables?.company_id,
       },
+      // @ts-ignore
+    }).then((response) => response?.data),
+});
+
+export const useCreateCandidateProfile = createMutation<
+  Response3,
+  UpdateCandidatePaylaod,
+  AxiosError
+>({
+  mutationFn: async (variables) =>
+    NetWorkService.Post({
+      url: 'applicant/profiles/create',
+      body: variables,
+      // @ts-ignore
+    }).then((response) => response?.data),
+});
+
+export const useUpdateCandidateProfile = createMutation<
+  Response3,
+  UpdateCandidatePaylaod,
+  AxiosError
+>({
+  mutationFn: async (variables) =>
+    NetWorkService.Post({
+      url: 'person/update-basic-info',
+      body: variables,
       // @ts-ignore
     }).then((response) => response?.data),
 });

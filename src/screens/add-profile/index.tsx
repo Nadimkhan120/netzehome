@@ -1,6 +1,12 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { ScrollView, StyleSheet, useWindowDimensions } from 'react-native';
+import {
+  Platform,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  useWindowDimensions,
+} from 'react-native';
 import { scale } from 'react-native-size-matters';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -9,19 +15,23 @@ import { useTheme } from '@shopify/restyle';
 import { Image } from 'expo-image';
 import { icons } from '@/assets/icons';
 import { ScreenHeader } from '@/components/screen-header';
-import { useSoftKeyboardEffect } from '@/hooks';
+import { useRefreshOnFocus, useSoftKeyboardEffect } from '@/hooks';
 import { queryClient } from '@/services/api/api-provider';
-import {
-  useCompanies,
-  useEditCompany,
-  useGetCompanyDetails,
-} from '@/services/api/company';
-import { useUser } from '@/store/user';
+import { setProfilePic, useUser } from '@/store/user';
 import type { Theme } from '@/theme';
-import { Button, ControlledInput, Screen, View } from '@/ui';
+import { Button, ControlledInput, Screen, View, Text } from '@/ui';
 import { DescriptionField } from '@/ui/description-field';
 import { showErrorMessage, showSuccessMessage } from '@/utils';
 import { Avatar } from '@/components/avatar';
+import { useActionSheet } from '@expo/react-native-action-sheet';
+import * as ImagePicker from 'expo-image-picker';
+import { useGetUserProfileDetails, useGetProfile } from '@/services/api/home';
+import { useUpdatePicture } from '@/services/api/profile';
+import * as mime from 'react-native-mime-types';
+import Loader from '@/components/loader';
+import { useCreateCandidateProfile } from '@/services/api/candidate';
+import { useExperience, setSelectedLocation } from '@/store/experience';
+import { SelectOptionButton } from '@/components/select-option-button';
 
 const schema = z.object({
   name: z.string({
@@ -32,8 +42,12 @@ const schema = z.object({
       required_error: 'Email is required',
     })
     .email('Invalid email format'),
+  jobTitle: z.string({
+    required_error: 'Job title is required',
+  }),
+
   cover: z.string({
-    required_error: 'Cover Letter is required',
+    required_error: 'Bio is required',
   }),
   location: z.string().optional(),
   salary: z.string().optional(),
@@ -44,117 +58,279 @@ export type AddProfileFormType = z.infer<typeof schema>;
 
 export const AddProfile = () => {
   const { colors } = useTheme<Theme>();
-  const { goBack } = useNavigation();
+  const { goBack, navigate } = useNavigation();
   const route = useRoute<any>();
   const { width } = useWindowDimensions();
-  const { navigate } = useNavigation();
+  const user = useUser((state) => state.profile);
+  const selectedLocation = useExperience((state) => state.selectedLocation);
 
   useSoftKeyboardEffect();
+  const { showActionSheetWithOptions } = useActionSheet();
 
-  const company = useUser((state) => state?.company);
+  const [image, setImage] = useState(null);
+  const [picTyp, setPicType] = useState(null);
+  const [cameraPermissionStatus, requestCameraPermission] =
+    ImagePicker.useCameraPermissions();
+  const [galleryPermission, requestGallaryPermission] =
+    ImagePicker.useMediaLibraryPermissions();
 
-  const { mutate: editCompanyApi, isLoading } = useEditCompany();
-
-  const data = route?.params?.data;
-
-  const { handleSubmit, control, setValue } = useForm<AddProfileFormType>({
-    resolver: zodResolver(schema),
-    // defaultValues: {
-    //   companyName: data?.name,
-    //   email: data?.email,
-    //   phone: data?.location?.phone,
-    //   website: data?.location?.website,
-    //   bio: data?.short_description,
-    //   employees: data?.no_of_employees,
-    //   wage: data?.average_wage,
-    //   address: data?.location?.address_1,
-    //   city: data?.location?.city_name,
-    //   country: data?.location?.country_name,
-    //   facebook: data?.facebook_link,
-    //   instgram: data?.instagram_link,
-    //   whatsapp: data?.twitter_link,
-    // },
+  const { data, isLoading, refetch } = useGetUserProfileDetails({
+    variables: {
+      id: route?.params?.user?.unique_id,
+    },
   });
 
+  useRefreshOnFocus(refetch);
+
+  const { mutate: createProfile, isLoading: creating } = useCreateCandidateProfile();
+
+  const { handleSubmit, control, setValue, watch, trigger } = useForm<AddProfileFormType>(
+    {
+      resolver: zodResolver(schema),
+    }
+  );
+
+  const { mutate: updateProfilePic, isLoading: savingPic } = useUpdatePicture();
+
+  const watchLocation = watch('location');
+
   const onSubmit = (data: AddProfileFormType) => {
-    return;
-    editCompanyApi(
-      {
-        name: data?.companyName,
-        email: data?.email,
-        contact_number: data?.phone,
-        no_of_employees: parseInt(data?.employees),
-        start_time: '9 am',
-        end_time: '6 pm',
-        average_wage: parseInt(data?.wage),
-        languages: [1, 2],
-        categories: [1, 2],
-        company_id: company?.id,
-        short_description: data?.bio,
-        facebook_link: data?.facebook,
-        instagram_link: data?.instgram,
-        twitter_link: data?.whatsapp,
-        locations: {
-          address_1: data?.address,
-          address_2: '',
-          city_id: '1',
-          country_id: '1',
-          phone: data?.phone,
-          email: data?.email,
-          website: data?.website,
-          web_location: '',
-          longitude: '0.00000',
-          latitude: '0.0000',
-          google_location: data?.location,
-        },
+    const body: any = {
+      email: data?.email,
+      full_name: data?.name,
+      job_title_id: data?.jobTitle,
+      expected_salary: data?.salary,
+      resume_bio: data?.cover,
+      // unique_id: profile?.unique_id,
+      location_id: data?.location,
+      experience_level_id: '0',
+      education_level_id: '0',
+    };
+
+    if (selectedLocation) {
+      body.city_id = selectedLocation?.city;
+    }
+    if (selectedLocation) {
+      body.country_id = selectedLocation?.country;
+    }
+
+    console.log('body', JSON.stringify(body, null, 2));
+
+    createProfile(body, {
+      onSuccess: (responseData) => {
+        console.log('body', JSON.stringify(responseData, null, 2));
+        if (responseData?.response?.status === 200) {
+          showSuccessMessage(responseData?.response?.message ?? '');
+          queryClient.invalidateQueries(useGetProfile.getKey());
+          setSelectedLocation('');
+          goBack();
+        } else {
+          showErrorMessage(responseData?.response?.message ?? '');
+        }
       },
-      {
-        onSuccess: (responseData) => {
-          if (responseData?.status === 200) {
-            showSuccessMessage(responseData?.message ?? '');
-            queryClient.invalidateQueries(useCompanies.getKey());
-            queryClient.invalidateQueries(useGetCompanyDetails.getKey());
-            goBack();
-          } else {
-            showErrorMessage(responseData?.message ?? '');
+      onError: (error) => {
+        //@ts-ignore
+        showErrorMessage(error?.response?.data?.message ?? '');
+      },
+    });
+  };
+
+  useEffect(() => {
+    if (!cameraPermissionStatus?.granted) {
+      requestCameraPermission();
+    }
+    if (!galleryPermission?.granted) {
+      requestGallaryPermission();
+    }
+  }, []);
+
+  useEffect(() => {
+    if (selectedLocation) {
+      setValue('location', selectedLocation?.address);
+      trigger('location');
+    }
+  }, [selectedLocation]);
+
+  const updateProfilePicApiCall = ({
+    asset,
+    picType,
+  }: {
+    asset: any;
+    picType: 'pic' | 'cover';
+  }) => {
+    const data = new FormData();
+
+    let fileName;
+    if (asset.fileName === null) {
+      const uriParts = asset.uri.split('/');
+      fileName = uriParts[uriParts.length - 1];
+    } else {
+      fileName = asset.fileName;
+    }
+
+    data.append('file', {
+      name: fileName,
+      type: mime.lookup(asset?.uri?.replace('file://', '')),
+      uri: Platform.OS === 'ios' ? asset?.uri?.replace('file://', '') : asset?.uri,
+    });
+
+    data?.append('id', route?.params?.user?.unique_id);
+    data?.append('type', picType);
+
+    updateProfilePic(data, {
+      onSuccess: (response) => {
+        console.log('response', response);
+
+        if (response?.response?.status === 200) {
+          queryClient.invalidateQueries(useGetProfile.getKey());
+          if (user?.unique_id === route?.params?.user?.unique_id) {
+            setProfilePic(response?.response?.path);
           }
-        },
-        onError: (error) => {
-          //@ts-ignore
-          showErrorMessage(error?.response?.data?.message ?? '');
-        },
+          // goBack();
+          showSuccessMessage('Experience Updated successfully');
+        } else {
+        }
+      },
+      onError: (error) => {
+        // An error happened!
+        // @ts-ignore
+        console.log(`error`, error);
+      },
+    });
+  };
+
+  const pickImage = async (picType) => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: picType === 'cover' ? [4, 2] : [4, 4],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+      setPicType(picType);
+      const asset = result?.assets[0];
+      updateProfilePicApiCall({ asset, picType });
+    }
+  };
+
+  const takeImage = async (picType) => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchCameraAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+      setPicType(picType);
+      const asset = result?.assets[0];
+      updateProfilePicApiCall({ asset, picType });
+    }
+  };
+
+  const takeProfilePic = ({ picType }: { picType: 'pic' | 'cover' }) => {
+    const options = ['Gallery', 'Camera', 'Cancel'];
+    const destructiveButtonIndex = 2;
+    const cancelButtonIndex = 2;
+
+    showActionSheetWithOptions(
+      {
+        options,
+        cancelButtonIndex,
+        destructiveButtonIndex,
+      },
+      (selectedIndex: number) => {
+        switch (selectedIndex) {
+          case 0:
+            // Save
+            pickImage(picType);
+            break;
+          case 1:
+            // Save
+            takeImage(picType);
+            break;
+          case destructiveButtonIndex:
+            // Delete
+            break;
+
+          case cancelButtonIndex:
+          // Canceled
+        }
       }
     );
   };
 
-  useEffect(() => {
-    //setValue('bio', data?.short_description);
-  }, []);
-
   return (
     <Screen backgroundColor={colors.white} edges={['top']}>
-      <ScreenHeader title="Edit Profile" showBorder={true} icon="close" />
+      <ScreenHeader title="Create Profile" showBorder={true} icon="close" />
 
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <View height={scale(119)}>
-          <Image
-            source={icons['back-cover']}
-            style={{ height: scale(119), width: width }}
-          />
+        <View>
+          <View>
+            <Image
+              cachePolicy="memory-disk"
+              ///source={picTyp === 'cover' ? image : profileData?.cover_pic}
+              style={{ height: scale(119), width: width }}
+              transition={1000}
+              placeholder={`https://fakeimg.pl/${width}x400/cccccc/cccccc`}
+            />
+
+            <View position={'absolute'} right={16} top={16}>
+              <TouchableOpacity>
+                <View
+                  height={scale(24)}
+                  justifyContent={'center'}
+                  alignItems={'center'}
+                  width={scale(24)}
+                  backgroundColor={'white'}
+                  borderRadius={scale(12)}
+                >
+                  <Image
+                    source={icons['camera']}
+                    style={{ height: scale(16), width: scale(16) }}
+                  />
+                </View>
+              </TouchableOpacity>
+            </View>
+          </View>
+
           <View
-            alignSelf={'flex-start'}
-            position={'absolute'}
-            // bottom={0}
             marginLeft={'large'}
             style={{
-              bottom: -scale(28),
+              marginTop: -28,
             }}
           >
-            <Avatar source={icons['avatar-2']} size="large" />
+            <View alignSelf={'baseline'}>
+              <Avatar
+                cachePolicy="none"
+                //  source={picTyp === 'pic' ? image : profileData?.profile_pic}
+                size="large"
+                transition={1000}
+                placeholder={'https://fakeimg.pl/400x400/cccccc/cccccc'}
+              />
+              <View position={'absolute'} right={0} top={0}>
+                <TouchableOpacity>
+                  <View
+                    height={scale(24)}
+                    justifyContent={'center'}
+                    alignItems={'center'}
+                    width={scale(24)}
+                    backgroundColor={'white'}
+                    borderRadius={scale(12)}
+                  >
+                    <Image
+                      source={icons['camera']}
+                      style={{ height: scale(16), width: scale(16) }}
+                    />
+                  </View>
+                </TouchableOpacity>
+              </View>
+            </View>
           </View>
         </View>
-
-        <View height={scale(44)} />
 
         <View paddingTop={'large'} paddingHorizontal={'large'} rowGap={'small'}>
           <ControlledInput
@@ -168,7 +344,7 @@ export const AddProfile = () => {
             placeholder="Enter job tilte"
             label="Job Title"
             control={control}
-            name="email"
+            name="jobTitle"
           />
 
           <ControlledInput
@@ -176,12 +352,6 @@ export const AddProfile = () => {
             label="Expected Salary"
             control={control}
             name="salary"
-          />
-          <ControlledInput
-            placeholder="e.g Urdu, English"
-            label="Languages"
-            control={control}
-            name="languages"
           />
 
           <ControlledInput
@@ -191,31 +361,30 @@ export const AddProfile = () => {
             name="email"
           />
 
-          <ControlledInput
-            placeholder="Enter location."
+          <SelectOptionButton
             label="Location"
-            control={control}
-            name="location"
+            isSelected={watchLocation ? true : false}
+            selectedText={watchLocation ? watchLocation : 'Choose Location'}
+            icon={'chevron-down'}
+            onPress={() => {
+              navigate('ChooseLocation', { from: 'Profile' });
+            }}
           />
 
           <DescriptionField
             placeholder="Write here"
-            label="Cover Letter"
+            label="Bio"
             control={control}
             name="cover"
           />
         </View>
         <View height={scale(24)} />
         <View flex={1} justifyContent={'flex-end'} paddingHorizontal={'large'}>
-          <Button
-            label="Save Profile"
-            onPress={() => {
-              navigate('Profile');
-            }}
-            loading={isLoading}
-          />
+          <Button label="Create" onPress={handleSubmit(onSubmit)} loading={creating} />
         </View>
       </ScrollView>
+
+      <Loader isVisible={savingPic} />
     </Screen>
   );
 };

@@ -1,13 +1,13 @@
-import { useTheme } from "@shopify/restyle";
-import { Image } from "expo-image";
-import * as React from "react";
-import type { TextInput, TextInputProps } from "react-native";
-import { StyleSheet, TextInput as NTextInput } from "react-native";
-import { scale } from "react-native-size-matters";
+import { useTheme } from '@shopify/restyle';
+import { Image } from 'expo-image';
+import * as React from 'react';
+import type { TextInput, TextInputProps } from 'react-native';
+import { StyleSheet, TextInput as NTextInput } from 'react-native';
+import { scale } from 'react-native-size-matters';
 
-import { icons } from "@/assets/icons";
-import { palette, type Theme } from "@/theme";
-import { PressableScale, Text, View } from "@/ui";
+import { icons } from '@/assets/icons';
+import { palette, type Theme } from '@/theme';
+import { PressableScale, Text, View } from '@/ui';
 
 export interface NInputProps extends TextInputProps {
   label?: string;
@@ -36,19 +36,19 @@ export const TextField = React.forwardRef<TextInput, NInputProps>((props, ref) =
   return (
     <View>
       {label && (
-        <Text paddingVertical={"small"} variant="medium14" color={"black"}>
+        <Text paddingVertical={'small'} variant="medium14" color={'black'}>
           {label}
         </Text>
       )}
       <View
-        flexDirection={"row"}
-        alignItems={"center"}
+        flexDirection={'row'}
+        alignItems={'center'}
         borderRadius={scale(8)}
         height={scale(49)}
-        paddingHorizontal={"medium"}
-        borderColor={error ? "error" : isFocussed ? "black" : "grey500"}
+        paddingHorizontal={'medium'}
+        borderColor={error ? 'error' : isFocussed ? 'black' : 'grey500'}
         borderWidth={1}
-        backgroundColor={isFocussed ? "white" : "grey500"}
+        backgroundColor={isFocussed ? 'white' : 'grey500'}
       >
         <NTextInput
           testID="STextInput"
@@ -63,7 +63,7 @@ export const TextField = React.forwardRef<TextInput, NInputProps>((props, ref) =
         {isSecure ? (
           <PressableScale onPress={togglePassword}>
             <Image
-              source={showPassword ? icons.eye : icons["eye-closed"]}
+              source={showPassword ? icons['eye-closed'] : icons.eye}
               style={styles.icon}
               contentFit="contain"
             />
@@ -72,7 +72,7 @@ export const TextField = React.forwardRef<TextInput, NInputProps>((props, ref) =
         {icon && icon}
       </View>
       {error && (
-        <Text paddingTop={"small"} variant="regular14" color={"error"}>
+        <Text paddingTop={'small'} variant="regular14" color={'error'}>
           {error}
         </Text>
       )}

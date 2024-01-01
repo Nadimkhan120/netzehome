@@ -526,7 +526,7 @@
 					"$(inherited)",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
-				PRODUCT_BUNDLE_IDENTIFIER = com.jubulus.candidate-app;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.jubulus.candidate-app";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Jobulus.app/Jobulus";
 			};
@@ -551,7 +551,7 @@
 					"$(inherited)",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
-				PRODUCT_BUNDLE_IDENTIFIER = com.jubulus.candidate-app;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.jubulus.candidate-app";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Jobulus.app/Jobulus";
 			};
@@ -565,7 +565,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 4Y34VJ367J;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Jobulus/Info.plist;
@@ -581,8 +581,8 @@
 					"-lc++",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
-				PRODUCT_BUNDLE_IDENTIFIER = com.jubulus.candidate-app;
-				"PRODUCT_BUNDLE_IDENTIFIER[sdk=iphoneos*]" = com.jubulus.candidate-app;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.jubulus.candidate-app";
+				"PRODUCT_BUNDLE_IDENTIFIER[sdk=iphoneos*]" = "com.jubulus.candidate-app";
 				PRODUCT_NAME = Jobulus;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -599,7 +599,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 4Y34VJ367J;
 				INFOPLIST_FILE = Jobulus/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Jobulus;
@@ -614,8 +614,8 @@
 					"-lc++",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
-				PRODUCT_BUNDLE_IDENTIFIER = com.jubulus.candidate-app;
-				"PRODUCT_BUNDLE_IDENTIFIER[sdk=iphoneos*]" = com.jubulus.candidate-app;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.jubulus.candidate-app";
+				"PRODUCT_BUNDLE_IDENTIFIER[sdk=iphoneos*]" = "com.jubulus.candidate-app";
 				PRODUCT_NAME = Jobulus;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
