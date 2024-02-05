@@ -208,8 +208,6 @@ export const Search = () => {
                   data={item}
                   showStars={false}
                   onItemPress={(payload) => {
-                    console.log('payload', payload);
-
                     let dataToStore = {
                       job_titles: payload?.job_titles,
                       id: payload?.id,
