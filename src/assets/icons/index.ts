@@ -80,6 +80,9 @@ export const icons = {
   'chat-plus': require('../images/chat-plus.png'),
   link: require('../images/link.png'),
   camera: require('../images/camera.png'),
+  briefcase: require('../images/briefcase.png'),
+  'person-outline': require('../images/person-outline.png'),
+  'person-filled': require('../images/person-fill.png'),
 };
 
 export type IconTypes = keyof typeof icons;

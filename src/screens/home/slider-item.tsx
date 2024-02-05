@@ -44,11 +44,14 @@ export const HomeSliderItem = ({ data }: HomeSliderItemProps) => {
         marginRight={'medium'}
         borderRadius={scale(8)}
         padding={'large'}
-        backgroundColor={'black'}
+        //backgroundColor={'black'}
         height={scale(160)}
         width={scale(300)}
         justifyContent={'center'}
         alignItems={'center'}
+        style={{
+          backgroundColor: '#1B1F29',
+        }}
       >
         <View position={'absolute'} left={scale(16)} top={scale(16)}>
           <PressableScale>

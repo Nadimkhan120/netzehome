@@ -9,15 +9,35 @@ import { PressableScale, Text, View } from '@/ui';
 type PersonItemProps = {
   data?: any;
   onStartPress?: (data: any) => void;
+  showStars?: boolean;
+  onItemPress?: (data: any) => void;
 };
 
-export const PersonItem = ({ data, onStartPress }: PersonItemProps) => {
+function getColorByIndex(index) {
+  const colors = ['rgba(247, 40, 40, 0.1)', '#DEFCFE', 'rgba(0, 160, 76, 0.1)'];
+
+  // Check if the index is within the valid range
+  if (index >= 0 && index < colors.length) {
+    return colors[index];
+  } else {
+    //console.error('Invalid index provided');
+    return colors[0];
+  }
+}
+
+export const PersonItem = ({
+  data,
+  onStartPress,
+  showStars = true,
+  onItemPress,
+}: PersonItemProps) => {
   const navigation = useNavigation();
 
   return (
     <PressableScale
       onPress={() => {
         navigation?.navigate('NewJobDetails', { id: data?.id });
+        onItemPress?.(data);
       }}
     >
       <View flexDirection={'row'} marginBottom={'large'} paddingHorizontal={'large'}>
@@ -46,26 +66,29 @@ export const PersonItem = ({ data, onStartPress }: PersonItemProps) => {
             </Text>
           </View>
 
-          {/* <View
+          <View
             flexDirection={'row'}
             gap={'medium'}
             alignItems={'center'}
             paddingTop={'small'}
             flexWrap={'wrap'}
           >
-            {data?.skillls[0] && data?.skillls[0]?.skill?.includes('[')
+            {data?.skills && data?.skills?.length === 0
               ? null
-              : data?.skillls?.map((item, index) => {
+              : data?.skills?.map((item, index) => {
                   return (
                     <View
                       key={index}
-                      backgroundColor={'grey500'}
+                      //backgroundColor={'grey500'}
                       borderRadius={scale(4)}
                       height={scale(31)}
                       paddingHorizontal={'medium'}
                       justifyContent={'center'}
                       alignItems={'center'}
                       flexDirection={'row'}
+                      style={{
+                        backgroundColor: getColorByIndex(index),
+                      }}
                     >
                       <Text variant={'regular13'} color={'grey100'}>
                         {item?.skill}
@@ -73,16 +96,18 @@ export const PersonItem = ({ data, onStartPress }: PersonItemProps) => {
                     </View>
                   );
                 })}
-          </View> */}
+          </View>
         </View>
 
-        <PressableScale onPress={() => onStartPress?.(data)}>
-          <Image
-            source={data?.isSaved === 0 ? icons['star'] : icons['star-fill']}
-            contentFit="contain"
-            style={styles.image}
-          />
-        </PressableScale>
+        {showStars ? (
+          <PressableScale onPress={() => onStartPress?.(data)}>
+            <Image
+              source={data?.isSaved === 0 ? icons['star'] : icons['star-fill']}
+              contentFit="contain"
+              style={styles.image}
+            />
+          </PressableScale>
+        ) : null}
       </View>
     </PressableScale>
   );

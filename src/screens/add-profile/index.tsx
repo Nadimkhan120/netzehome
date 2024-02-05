@@ -68,7 +68,12 @@ export const AddProfile = () => {
   const { showActionSheetWithOptions } = useActionSheet();
 
   const [image, setImage] = useState(null);
+  const [apiImage, setApiImage] = useState(null);
   const [picTyp, setPicType] = useState(null);
+
+  const [coverImage, setCoverImage] = useState(null);
+  const [apiCover, setApiCover] = useState(null);
+
   const [cameraPermissionStatus, requestCameraPermission] =
     ImagePicker.useCameraPermissions();
   const [galleryPermission, requestGallaryPermission] =
@@ -105,6 +110,8 @@ export const AddProfile = () => {
       location_id: data?.location,
       experience_level_id: '0',
       education_level_id: '0',
+      pic: apiImage,
+      cover: apiCover,
     };
 
     if (selectedLocation) {
@@ -113,8 +120,6 @@ export const AddProfile = () => {
     if (selectedLocation) {
       body.country_id = selectedLocation?.country;
     }
-
-    console.log('body', JSON.stringify(body, null, 2));
 
     createProfile(body, {
       onSuccess: (responseData) => {
@@ -161,12 +166,14 @@ export const AddProfile = () => {
     const data = new FormData();
 
     let fileName;
-    if (asset.fileName === null) {
-      const uriParts = asset.uri.split('/');
-      fileName = uriParts[uriParts.length - 1];
-    } else {
-      fileName = asset.fileName;
-    }
+    const uriParts = asset.uri.split('/');
+    fileName = uriParts[uriParts.length - 1];
+    // if (asset.fileName === null) {
+    //   const uriParts = asset.uri.split('/');
+    //   fileName = uriParts[uriParts.length - 1];
+    // } else {
+    //   fileName = asset.fileName;
+    // }
 
     data.append('file', {
       name: fileName,
@@ -174,7 +181,7 @@ export const AddProfile = () => {
       uri: Platform.OS === 'ios' ? asset?.uri?.replace('file://', '') : asset?.uri,
     });
 
-    data?.append('id', route?.params?.user?.unique_id);
+    //data?.append('id', route?.params?.user?.unique_id);
     data?.append('type', picType);
 
     updateProfilePic(data, {
@@ -182,12 +189,18 @@ export const AddProfile = () => {
         console.log('response', response);
 
         if (response?.response?.status === 200) {
-          queryClient.invalidateQueries(useGetProfile.getKey());
-          if (user?.unique_id === route?.params?.user?.unique_id) {
-            setProfilePic(response?.response?.path);
+          if (picType === 'pic') {
+            setApiImage(response?.response?.filename);
+          } else {
+            setApiCover(response?.response?.filename);
           }
+
+          // queryClient.invalidateQueries(useGetProfile.getKey());
+          // if (user?.unique_id === route?.params?.user?.unique_id) {
+          //   setProfilePic(response?.response?.path);
+          // }
           // goBack();
-          showSuccessMessage('Experience Updated successfully');
+          // showSuccessMessage('Profile created successfully');
         } else {
         }
       },
@@ -209,8 +222,18 @@ export const AddProfile = () => {
     });
 
     if (!result.canceled) {
-      setImage(result.assets[0].uri);
-      setPicType(picType);
+      // setImage(result.assets[0].uri);
+
+      console.log({ picType });
+
+      if (picType === 'pic') {
+        setImage(result.assets[0].uri);
+      }
+
+      if (picType === 'cover') {
+        setCoverImage(result.assets[0].uri);
+      }
+
       const asset = result?.assets[0];
       updateProfilePicApiCall({ asset, picType });
     }
@@ -224,8 +247,14 @@ export const AddProfile = () => {
     });
 
     if (!result.canceled) {
-      setImage(result.assets[0].uri);
-      setPicType(picType);
+      if (picTyp === 'pic') {
+        setImage(result.assets[0].uri);
+      }
+
+      if (picTyp === 'cover') {
+        setCoverImage(result.assets[0].uri);
+      }
+
       const asset = result?.assets[0];
       updateProfilePicApiCall({ asset, picType });
     }
@@ -271,15 +300,18 @@ export const AddProfile = () => {
         <View>
           <View>
             <Image
-              cachePolicy="memory-disk"
-              ///source={picTyp === 'cover' ? image : profileData?.cover_pic}
+              // cachePolicy="memory-disk"
+              // source={'https://fakeimg.pl/400x400/cccccc/cccccc'}
+              source={
+                coverImage ? coverImage : 'https://fakeimg.pl/400x400/cccccc/cccccc'
+              }
               style={{ height: scale(119), width: width }}
               transition={1000}
               placeholder={`https://fakeimg.pl/${width}x400/cccccc/cccccc`}
             />
 
             <View position={'absolute'} right={16} top={16}>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => takeProfilePic({ picType: 'cover' })}>
                 <View
                   height={scale(24)}
                   justifyContent={'center'}
@@ -306,13 +338,13 @@ export const AddProfile = () => {
             <View alignSelf={'baseline'}>
               <Avatar
                 cachePolicy="none"
-                //  source={picTyp === 'pic' ? image : profileData?.profile_pic}
+                source={image ? image : 'https://fakeimg.pl/400x400/F0ECEC/F0ECEC'}
                 size="large"
                 transition={1000}
-                placeholder={'https://fakeimg.pl/400x400/cccccc/cccccc'}
+                placeholder={'https://fakeimg.pl/400x400/F0ECEC/F0ECEC'}
               />
               <View position={'absolute'} right={0} top={0}>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => takeProfilePic({ picType: 'pic' })}>
                   <View
                     height={scale(24)}
                     justifyContent={'center'}

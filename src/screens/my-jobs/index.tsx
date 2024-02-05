@@ -3,7 +3,11 @@ import { StyleSheet, Alert, useWindowDimensions } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { scale } from 'react-native-size-matters';
 import type { BottomSheetModal } from '@gorhom/bottom-sheet';
-import { BottomSheetFlatList, BottomSheetFooter, BottomSheetView } from '@gorhom/bottom-sheet';
+import {
+  BottomSheetFlatList,
+  BottomSheetFooter,
+  BottomSheetView,
+} from '@gorhom/bottom-sheet';
 import { useTheme } from '@shopify/restyle';
 import ActivityIndicator from '@/components/activity-indicator';
 import { BottomModal } from '@/components/bottom-modal';
@@ -56,7 +60,13 @@ const renderScene = SceneMap({
   second: SecondRoute,
 });
 
-const renderLabel = ({ focused, route }: { focused: boolean; route: { title: string } }) => {
+const renderLabel = ({
+  focused,
+  route,
+}: {
+  focused: boolean;
+  route: { title: string };
+}) => {
   return (
     <Text
       color={focused ? 'primary' : 'grey300'}
@@ -121,13 +131,13 @@ export const MyJobs = () => {
     },
   });
 
-  const { data: seachData } = useSearchVacancies({
-    enabled: debouncedSearch?.length ? true : false,
-    variables: {
-      id: company?.id,
-      keyword: debouncedSearch,
-    },
-  });
+  // const { data: seachData } = useSearchVacancies({
+  //   enabled: debouncedSearch?.length ? true : false,
+  //   variables: {
+  //     id: company?.id,
+  //     keyword: debouncedSearch,
+  //   },
+  // });
 
   const { data: filteredVacancies } = useFilterVacancies({
     enabled: showFilter,
@@ -227,7 +237,10 @@ export const MyJobs = () => {
                       { id: selectedVacancy?.id },
                       {
                         onSuccess: (data) => {
-                          console.log('data?.response?.data', JSON.stringify(data, null, 2));
+                          console.log(
+                            'data?.response?.data',
+                            JSON.stringify(data, null, 2)
+                          );
 
                           if (data?.response?.status === 200) {
                             queryClient.invalidateQueries(useVacancies.getKey());

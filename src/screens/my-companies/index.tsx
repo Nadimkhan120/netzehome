@@ -126,7 +126,7 @@ export const MyCompanies = () => {
             }}
             ListEmptyComponent={
               <View height={scale(300)} justifyContent={'center'} alignItems={'center'}>
-                <Text>No Companies Found</Text>
+                <Text color={'black'}>No Companies Found</Text>
               </View>
             }
           />

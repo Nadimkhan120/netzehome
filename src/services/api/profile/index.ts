@@ -51,6 +51,8 @@ export const useUpdatePicture = createMutation<Response, UpdateProfile, AxiosErr
   mutationFn: async (variables) => {
     const token = getAuthToken();
 
+    console.log('variables', JSON.stringify(variables, null, 2));
+
     let headers = {
       'Content-Type': 'multipart/form-data',
       authorization: 'Bearer ' + token ?? '',
@@ -60,6 +62,9 @@ export const useUpdatePicture = createMutation<Response, UpdateProfile, AxiosErr
       url: 'applicant/profiles/update/file',
       body: variables,
       headers: headers,
+      transformRequest: (data) => {
+        return data;
+      },
       // @ts-ignore
     }).then((response) => response?.data);
   },

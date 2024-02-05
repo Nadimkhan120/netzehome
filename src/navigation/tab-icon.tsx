@@ -28,7 +28,7 @@ const getIcon = (name) => {
     case AddPost:
       return 'plus';
     case Candidates:
-      return 'candidates';
+      return 'person-outline';
     case Settings:
       return 'book';
     default:
@@ -46,7 +46,7 @@ const getIconFocused = (name) => {
     case AddPost:
       return 'new-plus-circle';
     case Candidates:
-      return 'candidates-focused';
+      return 'person-fill';
     case Settings:
       return 'book';
     default:

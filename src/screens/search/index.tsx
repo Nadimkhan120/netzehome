@@ -2,14 +2,14 @@ import React, { useCallback, useMemo, useRef, useState } from 'react';
 import type { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { BottomSheetFooter, BottomSheetView } from '@gorhom/bottom-sheet';
 import { useNavigation } from '@react-navigation/native';
-import { FlashList } from '@shopify/flash-list';
+//import { FlashList } from '@shopify/flash-list';
 import { useTheme } from '@shopify/restyle';
 import { Image } from 'expo-image';
 import { ScrollView, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { scale } from 'react-native-size-matters';
 import { ImageButton } from '@/components';
-import ActivityIndicator from '@/components/activity-indicator';
+//import ActivityIndicator from '@/components/activity-indicator';
 import { BottomModal } from '@/components/bottom-modal';
 import { ScreenHeader } from '@/components/screen-header';
 import { SearchField } from '@/components/search-field';
@@ -18,9 +18,12 @@ import type { User } from '@/services/api/user';
 import { useGetUser } from '@/services/api/user';
 import { useUser } from '@/store/user';
 import type { Theme } from '@/theme';
-import { Button, Screen, Text, View } from '@/ui';
+import { Button, PressableScale, Screen, Text, View } from '@/ui';
 import { PersonItem } from '@/components/person-item';
 import { icons } from '@/assets/icons';
+import { useDebounce } from '@/hooks';
+import { useSearchVacancies } from '@/services/api/vacancies';
+import { setRecentSearches, useSearchStorage } from '@/store/search';
 
 export const Search = () => {
   const { colors } = useTheme<Theme>();
@@ -28,11 +31,24 @@ export const Search = () => {
   const { navigate } = useNavigation();
 
   const company = useUser((state) => state?.company);
+  const recentSearches = useSearchStorage((state) => state?.recentSearches);
+
   const [selectUser, setSelectUser] = useState<User | null>(null);
+
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const debouncedSearch = useDebounce<string>(searchQuery, 300);
 
   const { data, isLoading } = useGetUser({
     variables: {
       id: company?.id,
+    },
+  });
+
+  const { data: seachData } = useSearchVacancies({
+    enabled: debouncedSearch?.length ? true : false,
+    variables: {
+      keyword: debouncedSearch,
     },
   });
 
@@ -91,7 +107,12 @@ export const Search = () => {
         paddingHorizontal={'large'}
         paddingBottom={'medium'}
       >
-        <SearchField placeholder="Search by name" showBorder={true} />
+        <SearchField
+          placeholder="Search by name"
+          showBorder={true}
+          value={searchQuery}
+          onChangeText={setSearchQuery}
+        />
       </View>
 
       <View flex={1} backgroundColor={'white'}>
@@ -112,27 +133,44 @@ export const Search = () => {
               Recent Search
             </Text>
           </View>
+
           <View paddingHorizontal={'large'}>
-            {[0, 1, 2].map((item, index) => {
+            {recentSearches?.length === 0 ? (
+              <View>
+                <Text variant={'medium12'} color={'black'}>
+                  No Recent Searches
+                </Text>
+              </View>
+            ) : null}
+
+            {recentSearches?.map((item, index) => {
               return (
-                <View
-                  key={index}
-                  flexDirection={'row'}
-                  marginVertical={'small'}
-                  alignItems={'center'}
+                <PressableScale
+                  onPress={() => {
+                    // @ts-ignore
+                    navigate('NewJobDetails', { id: item?.id });
+                  }}
                 >
-                  <Image
-                    source={icons['clock']}
-                    style={{ height: scale(16), width: scale(16) }}
-                    contentFit="contain"
-                  />
-                  <Text marginLeft={'small'} variant={'medium13'}>
-                    human resource manager
-                  </Text>
-                </View>
+                  <View
+                    key={index}
+                    flexDirection={'row'}
+                    marginVertical={'small'}
+                    alignItems={'center'}
+                  >
+                    <Image
+                      source={icons['clock']}
+                      style={{ height: scale(16), width: scale(16) }}
+                      contentFit="contain"
+                    />
+                    <Text marginLeft={'small'} variant={'medium13'}>
+                      {item?.job_titles}
+                    </Text>
+                  </View>
+                </PressableScale>
               );
             })}
           </View>
+
           <View
             flexDirection={'row'}
             alignItems={'center'}
@@ -142,16 +180,48 @@ export const Search = () => {
             paddingTop={'large'}
           >
             <Text variant={'semiBold16'} color={'black'}>
-              Suggested Jobs
+              Searches
             </Text>
-            <Text variant={'medium14'} color={'primary'}>
+            {/* <Text variant={'medium14'} color={'primary'}>
               See All
-            </Text>
+            </Text> */}
           </View>
-          {[0, 1, 2].map((item, index) => {
-            return <PersonItem key={index} data={item} />;
-          })}
-          <View>
+
+          {
+            // @ts-ignore
+            (seachData?.response?.data && seachData?.response?.data?.length === 0) ||
+            !seachData ? (
+              <View paddingHorizontal={'large'}>
+                <Text variant={'medium12'} color={'black'}>
+                  No Searches Found, Please search
+                </Text>
+              </View>
+            ) : null
+          }
+
+          {
+            // @ts-ignore
+            seachData?.response?.data?.map((item, index) => {
+              return (
+                <PersonItem
+                  key={index}
+                  data={item}
+                  showStars={false}
+                  onItemPress={(payload) => {
+                    console.log('payload', payload);
+
+                    let dataToStore = {
+                      job_titles: payload?.job_titles,
+                      id: payload?.id,
+                    };
+
+                    setRecentSearches(dataToStore);
+                  }}
+                />
+              );
+            })
+          }
+          {/* <View>
             <View paddingHorizontal={'large'}>
               {[0, 1, 2].map((item, index) => {
                 return (
@@ -173,7 +243,7 @@ export const Search = () => {
                 );
               })}
             </View>
-          </View>
+          </View> */}
         </ScrollView>
       </View>
 
@@ -195,9 +265,7 @@ export const Search = () => {
               onPress={handleDismissModalPress}
               size={scale(16)}
             />
-            <Status
-              status={selectUser?.isactive === '0' ? 'Pending' : 'Active'}
-            />
+            <Status status={selectUser?.isactive === '0' ? 'Pending' : 'Active'} />
           </View>
           <View
             alignItems={'center'}
@@ -218,11 +286,7 @@ export const Search = () => {
             justifyContent={'center'}
             paddingVertical={'medium'}
           >
-            <Text
-              variant={'medium24'}
-              textTransform={'capitalize'}
-              color={'black'}
-            >
+            <Text variant={'medium24'} textTransform={'capitalize'} color={'black'}>
               {selectUser?.person_name}
             </Text>
             <Text variant={'regular13'} color={'grey200'}>

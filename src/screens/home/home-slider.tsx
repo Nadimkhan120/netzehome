@@ -17,6 +17,8 @@ export const HomeSliderContainer = ({}) => {
 
   useRefreshOnFocus(refetch);
 
+  console.log('data', JSON.stringify(data, null, 2));
+
   if (isLoading) return;
 
   return (
@@ -61,7 +63,7 @@ export const HomeSliderContainer = ({}) => {
         </View>
         <View alignItems={'center'}>
           <ImageButton
-            icon="vacancies-focused"
+            icon="briefcase"
             size={scale(48)}
             backgroundColor={'white'}
             onPress={() => navigate('MyJobs')}

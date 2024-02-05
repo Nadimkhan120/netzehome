@@ -131,7 +131,7 @@ export const Login = () => {
 
         <View paddingVertical={'2xl'} alignSelf={'center'}>
           <PressableScale onPress={() => navigate('ForgotPassword')}>
-            <Text>Forgot password?</Text>
+            <Text color={'black'}  >Forgot password?</Text>
           </PressableScale>
         </View>
 

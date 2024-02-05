@@ -86,8 +86,6 @@ export const EditProfile = () => {
 
   const profileData = data?.response?.data;
 
-  console.log('route', JSON.stringify(route, null, 2));
-
   const profile = route?.params?.user;
 
   const { handleSubmit, control, setValue, watch, trigger } =
@@ -173,12 +171,16 @@ export const EditProfile = () => {
     const data = new FormData();
 
     let fileName;
-    if (asset.fileName === null) {
-      const uriParts = asset.uri.split('/');
-      fileName = uriParts[uriParts.length - 1];
-    } else {
-      fileName = asset.fileName;
-    }
+
+    const uriParts = asset.uri.split('/');
+    fileName = uriParts[uriParts.length - 1];
+
+    // if (asset.fileName === null) {
+    //   const uriParts = asset.uri.split('/');
+    //   fileName = uriParts[uriParts.length - 1];
+    // } else {
+    //   fileName = asset.fileName;
+    // }
 
     data.append('file', {
       name: fileName,
@@ -204,7 +206,7 @@ export const EditProfile = () => {
       onError: (error) => {
         // An error happened!
         // @ts-ignore
-        console.log(`error`, error?.response?.data?.message);
+        console.log(`error`, error?.response.data?.message);
       },
     });
   };

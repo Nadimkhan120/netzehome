@@ -84,6 +84,7 @@ export const ChooseLocation = () => {
               fontSize: 12,
               flex: 1,
               fontFamily: AppFonts.APP_FONT_REGULAR,
+              color: 'black',
             },
             poweredContainer: {
               justifyContent: 'flex-end',

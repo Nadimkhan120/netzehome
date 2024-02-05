@@ -6,7 +6,7 @@ import { NetWorkService } from '@/services/apinetworkservice';
 type Variables = { status: string; id: number };
 type TopVariables = { id: number };
 type JobVariables = { id: number };
-type SearchVariable = { id: number; keyword: string };
+type SearchVariable = { keyword: string };
 type ApplyJob = { unique_id: any; job_id: number; person_id: number };
 
 type FilterVariable = {
@@ -161,7 +161,7 @@ export const useSearchVacancies = createQuery<Response3, SearchVariable, AxiosEr
   primaryKey: 'find-jobs',
   queryFn: ({ queryKey: [primaryKey, variables] }) => {
     return NetWorkService.Get({
-      url: `${primaryKey}?keyword=${variables.keyword}&company_id=${variables?.id}`,
+      url: `${primaryKey}?keyword=${variables.keyword}`,
       //@ts-ignore
     }).then((response) => response.data);
   },

@@ -22,7 +22,13 @@ const Applied = () => {
 
   const renderItem = useCallback(
     ({ item }) => {
-      return <JobItem data={item} onPress={() => navigate('MyJobDetail')} onOptionPress={function (): void {}} />;
+      return (
+        <JobItem
+          data={item}
+          onPress={() => navigate('MyJobDetail')}
+          onOptionPress={function (): void {}}
+        />
+      );
     },
     [user]
   );

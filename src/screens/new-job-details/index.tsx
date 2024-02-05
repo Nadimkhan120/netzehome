@@ -33,6 +33,7 @@ const OverViewTab = ({ route, data }: any) => {
 
     applyJobApi(body, {
       onSuccess: (data) => {
+        console.log('data?.response?.message', data?.response?.message);
         if (data?.response?.status === 200) {
           queryClient.invalidateQueries(useAppliedJobs.getKey());
           showSuccessMessage('Job applied successfully.');

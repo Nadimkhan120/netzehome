@@ -2,7 +2,7 @@ import React, { useCallback, useEffect } from 'react';
 import { useTheme } from '@shopify/restyle';
 import { TopHeader } from '@/components/top-header';
 import type { Theme } from '@/theme';
-import { Screen, View } from '@/ui';
+import { PressableScale, Screen, Text, View } from '@/ui';
 import { HomeSliderContainer } from './home-slider';
 import { PersonItem } from '@/components/person-item';
 import { FlashList } from '@shopify/flash-list';
@@ -11,9 +11,42 @@ import { useUser } from '@/store/user';
 import ActivityIndicator from '@/components/activity-indicator';
 import { queryClient } from '@/services/api/api-provider';
 import { useRefreshOnFocus } from '@/hooks';
+import { useNavigation } from '@react-navigation/native';
 
 const renderHeader = () => {
-  return <HomeSliderContainer />;
+  const { navigate } = useNavigation();
+
+  return (
+    <View>
+      <HomeSliderContainer />
+      <View
+        paddingHorizontal={'large'}
+        flexDirection={'row'}
+        alignItems={'center'}
+        justifyContent={'space-between'}
+        paddingBottom={'medium'}
+      >
+        <Text variant={'semiBold16'} color={'black'}>
+          Suggested JObs
+        </Text>
+        <PressableScale
+          onPress={() => {
+            // @ts-ignore
+            navigate('Vacancies');
+          }}
+        >
+          <Text
+            variant={'medium14'}
+            style={{
+              color: '#5386E4',
+            }}
+          >
+            View All
+          </Text>
+        </PressableScale>
+      </View>
+    </View>
+  );
 };
 
 export function Home() {
@@ -43,8 +76,6 @@ export function Home() {
               { job_id: job?.id },
               {
                 onSuccess: (data) => {
-                  console.log('data', data);
-
                   if (data?.response?.status === 200) {
                     queryClient.invalidateQueries(useSuggestedJobs.getKey());
                   } else {
