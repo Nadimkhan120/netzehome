@@ -57,6 +57,7 @@ export const Chats = () => {
   const [message, setMessage] = useState<string>('');
 
   const company = useUser((state) => state?.company);
+
   const myUser = useUser((state) => state?.user);
   const {
     data: chatMessage,
@@ -243,9 +244,9 @@ export const Chats = () => {
             }}
           />
         </View>
-        <PressableScale>
+        {/* <PressableScale>
           <Image source={icons['chat-plus']} style={styles.icon} contentFit="contain" />
-        </PressableScale>
+        </PressableScale> */}
         <PressableScale onPress={() => handleSendPress(message)}>
           <Image
             source={icons['send']}

@@ -111,11 +111,13 @@ export const useSavedJobs = createQuery<Response4, SavedJobs, AxiosError>({
 export const useAppliedJobs = createQuery<Response4, SuggestedJobs, AxiosError>({
   primaryKey: 'applicant/applied-jobs',
   queryFn: ({ queryKey: [primaryKey, variables] }) => {
-    return NetWorkService.Post({
-      url: `${primaryKey}`,
-      data: {
-        person_id: variables?.person_id,
-      },
+    console.log('variables', variables);
+
+    return NetWorkService.Get({
+      url: `${primaryKey}?person_id=${variables?.person_id}`,
+      // data: {
+      //   person_id: variables?.person_id,
+      // },
       //@ts-ignore
     }).then((response) => response.data);
   },

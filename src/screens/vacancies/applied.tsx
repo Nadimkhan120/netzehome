@@ -6,15 +6,20 @@ import { useUser } from '@/store/user';
 import ActivityIndicator from '@/components/activity-indicator';
 import { View, Text } from '@/ui';
 import { scale } from 'react-native-size-matters';
+import { useRefreshOnFocus } from '@/hooks';
 
 const Applied = () => {
   const user = useUser((state) => state?.user);
 
-  const { data, isLoading } = useAppliedJobs({
+  const { data, isLoading, refetch } = useAppliedJobs({
     variables: {
       person_id: user?.id,
     },
   });
+
+  useRefreshOnFocus(refetch);
+
+  console.log('data?.response?.data', JSON.stringify(data?.response?.data, null, 2));
 
   const renderItem = useCallback(({ item }) => {
     return <PersonItem data={item} />;
@@ -38,11 +43,7 @@ const Applied = () => {
           estimatedItemSize={100}
           renderItem={renderItem}
           ListEmptyComponent={
-            <View
-              height={scale(300)}
-              justifyContent={'center'}
-              alignItems={'center'}
-            >
+            <View height={scale(300)} justifyContent={'center'} alignItems={'center'}>
               <Text>No Job Found</Text>
             </View>
           }

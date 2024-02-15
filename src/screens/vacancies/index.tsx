@@ -70,11 +70,7 @@ const renderLabel = ({
   route: { title: string };
 }) => {
   return (
-    <Text
-      color={focused ? 'primary' : 'grey300'}
-      variant={focused ? 'medium14' : 'regular14'}
-      //numberOfLines={1}
-    >
+    <Text color={focused ? 'primary' : 'grey300'} variant={'regular14'}>
       {route.title}
     </Text>
   );
@@ -193,11 +189,7 @@ export const Vacancies = () => {
   const renderFooter = useCallback(
     (props) => (
       <BottomSheetFooter {...props} bottomInset={bottom}>
-        <View
-          paddingVertical={'large'}
-          borderTopWidth={1}
-          borderTopColor={'grey400'}
-        >
+        <View paddingVertical={'large'} borderTopWidth={1} borderTopColor={'grey400'}>
           <Button
             marginHorizontal={'large'}
             label="Show Results"
@@ -231,47 +223,41 @@ export const Vacancies = () => {
                 navigation.navigate('Applicants', { id: selectedVacancy?.id });
               }, 200);
             } else if (data?.name === 'Delete Job') {
-              Alert.alert(
-                'Confirmation',
-                'Are you sure? you want to delete this job ',
-                [
-                  {
-                    text: 'Cancel',
-                    onPress: () => console.log('Cancel Pressed'),
-                    style: 'cancel',
-                  },
-                  {
-                    text: 'Delete',
-                    onPress: () => {
-                      deletePost(
-                        { id: selectedVacancy?.id },
-                        {
-                          onSuccess: (data) => {
-                            console.log(
-                              'data?.response?.data',
-                              JSON.stringify(data, null, 2)
-                            );
+              Alert.alert('Confirmation', 'Are you sure? you want to delete this job ', [
+                {
+                  text: 'Cancel',
+                  onPress: () => console.log('Cancel Pressed'),
+                  style: 'cancel',
+                },
+                {
+                  text: 'Delete',
+                  onPress: () => {
+                    deletePost(
+                      { id: selectedVacancy?.id },
+                      {
+                        onSuccess: (data) => {
+                          console.log(
+                            'data?.response?.data',
+                            JSON.stringify(data, null, 2)
+                          );
 
-                            if (data?.response?.status === 200) {
-                              queryClient.invalidateQueries(
-                                useVacancies.getKey()
-                              );
-                              handleDismissOptionsModalPress();
-                            } else {
-                              //@ts-ignore
-                              showErrorMessage(data?.response?.message);
-                            }
-                          },
-                          onError: (error) => {
-                            // An error happened!
-                            console.log(`error`, error?.response?.data);
-                          },
-                        }
-                      );
-                    },
+                          if (data?.response?.status === 200) {
+                            queryClient.invalidateQueries(useVacancies.getKey());
+                            handleDismissOptionsModalPress();
+                          } else {
+                            //@ts-ignore
+                            showErrorMessage(data?.response?.message);
+                          }
+                        },
+                        onError: (error) => {
+                          // An error happened!
+                          console.log(`error`, error?.response?.data);
+                        },
+                      }
+                    );
                   },
-                ]
-              );
+                },
+              ]);
             }
           }}
         />
@@ -281,11 +267,7 @@ export const Vacancies = () => {
   );
 
   return (
-    <Screen
-      edges={['top']}
-      backgroundColor={colors.white}
-      barStyle="dark-content"
-    >
+    <Screen edges={['top']} backgroundColor={colors.white} barStyle="dark-content">
       <Header />
 
       <SearchWithFilter

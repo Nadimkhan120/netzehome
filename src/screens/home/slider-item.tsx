@@ -59,12 +59,12 @@ export const HomeSliderItem = ({ data }: HomeSliderItemProps) => {
           </PressableScale>
         </View>
         <View position={'absolute'} right={scale(16)} top={scale(16)}>
-          <PressableScale>
+          {/* <PressableScale>
             <Image
               source={icons['more-vertical']}
               style={{ height: scale(24), width: scale(24) }}
             />
-          </PressableScale>
+          </PressableScale> */}
         </View>
 
         <View alignItems={'center'} justifyContent={'center'}>

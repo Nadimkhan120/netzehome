@@ -68,7 +68,10 @@ export const EditProfile = () => {
   const { showActionSheetWithOptions } = useActionSheet();
 
   const [image, setImage] = useState(null);
+  const [coverPic, setCoverPic] = useState(null);
+
   const [picTyp, setPicType] = useState(null);
+
   const [cameraPermissionStatus, requestCameraPermission] =
     ImagePicker.useCameraPermissions();
   const [galleryPermission, requestGallaryPermission] =
@@ -221,7 +224,12 @@ export const EditProfile = () => {
     });
 
     if (!result.canceled) {
-      setImage(result.assets[0].uri);
+      if (picType === 'pic') {
+        setImage(result.assets[0].uri);
+      } else {
+        setCoverPic(result.assets[0].uri);
+      }
+
       setPicType(picType);
       const asset = result?.assets[0];
       updateProfilePicApiCall({ asset, picType });
@@ -238,6 +246,13 @@ export const EditProfile = () => {
     if (!result.canceled) {
       setImage(result.assets[0].uri);
       setPicType(picType);
+
+      if (picType === 'pic') {
+        setImage(result.assets[0].uri);
+      } else {
+        setCoverPic(result.assets[0].uri);
+      }
+
       const asset = result?.assets[0];
       updateProfilePicApiCall({ asset, picType });
     }
@@ -284,7 +299,7 @@ export const EditProfile = () => {
           <View>
             <Image
               cachePolicy="memory-disk"
-              source={picTyp === 'cover' ? image : profileData?.cover_pic}
+              source={coverPic ? coverPic : profileData?.cover_pic}
               style={{ height: scale(119), width: width }}
               transition={1000}
               placeholder={`https://fakeimg.pl/${width}x400/cccccc/cccccc`}
@@ -318,7 +333,7 @@ export const EditProfile = () => {
             <View alignSelf={'baseline'}>
               <Avatar
                 cachePolicy="none"
-                source={picTyp === 'pic' ? image : profileData?.profile_pic}
+                source={image ? image : profileData?.profile_pic}
                 size="large"
                 onPress={() => takeProfilePic({ picType: 'pic' })}
                 transition={1000}

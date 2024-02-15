@@ -44,10 +44,7 @@ const renderLabel = ({
   route: { title: string };
 }) => {
   return (
-    <Text
-      color={focused ? 'primary' : 'grey300'}
-      variant={focused ? 'medium14' : 'regular14'}
-    >
+    <Text color={focused ? 'primary' : 'grey300'} variant={'regular14'}>
       {route.title}
     </Text>
   );
@@ -104,6 +101,7 @@ export const Candidates = () => {
   const layout = useWindowDimensions();
 
   const [index, setIndex] = React.useState(0);
+
   const [routes] = React.useState([
     { key: 'first', title: 'Explore' },
     { key: 'second', title: 'My Network' },
@@ -140,11 +138,7 @@ export const Candidates = () => {
   const renderFooter = useCallback(
     (props) => (
       <BottomSheetFooter {...props} bottomInset={bottom}>
-        <View
-          paddingVertical={'large'}
-          borderTopWidth={1}
-          borderTopColor={'grey400'}
-        >
+        <View paddingVertical={'large'} borderTopWidth={1} borderTopColor={'grey400'}>
           <Button
             marginHorizontal={'large'}
             label="Show Results"

@@ -59,7 +59,8 @@ export const Login = () => {
       { email: data?.email, password: data?.password },
       {
         onSuccess: (data) => {
-          console.log('data', data);
+          console.log('data', JSON.stringify(data?.response?.data, null, 2));
+
           if (data?.response?.status === 200) {
             login(data?.response?.data?.token);
             setUserData(data?.response?.data);
@@ -131,7 +132,7 @@ export const Login = () => {
 
         <View paddingVertical={'2xl'} alignSelf={'center'}>
           <PressableScale onPress={() => navigate('ForgotPassword')}>
-            <Text color={'black'}  >Forgot password?</Text>
+            <Text color={'black'}>Forgot password?</Text>
           </PressableScale>
         </View>
 

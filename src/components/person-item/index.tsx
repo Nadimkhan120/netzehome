@@ -43,7 +43,10 @@ export const PersonItem = ({
       <View flexDirection={'row'} marginBottom={'large'} paddingHorizontal={'large'}>
         <View>
           <Image
-            source={{ uri: 'https://fakeimg.pl/400x400/cccccc/cccccc' }}
+            source={{
+              uri:
+                data?.company?.images?.pic ?? 'https://fakeimg.pl/400x400/cccccc/cccccc',
+            }}
             placeholder={{ uri: 'https://fakeimg.pl/400x400/cccccc/cccccc' }}
             transition={1000}
             style={{

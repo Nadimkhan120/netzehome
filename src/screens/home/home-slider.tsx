@@ -10,14 +10,14 @@ import { useNavigation } from '@react-navigation/native';
 import { useGetProfile } from '@/services/api/home';
 
 export const HomeSliderContainer = ({}) => {
-  const user = useUser((state) => state?.user);
   const { navigate } = useNavigation();
+
+  const user = useUser((state) => state?.user);
+  const profile = useUser((state) => state?.profile);
 
   const { data, isLoading, refetch } = useGetProfile();
 
   useRefreshOnFocus(refetch);
-
-  console.log('data', JSON.stringify(data, null, 2));
 
   if (isLoading) return;
 
@@ -77,7 +77,7 @@ export const HomeSliderContainer = ({}) => {
             icon="person"
             size={scale(48)}
             backgroundColor={'white'}
-            onPress={() => null}
+            onPress={() => navigate('EditProfile', { user: profile })}
           />
           <Text variant={'regular12'} marginTop={'small'} color={'black'}>
             Profile

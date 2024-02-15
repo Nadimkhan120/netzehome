@@ -21,19 +21,13 @@ type Response = {
   };
 };
 
-export const useCompanyInformation = createMutation<
-  Response,
-  Variables,
-  AxiosError
->({
+export const useCompanyInformation = createMutation<Response, Variables, AxiosError>({
   mutationFn: async (variables) =>
     NetWorkService.Post({
       url: 'applicant/profiles/information',
       body: variables,
     })
       .then((response) => {
-        console.log('response', response?.data);
-
         // @ts-ignore
         return response?.data;
       })
