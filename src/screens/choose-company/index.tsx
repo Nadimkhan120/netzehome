@@ -39,8 +39,6 @@ export const ChooseCompany = () => {
         <CompanyItem
           data={item}
           onPress={(company) => {
-            console.log('hello', company);
-
             setSelectedCompany(company?.name);
             goBack();
           }}
@@ -49,6 +47,8 @@ export const ChooseCompany = () => {
     },
     [data, goBack]
   );
+
+  console.log('data?.response?.data', JSON.stringify(data?.response?.data, null, 2));
 
   const renderLoading = () => {
     return (

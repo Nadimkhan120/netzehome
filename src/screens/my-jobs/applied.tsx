@@ -41,6 +41,8 @@ const Applied = () => {
     );
   }
 
+  //console.log('data?.response?.data', JSON.stringify(data?.response?.data, null, 2));
+
   return (
     <View flex={1} backgroundColor={'grey500'}>
       <FlashList

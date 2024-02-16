@@ -2,7 +2,6 @@ import { Image } from 'expo-image';
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import { scale } from 'react-native-size-matters';
-
 import { icons } from '@/assets/icons';
 import type { Experience } from '@/services/api/candidate';
 import { PressableScale, Text, View } from '@/ui';
@@ -27,7 +26,10 @@ const Experiences = ({ data }: ExperienceProps) => {
                 borderBottomColor={'grey500'}
                 borderBottomWidth={1}
               >
-                <Image source={icons.indesign} style={styles.image} />
+                <Image
+                  source={item?.images?.pic ? item?.images?.pic : icons.indesign}
+                  style={styles.image}
+                />
                 <View paddingHorizontal={'medium'} flex={1}>
                   <Text variant="medium14" color="black">
                     {item?.job_category}

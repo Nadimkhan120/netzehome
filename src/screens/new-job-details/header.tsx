@@ -11,9 +11,15 @@ type DetailContainerProps = {
 const Header = ({ data }: DetailContainerProps) => {
   const navigation = useNavigation();
 
+  console.log('Header', JSON.stringify(data, null, 2));
+
   return (
     <PressableScale onPress={() => {}}>
-      <View paddingVertical={'large'} paddingHorizontal={'large'} backgroundColor={'white'}>
+      <View
+        paddingVertical={'large'}
+        paddingHorizontal={'large'}
+        backgroundColor={'white'}
+      >
         <Text variant={'regular20'} color={'black'}>
           {data?.job_titles}
         </Text>
@@ -37,7 +43,12 @@ const Header = ({ data }: DetailContainerProps) => {
             </Text>
           </View>
         </View>
-        <View flexDirection={'row'} gap={'medium'} alignItems={'center'} paddingTop={'small'}>
+        <View
+          flexDirection={'row'}
+          gap={'medium'}
+          alignItems={'center'}
+          paddingTop={'small'}
+        >
           {data?.skills?.map((item, index) => {
             return (
               <View

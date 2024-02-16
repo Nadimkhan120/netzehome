@@ -13,6 +13,8 @@ type ExperienceItemProps = {
 export const ExperienceItem = ({ data, onStartPress }: ExperienceItemProps) => {
   const navigation = useNavigation();
 
+  console.log('ExperienceItem', JSON.stringify(data, null, 2));
+
   return (
     <PressableScale
       onPress={() => {
@@ -22,7 +24,11 @@ export const ExperienceItem = ({ data, onStartPress }: ExperienceItemProps) => {
       <View flexDirection={'row'} marginBottom={'large'} paddingHorizontal={'large'}>
         <View>
           <Image
-            source={{ uri: 'https://fakeimg.pl/400x400/cccccc/cccccc' }}
+            source={{
+              uri: data?.images?.pic
+                ? data?.images?.pic
+                : 'https://fakeimg.pl/400x400/cccccc/cccccc',
+            }}
             placeholder={'https://fakeimg.pl/400x400/cccccc/cccccc'}
             transition={1000}
             style={{

@@ -14,7 +14,12 @@ type CadidateItemProps = {
   onMessage?: (data: any) => void;
 };
 
-const CadidateItem = ({ data, onSavePress, onHandShake, onMessage }: CadidateItemProps) => {
+const CadidateItem = ({
+  data,
+  onSavePress,
+  onHandShake,
+  onMessage,
+}: CadidateItemProps) => {
   const { navigate } = useNavigation();
 
   return (
@@ -43,20 +48,43 @@ const CadidateItem = ({ data, onSavePress, onHandShake, onMessage }: CadidateIte
           </PressableScale>
         </View>
         <View height={scale(16)}></View>
-        <Avatar source={icons['avatar-2']} size="small" />
-        <Text variant={'semiBold14'} textAlign={'center'} color={'black'} marginTop={'tiny'}>
+        <Avatar
+          source={data?.profile_pic ? data?.profile_pic : icons['avatar-2']}
+          size="small"
+          placeholder={'https://fakeimg.pl/400x400/cccccc/cccccc'}
+        />
+        <Text
+          variant={'semiBold14'}
+          textAlign={'center'}
+          color={'black'}
+          marginTop={'tiny'}
+        >
           {data?.full_name}
         </Text>
-        <Text variant={'regular12'} color={'grey300'} marginTop={'tiny'} textAlign={'center'}>
+        <Text
+          variant={'regular12'}
+          color={'grey300'}
+          marginTop={'tiny'}
+          textAlign={'center'}
+        >
           {data?.job_title}
         </Text>
-        <Text variant={'regular12'} marginTop={'tiny'} color={'grey300'} textAlign={'center'}>
+        <Text
+          variant={'regular12'}
+          marginTop={'tiny'}
+          color={'grey300'}
+          textAlign={'center'}
+        >
           {data?.city}, {data?.country}
         </Text>
         <View marginTop={'small'}>
           <PressableScale
             onPress={() =>
-              data?.is_friend === 0 ? onHandShake?.(data) : data?.is_request_sent === 1 ? null : onMessage?.(data)
+              data?.is_friend === 0
+                ? onHandShake?.(data)
+                : data?.is_request_sent === 1
+                ? null
+                : onMessage?.(data)
             }
           >
             <View
@@ -66,14 +94,36 @@ const CadidateItem = ({ data, onSavePress, onHandShake, onMessage }: CadidateIte
               justifyContent={'center'}
               alignItems={'center'}
               borderWidth={1}
-              borderColor={data?.is_request_sent === 1 ? 'grey500' : data?.is_friend === 1 ? 'primary' : 'primary'}
-              backgroundColor={data?.is_request_sent === 1 ? 'grey500' : data?.is_friend === 1 ? 'primary' : 'white'}
+              borderColor={
+                data?.is_request_sent === 1
+                  ? 'grey500'
+                  : data?.is_friend === 1
+                  ? 'primary'
+                  : 'primary'
+              }
+              backgroundColor={
+                data?.is_request_sent === 1
+                  ? 'grey500'
+                  : data?.is_friend === 1
+                  ? 'primary'
+                  : 'white'
+              }
             >
               <Text
                 variant={'medium13'}
-                color={data?.is_request_sent === 1 ? 'grey300' : data?.is_friend === 1 ? 'white' : 'primary'}
+                color={
+                  data?.is_request_sent === 1
+                    ? 'grey300'
+                    : data?.is_friend === 1
+                    ? 'white'
+                    : 'primary'
+                }
               >
-                {data?.is_request_sent === 1 ? 'Request Sent' : data?.is_friend === 1 ? 'Message' : 'HandShake'}
+                {data?.is_request_sent === 1
+                  ? 'Request Sent'
+                  : data?.is_friend === 1
+                  ? 'Message'
+                  : 'HandShake'}
               </Text>
             </View>
           </PressableScale>

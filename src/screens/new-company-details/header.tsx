@@ -16,7 +16,10 @@ const Header = ({ data }: DetailContainerProps) => {
   return (
     <>
       <View height={scale(119)}>
-        <Image source={icons['back-cover']} style={{ height: scale(119), width: width }} />
+        <Image
+          source={data?.images?.cover ? data?.images?.cover : icons['back-cover']}
+          style={{ height: scale(119), width: width }}
+        />
         <View
           alignSelf={'flex-start'}
           position={'absolute'}
@@ -25,7 +28,13 @@ const Header = ({ data }: DetailContainerProps) => {
             bottom: -scale(43),
           }}
         >
-          <CompanyButton icon="company" onPress={() => null} size={scale(86)} imageSize={scale(86)} />
+          <CompanyButton
+            icon="company"
+            onPress={() => null}
+            size={scale(86)}
+            imageSize={scale(86)}
+            companyImage={data?.images?.pic}
+          />
         </View>
       </View>
 

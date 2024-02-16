@@ -17,7 +17,10 @@ const CompanyItem = ({ data, onFollow, onSavePress, onMessage }: CompanyItemProp
   const { navigate } = useNavigation();
 
   return (
-    <Pressable style={{ flex: 1 }} onPress={() => navigate('NewCompanyDetails', { id: data?.id })}>
+    <Pressable
+      style={{ flex: 1 }}
+      onPress={() => navigate('NewCompanyDetails', { id: data?.id })}
+    >
       <View
         backgroundColor={'white'}
         borderRadius={scale(12)}
@@ -38,7 +41,7 @@ const CompanyItem = ({ data, onFollow, onSavePress, onMessage }: CompanyItemProp
         </View>
         <PressableScale>
           <Image
-            source={icons['company']}
+            source={data?.images?.pic ? data?.images?.pic : icons['company']}
             style={{
               height: scale(48),
               width: scale(48),
@@ -62,7 +65,11 @@ const CompanyItem = ({ data, onFollow, onSavePress, onMessage }: CompanyItemProp
         </Text>
 
         <View marginTop={'small'}>
-          <PressableScale onPress={() => (data?.is_followed === 0 ? onFollow?.(data) : onMessage?.(data))}>
+          <PressableScale
+            onPress={() =>
+              data?.is_followed === 0 ? onFollow?.(data) : onMessage?.(data)
+            }
+          >
             <View
               borderRadius={scale(44)}
               height={scale(32)}
@@ -73,7 +80,10 @@ const CompanyItem = ({ data, onFollow, onSavePress, onMessage }: CompanyItemProp
               borderColor={'primary'}
               backgroundColor={data?.is_followed === 0 ? 'white' : 'primary'}
             >
-              <Text variant={'medium13'} color={data?.is_followed === 0 ? 'primary' : 'white'}>
+              <Text
+                variant={'medium13'}
+                color={data?.is_followed === 0 ? 'primary' : 'white'}
+              >
                 {data?.is_followed === 0 ? 'Follow' : 'Message'}
               </Text>
             </View>

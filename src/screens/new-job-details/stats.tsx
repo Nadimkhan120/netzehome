@@ -47,6 +47,11 @@ const Stats = ({ data }: StatsProps) => {
 
   const renderItem = useCallback(
     ({ item }) => {
+      let data = {
+        ...item,
+        //profile_pic:"",
+      };
+
       return (
         <CadidateItem
           data={item}
@@ -118,6 +123,8 @@ const Stats = ({ data }: StatsProps) => {
     },
     [user]
   );
+
+  console.log('data?.applicants', JSON.stringify(data?.applicants, null, 2));
 
   return (
     <View>

@@ -135,6 +135,10 @@ export type Experience = {
   company_name: string;
   is_current: string;
   job_category: string;
+  images?: {
+    cover: string;
+    pic: string;
+  };
 };
 
 export type CandidateProfile = {

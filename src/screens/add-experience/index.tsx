@@ -23,7 +23,11 @@ import { BottomSheetFlatList } from '@gorhom/bottom-sheet';
 import { SelectModalItem } from '@/components/select-modal-item';
 import { format } from 'date-fns';
 import DatePicker from 'react-native-date-picker';
-import { useExperience } from '@/store/experience';
+import {
+  setSelectedCompany,
+  setSelectedLocation,
+  useExperience,
+} from '@/store/experience';
 import { useUpdateExperience } from '@/services/api/profile';
 import { useGetUserProfileDetails } from '@/services/api/home';
 
@@ -55,9 +59,7 @@ const schema = z.object({
       required_error: 'End date is required',
     })
     .optional(),
-  isPresent: z.boolean({
-    required_error: 'Present is required',
-  }),
+  isPresent: z.boolean().optional(),
 });
 
 export type AddExperienceFormType = z.infer<typeof schema>;
@@ -142,6 +144,8 @@ export const AddExperience = () => {
             queryClient.invalidateQueries(useGetUserProfileDetails.getKey());
             goBack();
             showSuccessMessage('Experience Updated successfully');
+            setSelectedCompany('');
+            setSelectedLocation('');
           } else {
           }
         },
@@ -427,6 +431,7 @@ export const AddExperience = () => {
         locale="en"
         open={openStartDate}
         date={startDate}
+        mode="date"
         onConfirm={(date) => {
           const myDate = new Date(date);
           const formattedDate = format(myDate, 'yyyy/MM/dd');
@@ -444,6 +449,7 @@ export const AddExperience = () => {
         locale="en"
         open={openEndDate}
         date={endDate}
+        mode="date"
         onConfirm={(date) => {
           const myDate = new Date(date);
           const formattedDate = format(myDate, 'yyyy/MM/dd');

@@ -29,12 +29,9 @@ type JobItemProps = {
   onOptionPress: () => void;
 };
 
-const JobItem = ({
-  data,
-  showStatus,
-  onPress,
-  onOptionPress,
-}: JobItemProps) => {
+const JobItem = ({ data, showStatus, onPress, onOptionPress }: JobItemProps) => {
+  console.log('data', JSON.stringify(data, null, 2));
+
   return (
     <PressableScale onPress={onPress}>
       <View
@@ -48,7 +45,11 @@ const JobItem = ({
         <View>
           <Avatar
             transition={1000}
-            source={{ uri: 'https://fakeimg.pl/400x400/cccccc/cccccc' }}
+            source={{
+              uri: data?.company?.images?.pic
+                ? data?.company?.images?.pic
+                : 'https://fakeimg.pl/400x400/cccccc/cccccc',
+            }}
             placeholder={{ uri: 'https://fakeimg.pl/400x400/cccccc/cccccc' }}
           />
         </View>

@@ -141,7 +141,7 @@ export function Job() {
     },
   });
 
-  console.log('candidateData', JSON.stringify(candidateData, null, 2));
+  //console.log('candidateData', JSON.stringify(candidateData, null, 2));
 
   const renderScene = useCallback(
     ({ route }: any) => {

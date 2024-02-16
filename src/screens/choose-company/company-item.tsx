@@ -23,7 +23,11 @@ const CompanyItem = ({ onPress, data }: CompanyItem) => {
         <View>
           <Image
             transition={1000}
-            source={{ uri: 'https://fakeimg.pl/400x400/cccccc/cccccc' }}
+            source={{
+              uri: data?.images?.pic
+                ? data?.images?.pic
+                : 'https://fakeimg.pl/400x400/cccccc/cccccc',
+            }}
             placeholder={{ uri: 'https://fakeimg.pl/400x400/cccccc/cccccc' }}
             style={{
               height: scale(40),

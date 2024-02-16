@@ -41,8 +41,6 @@ const Explore = () => {
                 { company_id: 0, person_id: person?.id, emails: person?.email },
                 {
                   onSuccess: (data) => {
-                    console.log('addHandShakeApi', data);
-
                     if (data?.response?.status === 200) {
                       queryClient.invalidateQueries(useAllCandidates.getKey());
                       queryClient.invalidateQueries(useMyNetworks.getKey());

@@ -17,12 +17,23 @@ const Saved = () => {
     },
   });
 
+  // console.log('Saved', JSON.stringify(data, null, 2));
+
   const { mutate: saveUnJobApi, isLoading: isUnSaving } = useUnSaveJob();
 
   const renderItem = useCallback(({ item }) => {
+    let itemToSend = {
+      ...item,
+      company: {
+        images: {
+          pic: item?.company_images?.pic,
+        },
+      },
+    };
+
     return (
       <PersonItem
-        data={item}
+        data={itemToSend}
         onStartPress={(job) => {
           saveUnJobApi(
             { job_id: job?.id },

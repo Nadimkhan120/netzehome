@@ -45,7 +45,13 @@ const JobsTab = ({ route, data }: any) => {
   );
 };
 
-const renderLabel = ({ focused, route }: { focused: boolean; route: { title: string } }) => {
+const renderLabel = ({
+  focused,
+  route,
+}: {
+  focused: boolean;
+  route: { title: string };
+}) => {
   return (
     <Text color={focused ? 'primary' : 'black'} variant="medium14" numberOfLines={1}>
       {route.title}
@@ -94,8 +100,6 @@ export function NewCompanyDetails() {
     },
   });
 
-  console.log('companyDetails', JSON.stringify(companyDetails, null, 2));
-
   const renderScene = useCallback(
     ({ route }: any) => {
       switch (route.key) {
@@ -133,7 +137,12 @@ export function NewCompanyDetails() {
     <Screen backgroundColor={colors.white}>
       <ScreenHeader showBorder={true} icon="close" />
       {isLoading ? (
-        <View flex={1} height={scale(300)} justifyContent={'center'} alignItems={'center'}>
+        <View
+          flex={1}
+          height={scale(300)}
+          justifyContent={'center'}
+          alignItems={'center'}
+        >
           <ActivityIndicator size={'large'} />
         </View>
       ) : (

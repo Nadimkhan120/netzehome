@@ -51,7 +51,10 @@ const Company = ({ companyData }: CompanyProps) => {
   return (
     <>
       <View height={scale(119)}>
-        <Image source={icons['back-cover']} style={{ height: scale(119), width: width }} />
+        <Image
+          source={data?.images?.cover ? data?.images?.cover : icons['back-cover']}
+          style={{ height: scale(119), width: width }}
+        />
         <View
           alignSelf={'flex-start'}
           position={'absolute'}
@@ -60,7 +63,13 @@ const Company = ({ companyData }: CompanyProps) => {
             bottom: -scale(43),
           }}
         >
-          <CompanyButton icon="company" onPress={() => null} size={scale(86)} imageSize={scale(86)} />
+          <CompanyButton
+            icon="company"
+            onPress={() => null}
+            size={scale(86)}
+            imageSize={scale(86)}
+            companyImage={data?.images?.pic}
+          />
         </View>
       </View>
 
@@ -82,7 +91,12 @@ const Company = ({ companyData }: CompanyProps) => {
           About Company
         </Text>
 
-        <Text paddingTop={'small'} variant={'regular14'} color={'grey200'} lineHeight={21} />
+        <Text
+          paddingTop={'small'}
+          variant={'regular14'}
+          color={'grey200'}
+          lineHeight={21}
+        />
       </View>
 
       <View height={scale(16)} />
@@ -96,9 +110,21 @@ const Company = ({ companyData }: CompanyProps) => {
         <InfoRow label={'Phone Number'} value={data?.location?.phone} isGrey={false} />
         <InfoRow label={'Website'} value={data?.location?.website} isGrey={false} />
         <InfoRow label={'Employees'} value={data?.no_of_employees} isGrey={true} />
-        <InfoRow label={'Category'} value={data?.categories?.map((element) => `${element?.name},`)} isGrey={true} />
-        <InfoRow label={'Industry'} value={data?.industries?.map((element) => `${element?.name},`)} isGrey={true} />
-        <InfoRow label={'Work Time'} value={`${data?.start_time}-${data?.end_time}`} isGrey={true} />
+        <InfoRow
+          label={'Category'}
+          value={data?.categories?.map((element) => `${element?.name},`)}
+          isGrey={true}
+        />
+        <InfoRow
+          label={'Industry'}
+          value={data?.industries?.map((element) => `${element?.name},`)}
+          isGrey={true}
+        />
+        <InfoRow
+          label={'Work Time'}
+          value={`${data?.start_time}-${data?.end_time}`}
+          isGrey={true}
+        />
         <InfoRow label={'Average Wage'} value={data?.average_wage} isGrey={true} />
       </View>
 

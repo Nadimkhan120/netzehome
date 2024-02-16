@@ -132,6 +132,7 @@ export const Vacancies = () => {
   const { data: seachData } = useSearchVacancies({
     enabled: debouncedSearch?.length ? true : false,
     variables: {
+      //@ts-ignore
       id: company?.id,
       keyword: debouncedSearch,
     },

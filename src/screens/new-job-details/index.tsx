@@ -152,8 +152,6 @@ export function NewJobDetails() {
     },
   });
 
-  console.log('jobDetailsData', JSON.stringify(jobDetailsData, null, 2));
-
   const renderScene = useCallback(
     ({ route }: any) => {
       switch (route.key) {

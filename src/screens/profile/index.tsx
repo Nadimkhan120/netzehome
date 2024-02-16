@@ -174,19 +174,20 @@ export const Profile = () => {
               paddingHorizontal={'large'}
               paddingTop={'medium'}
             >
-              {profileData?.skills?.map((element, index) => {
-                return (
-                  <View
-                    paddingHorizontal={'large'}
-                    backgroundColor={'primary'}
-                    paddingVertical={'small'}
-                    key={index}
-                    borderRadius={44}
-                  >
-                    <Text color={'white'}>{element?.name}</Text>
-                  </View>
-                );
-              })}
+              {profileData?.skills?.length &&
+                profileData?.skills?.map((element, index) => {
+                  return (
+                    <View
+                      paddingHorizontal={'large'}
+                      backgroundColor={'primary'}
+                      paddingVertical={'small'}
+                      key={index}
+                      borderRadius={44}
+                    >
+                      <Text color={'white'}>{element?.name}</Text>
+                    </View>
+                  );
+                })}
             </View>
           </InfoRow>
         </View>
