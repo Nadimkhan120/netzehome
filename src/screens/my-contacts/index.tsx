@@ -20,11 +20,16 @@ import { ScreenHeader } from '@/components/screen-header';
 
 export const MyContacts = () => {
   const { colors } = useTheme<Theme>();
+
   const user = useUser((state) => state?.user);
+
   const { isLoading, data } = useMyNetworks();
+
   const { mutate: saveCandidateApi, isLoading: isSaving } = useSaveCandidate();
   const { mutate: saveUnCandidateApi, isLoading: isUnSaving } = useUnsaveSaveCandidate();
   const { mutate: addHandShakeApi, isLoading: isHandShaking } = useAddContactCandidate();
+
+  //console.log('data?.response?.data', JSON.stringify(data?.response?.data, null, 2));
 
   const renderItem = useCallback(
     ({ item }) => {

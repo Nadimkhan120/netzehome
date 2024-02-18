@@ -1,14 +1,14 @@
-import React from "react";
-import type { TextInputProps } from "react-native";
-import { StyleSheet, TextInput, Platform } from "react-native";
-import { scale } from "react-native-size-matters";
-import { useTheme } from "@shopify/restyle";
-import { Image } from "expo-image";
-import type { IconTypes } from "@/assets/icons";
-import { icons } from "@/assets/icons";
-import { AppFonts } from "@/constants/fonts";
-import type { Theme } from "@/theme";
-import { View } from "@/ui";
+import React from 'react';
+import type { TextInputProps } from 'react-native';
+import { StyleSheet, TextInput, Platform } from 'react-native';
+import { scale } from 'react-native-size-matters';
+import { useTheme } from '@shopify/restyle';
+import { Image } from 'expo-image';
+import type { IconTypes } from '@/assets/icons';
+import { icons } from '@/assets/icons';
+import { AppFonts } from '@/constants/fonts';
+import type { Theme } from '@/theme';
+import { View } from '@/ui';
 
 type SearchFieldProps = {
   icon?: IconTypes;
@@ -20,13 +20,13 @@ export const SearchField = ({ icon, showBorder, ...rest }: SearchFieldProps) => 
 
   return (
     <View
-      flexDirection={"row"}
-      alignItems={"center"}
-      paddingHorizontal={"small"}
+      flexDirection={'row'}
+      alignItems={'center'}
+      paddingHorizontal={'small'}
       borderRadius={scale(8)}
-      backgroundColor={"white"}
+      backgroundColor={'white'}
       borderWidth={showBorder ? 1 : 0}
-      borderColor={"grey300"}
+      borderColor={'grey300'}
       height={scale(40)}
     >
       <Image source={icon ?? icons.search} style={styles.icon} contentFit="contain" />

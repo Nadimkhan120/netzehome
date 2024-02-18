@@ -121,6 +121,7 @@ export const Search = () => {
           onChangeText={setSearchQuery}
           returnKeyType="search"
           returnKeyLabel="Search"
+          autoFocus={true}
           onSubmitEditing={(e) => {
             navigate('SearchResults', { searchKeyword: debouncedSearch });
           }}

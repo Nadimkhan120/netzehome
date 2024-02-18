@@ -10,7 +10,11 @@ import ActivityIndicator from '@/components/activity-indicator';
 import { BottomModal } from '@/components/bottom-modal';
 import SelectionBox from '@/components/drop-down';
 import { SearchWithFilter } from '@/components/search-with-filter';
-import { useAllCandidates, useCandidateByName, useFilterCandidates } from '@/services/api/candidate';
+import {
+  useAllCandidates,
+  useCandidateByName,
+  useFilterCandidates,
+} from '@/services/api/candidate';
 import type { Theme } from '@/theme';
 import { Button, Screen, Text, View } from '@/ui';
 import { useIndustries, useSkills } from '@/services/api/settings';
@@ -30,9 +34,18 @@ const renderScene = SceneMap({
   third: ThirdRoute,
 });
 
-const renderLabel = ({ focused, route }: { focused: boolean; route: { title: string } }) => {
+const renderLabel = ({
+  focused,
+  route,
+}: {
+  focused: boolean;
+  route: { title: string };
+}) => {
   return (
-    <Text color={focused ? 'primary' : 'grey300'} variant={focused ? 'medium14' : 'regular14'}>
+    <Text
+      color={focused ? 'primary' : 'grey300'}
+      variant={focused ? 'medium14' : 'regular14'}
+    >
       {route.title}
     </Text>
   );
@@ -148,6 +161,9 @@ export const Settings = () => {
         searchValue={searchQuery}
         onChangeText={(text) => setSearchQuery(text)}
         onFilter={handlePresentModalPress}
+        onFocus={() => {
+          navigate('Search');
+        }}
       />
 
       <TabView

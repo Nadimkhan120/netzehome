@@ -16,18 +16,7 @@ import type { Theme } from '@/theme';
 import { Button, ControlledInput, PressableScale, Screen, Text, View } from '@/ui';
 import { showErrorMessage } from '@/utils';
 import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
-
-GoogleSignin.configure({
-  offlineAccess: false, // if you want to access Google API on behalf of the user FROM YOUR SERVER
-  hostedDomain: '', // specifies a hosted domain restriction
-  forceCodeForRefreshToken: true, // [Android] related to `serverAuthCode`, read the docs link below *.
-  accountName: '', // [Android] specifies an account name on the device that should be used
-  iosClientId:
-    '1056415638644-vu2fbrmnkgcmki8toton39h2pqfj23jd.apps.googleusercontent.com', // [iOS] if you want to specify the client ID of type iOS (otherwise, it is taken from GoogleService-Info.plist)
-
-  openIdRealm: '', // [iOS] The OpenID2 realm of the home web server. This allows Google to include the user's OpenID Identifier in the OpenID Connect ID token.
-  profileImageSize: 120, // [iOS] The desired height (and width) of the profile image. Defaults to 120px
-});
+import { setShowLoading } from '@/store/loader';
 
 const schema = z.object({
   email: z
@@ -80,6 +69,8 @@ export const Login = () => {
   };
 
   const googleLogin = async () => {
+    setShowLoading(true);
+
     try {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
@@ -99,6 +90,8 @@ export const Login = () => {
             console.log('data', JSON.stringify(data?.response?.data, null, 2));
 
             if (data?.response?.status === 200) {
+              setShowLoading(false);
+              //setTimeout(()=>{},)
               login(data?.response?.data?.token);
               setUserData(data?.response?.data);
             } else {
@@ -110,11 +103,13 @@ export const Login = () => {
 
             // An error happened!
             console.log(`error`, error?.response?.data);
+            setShowLoading(false);
           },
         }
       );
     } catch (error) {
       console.log('error', error);
+      setShowLoading(false);
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         // user cancelled the login flow
       } else if (error.code === statusCodes.IN_PROGRESS) {
@@ -179,9 +174,9 @@ export const Login = () => {
           gap={'medium'}
           marginVertical={'large'}
         >
-          <IconButton icon="apple" onPress={() => null} color={'grey500'} />
+          {/* <IconButton icon="apple" onPress={() => null} color={'grey500'} /> */}
           <IconButton icon="google" onPress={googleLogin} color={'grey500'} />
-          <IconButton icon="facebook" onPress={() => null} color={'grey500'} />
+          {/* <IconButton icon="facebook" onPress={() => null} color={'grey500'} /> */}
         </View>
 
         <View paddingVertical={'2xl'} alignSelf={'center'}>

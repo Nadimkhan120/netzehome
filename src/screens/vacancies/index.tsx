@@ -273,8 +273,10 @@ export const Vacancies = () => {
 
       <SearchWithFilter
         searchValue={searchQuery}
-        onChangeText={(text) => setSearchQuery(text)}
         onFilter={handlePresentModalPress}
+        onFocus={() => {
+          navigation.navigate('Search');
+        }}
       />
 
       <TabView

@@ -15,6 +15,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useNavigation } from '@react-navigation/native';
 import { useTheme } from '@shopify/restyle';
 import { Image } from 'expo-image';
+import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
+import { useSocialLogin } from '@/services/api/auth/login';
+import { login } from '@/store/auth';
+import { setUserData } from '@/store/user';
+import { setShowLoading } from '@/store/loader';
 
 const schema = z.object({
   fullName: z
@@ -52,6 +57,8 @@ export const Register = () => {
     resolver: zodResolver(schema),
   });
 
+  const { mutate: socialApi, isLoading: isLoadingSocial } = useSocialLogin();
+
   const onSubmit = (data: RegisterFormType) => {
     registerApi(
       {
@@ -81,6 +88,58 @@ export const Register = () => {
         },
       }
     );
+  };
+
+  const googleLogin = async () => {
+    setShowLoading(true);
+    try {
+      await GoogleSignin.hasPlayServices();
+      const userInfo = await GoogleSignin.signIn();
+
+      console.log('userInfo', JSON.stringify(userInfo, null, 2));
+
+      socialApi(
+        {
+          email: userInfo?.user?.email,
+          provider: 'google',
+          token: userInfo?.user?.id,
+          user_type: '1',
+          full_name: userInfo?.user?.name,
+        },
+        {
+          onSuccess: (data) => {
+            console.log('data', JSON.stringify(data?.response?.data, null, 2));
+
+            if (data?.response?.status === 200) {
+              setShowLoading(false);
+              login(data?.response?.data?.token);
+              setUserData(data?.response?.data);
+            } else {
+              showErrorMessage(data?.response?.message);
+            }
+          },
+          onError: (error) => {
+            console.log('error', error?.response);
+
+            // An error happened!
+            console.log(`error`, error?.response?.data);
+            setShowLoading(false);
+          },
+        }
+      );
+    } catch (error) {
+      console.log('error', error);
+      setShowLoading(false);
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        // user cancelled the login flow
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+        // operation (e.g. sign in) is in progress already
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        // play services not available or outdated
+      } else {
+        // some other error happened
+      }
+    }
   };
 
   return (
@@ -138,9 +197,9 @@ export const Register = () => {
           gap={'medium'}
           marginVertical={'large'}
         >
-          <IconButton icon="apple" onPress={() => null} color={'grey500'} />
-          <IconButton icon="google" onPress={() => null} color={'grey500'} />
-          <IconButton icon="facebook" onPress={() => null} color={'grey500'} />
+          {/* <IconButton icon="apple" onPress={() => null} color={'grey500'} /> */}
+          <IconButton icon="google" onPress={googleLogin} color={'grey500'} />
+          {/* <IconButton icon="facebook" onPress={() => null} color={'grey500'} /> */}
         </View>
 
         {/* <View paddingVertical={'2xl'} alignSelf={'center'}>

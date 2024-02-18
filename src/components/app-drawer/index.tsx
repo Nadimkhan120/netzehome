@@ -175,6 +175,7 @@ export function AppDrawer({ children }: AppDrawer) {
               <View flex={1} paddingBottom={'large'} justifyContent={'flex-end'}>
                 <PressableScale
                   onPress={() => {
+                    closeDrawer();
                     removeUserData();
                     logOut();
                   }}

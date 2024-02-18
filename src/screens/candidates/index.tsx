@@ -172,6 +172,9 @@ export const Candidates = () => {
         searchValue={searchQuery}
         onChangeText={(text) => setSearchQuery(text)}
         onFilter={handlePresentModalPress}
+        onFocus={() => {
+          navigate('Search');
+        }}
       />
 
       <TabView
