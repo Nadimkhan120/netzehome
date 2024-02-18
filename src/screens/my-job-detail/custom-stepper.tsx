@@ -17,19 +17,25 @@ export const CustomStepper = ({ element, index, count }: StepperProps) => {
     <View alignItems={'center'}>
       <View
         style={styles.stepIcon}
-        backgroundColor={element?.completed ? 'primary' : 'tertiary'}
+        backgroundColor={
+          element?.person_step?.is_completed === '1' ? 'primary' : 'tertiary'
+        }
         alignItems={'center'}
         justifyContent={'center'}
       >
-        <Text color={element?.completed ? 'white' : 'primary'}>
+        <Text color={element?.person_step?.is_completed === '1' ? 'white' : 'primary'}>
           {index + 1}
         </Text>
       </View>
       {index < count - 1 && (
         <Image
-          source={element?.completed ? icons['plain-line'] : icons['stepper']}
+          source={
+            element?.person_step?.is_completed === '1'
+              ? icons['plain-line']
+              : icons['stepper']
+          }
           style={{ height: scale(80), width: scale(2) }}
-          contentFit={element?.completed ? null : 'contain'}
+          contentFit={element?.person_step?.is_completed === '1' ? null : 'contain'}
         />
       )}
       {/* <View>

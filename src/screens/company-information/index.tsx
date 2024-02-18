@@ -3,7 +3,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useNavigation } from '@react-navigation/native';
 import { useTheme } from '@shopify/restyle';
 import { useForm } from 'react-hook-form';
-import { ScrollView, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { scale } from 'react-native-size-matters';
 import * as z from 'zod';
 import StepIndicator from '@/components/indicator-2';
@@ -18,6 +18,7 @@ import { useEducationLevels, useExperienceLevels } from '@/services/api/settings
 import SelectionBox from '@/components/drop-down';
 import { SelectOptionButton } from '@/components/select-option-button';
 import { useExperience, setSelectedLocation } from '@/store/experience';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const labels = ['Registration', 'Information', 'Invite'];
 
@@ -32,9 +33,9 @@ const schema = z.object({
   education: z.string({
     required_error: 'Education is required',
   }),
-  skills: z.string({
-    required_error: 'Skilles are  required',
-  }),
+  // skills?: z.string({
+  //   required_error: 'Skilles are  required',
+  // }),
   location: z.string({
     required_error: 'Location is required',
   }),
@@ -71,7 +72,7 @@ export const CompanyInformation = () => {
       experience_level_id: parseInt(data.experience),
       user_id: user?.id,
       //@ts-ignore
-      skills: [data?.skills],
+      //skills: [data?.skills],
       google_location: data?.location,
     };
 
@@ -86,7 +87,7 @@ export const CompanyInformation = () => {
         experience_level_id: parseInt(data.experience),
         user_id: user?.id,
         //@ts-ignore
-        skills: [data?.skills],
+        //skills: [data?.skills],
         google_location: data?.location,
       },
       {
@@ -97,7 +98,7 @@ export const CompanyInformation = () => {
             navigate('SendInvite');
             setSelectedLocation('');
           } else {
-            showErrorMessage(data?.response?.message);
+            // showErrorMessage(data?.response?.message);
           }
         },
         onError: (error) => {
@@ -116,7 +117,7 @@ export const CompanyInformation = () => {
   }, [selectedLocation]);
 
   return (
-    <Screen backgroundColor={colors.white} edges={['top']}>
+    <Screen backgroundColor={colors.white} edges={['top', 'bottom']}>
       <ScreenHeader />
 
       <View
@@ -127,7 +128,7 @@ export const CompanyInformation = () => {
         <StepIndicator stepCount={3} currentPosition={1} labels={labels} />
       </View>
 
-      <ScrollView
+      <KeyboardAwareScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.content}
       >
@@ -183,12 +184,12 @@ export const CompanyInformation = () => {
               )}
             </View>
 
-            <ControlledInput
+            {/* <ControlledInput
               placeholder="Enter skills"
               label="Skills"
               control={control}
               name="skills"
-            />
+            /> */}
 
             <SelectOptionButton
               label="Location"
@@ -207,10 +208,12 @@ export const CompanyInformation = () => {
               name="location"
             /> */}
           </View>
-          <View height={scale(24)} />
-          <Button label="Next" onPress={handleSubmit(onSubmit)} loading={isLoading} />
         </View>
-      </ScrollView>
+      </KeyboardAwareScrollView>
+      <View height={scale(24)} />
+      <View marginHorizontal={'large'}>
+        <Button label="Next" onPress={handleSubmit(onSubmit)} loading={isLoading} />
+      </View>
     </Screen>
   );
 };

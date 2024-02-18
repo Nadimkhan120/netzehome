@@ -1,10 +1,4 @@
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { ScrollView, StyleSheet, useWindowDimensions } from 'react-native';
 import { scale } from 'react-native-size-matters';
@@ -24,14 +18,7 @@ import {
 } from '@/services/api/company';
 import { useUser } from '@/store/user';
 import { palette, type Theme } from '@/theme';
-import {
-  Button,
-  ControlledInput,
-  PressableScale,
-  Screen,
-  Text,
-  View,
-} from '@/ui';
+import { Button, ControlledInput, PressableScale, Screen, Text, View } from '@/ui';
 import { DescriptionField } from '@/ui/description-field';
 import { showErrorMessage, showSuccessMessage } from '@/utils';
 import { Avatar } from '@/components/avatar';
@@ -49,6 +36,7 @@ import {
 import { SelectModalItem } from '@/components/select-modal-item';
 import { format } from 'date-fns';
 import DatePicker from 'react-native-date-picker';
+import { useExperience } from '@/store/experience';
 
 const schema = z.object({
   name: z.string({
@@ -118,10 +106,13 @@ export const AddEducation = () => {
 
   const data = route?.params?.data;
 
-  const { handleSubmit, control, setValue, watch } =
-    useForm<AddEducationFormType>({
-      resolver: zodResolver(schema),
-    });
+  const selectedSchool = useExperience((state) => state?.selectedSchool);
+  const selectedField = useExperience((state) => state?.selectedField);
+  const selectedDegree = useExperience((state) => state?.selectedDegree);
+
+  const { handleSubmit, control, setValue, watch } = useForm<AddEducationFormType>({
+    resolver: zodResolver(schema),
+  });
 
   const onSubmit = (data: AddEducationFormType) => {
     return;
@@ -142,6 +133,8 @@ export const AddEducation = () => {
     );
   }, []);
 
+  console.log('selectedSchool?.name', selectedSchool?.name);
+
   return (
     <Screen backgroundColor={colors.white} edges={['top']}>
       <ScreenHeader title="Add Education" showBorder={true} icon="close" />
@@ -158,8 +151,8 @@ export const AddEducation = () => {
               Notify network
             </Text>
             <Text variant={'regular13'} paddingTop={'small'} color={'grey300'}>
-              Turn on to notify your network of key profile changes (such as new
-              job) and work anniversaries. Updates can take up to 2 hours.
+              Turn on to notify your network of key profile changes (such as new job) and
+              work anniversaries. Updates can take up to 2 hours.
             </Text>
           </View>
           <SwitchToggle
@@ -175,8 +168,8 @@ export const AddEducation = () => {
         <View paddingTop={'large'} paddingHorizontal={'large'} rowGap={'small'}>
           <SelectOptionButton
             label="School"
-            isSelected={false}
-            selectedText="Please Select"
+            isSelected={selectedSchool?.name ? true : false}
+            selectedText={selectedSchool?.name ?? 'Please Select'}
             icon={'chevron-down'}
             onPress={() => {
               navigate('ChooseSchool');
@@ -185,8 +178,8 @@ export const AddEducation = () => {
 
           <SelectOptionButton
             label="Degree"
-            isSelected={false}
-            selectedText="Please Select"
+            isSelected={selectedDegree?.name ? true : false}
+            selectedText={selectedDegree?.name ?? 'Please Select'}
             icon={'chevron-down'}
             onPress={() => {
               navigate('ChooseDegree');
@@ -195,8 +188,8 @@ export const AddEducation = () => {
 
           <SelectOptionButton
             label="Field of study"
-            isSelected={false}
-            selectedText="Please Select"
+            isSelected={selectedField?.name ? true : false}
+            selectedText={selectedField?.name ?? 'Please Select'}
             icon={'chevron-down'}
             onPress={() => {
               navigate('ChooseDegreeField');
@@ -265,6 +258,7 @@ export const AddEducation = () => {
         modal
         locale="en"
         open={openStartDate}
+        mode="date"
         date={startDate}
         onConfirm={(date) => {
           const myDate = new Date(date);
@@ -282,6 +276,7 @@ export const AddEducation = () => {
         modal
         locale="en"
         open={openEndDate}
+        mode="date"
         date={endDate}
         onConfirm={(date) => {
           const myDate = new Date(date);

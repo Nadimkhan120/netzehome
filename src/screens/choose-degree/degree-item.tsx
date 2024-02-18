@@ -6,12 +6,12 @@ import { PressableScale, Text, View } from '@/ui';
 
 type DegreeItem = {
   data: any;
-  onPress: () => void;
+  onPress: (data: any) => void;
 };
 
 const DegreeItem = ({ onPress, data }: DegreeItem) => {
   return (
-    <PressableScale onPress={onPress}>
+    <PressableScale onPress={() => onPress(data)}>
       <View
         flexDirection={'row'}
         paddingHorizontal={'large'}

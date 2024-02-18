@@ -57,6 +57,7 @@ import CandidateProfile from '@/screens/candidate-profile';
 import { Job } from '@/screens/job';
 import JobDetail from '@/screens/job-detail';
 import { TabNavigator } from './tab-navigator';
+import { SearchResults } from '@/screens/search-results';
 
 export type AppStackParamList = {
   TabNavigator: undefined;
@@ -101,7 +102,7 @@ export type AppStackParamList = {
   Search: undefined;
   EditProfile: { user: any };
   AddProfile: undefined;
-  MyJobDetail: undefined;
+  MyJobDetail: { data: any };
   ChatList: undefined;
   AddEducation: { id: any };
   AddExperience: { id: any };
@@ -114,6 +115,7 @@ export type AppStackParamList = {
   ChooseDegreeField: undefined;
   ChooseSchool: undefined;
   Chats: { person_id?: any; chat_id: any; profile_pic: any; name: any };
+  SearchResults: { searchKeyword: any };
 };
 
 const Stack = createNativeStackNavigator<AppStackParamList>();
@@ -182,6 +184,7 @@ export const AppNavigator = () => {
         <Stack.Screen name="ChooseSchool" component={ChooseSchool} />
         <Stack.Screen name="NewJobDetails" component={NewJobDetails} />
         <Stack.Screen name="NewCompanyDetails" component={NewCompanyDetails} />
+        <Stack.Screen name="SearchResults" component={SearchResults} />
       </Stack.Group>
     </Stack.Navigator>
   );

@@ -26,12 +26,13 @@ import { Avatar } from '@/components/avatar';
 import { useActionSheet } from '@expo/react-native-action-sheet';
 import * as ImagePicker from 'expo-image-picker';
 import { useGetUserProfileDetails, useGetProfile } from '@/services/api/home';
-import { useUpdatePicture } from '@/services/api/profile';
+import { useUpdatePicture, useProfileDetails } from '@/services/api/profile';
 import * as mime from 'react-native-mime-types';
 import Loader from '@/components/loader';
 import { useUpdateCandidateProfile } from '@/services/api/candidate';
 import { useExperience, setSelectedLocation } from '@/store/experience';
 import { SelectOptionButton } from '@/components/select-option-button';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const schema = z.object({
   name: z.string({
@@ -64,7 +65,8 @@ export const EditProfile = () => {
   const user = useUser((state) => state.profile);
   const selectedLocation = useExperience((state) => state.selectedLocation);
 
-  useSoftKeyboardEffect();
+  //useSoftKeyboardEffect();
+
   const { showActionSheetWithOptions } = useActionSheet();
 
   const [image, setImage] = useState(null);
@@ -89,24 +91,43 @@ export const EditProfile = () => {
 
   const profileData = data?.response?.data;
 
+  // console.log('profileData', JSON.stringify(profileData, null, 2));
+
   const profile = route?.params?.user;
 
   const { handleSubmit, control, setValue, watch, trigger } =
     useForm<EditProfileFormType>({
       resolver: zodResolver(schema),
-      defaultValues: {
-        name: profile?.full_name,
-        email: profile?.contact?.email,
-        jobTitle: profile?.job_titles,
-        cover: profile?.resume_bio ? profile?.resume_bio : '',
-        location: profile?.contact?.google_location,
-        salary: profile?.expected_salary,
-      },
+      // defaultValues: {
+      //   name: profile?.full_name,
+      //   email: profile?.contact?.email,
+      //   jobTitle: profile?.job_titles,
+      //   cover: profile?.resume_bio ? profile?.resume_bio : '',
+      //   location: profile?.contact?.google_location,
+      //   salary: profile?.expected_salary,
+      // },
     });
 
   const { mutate: updateProfilePic, isLoading: savingPic } = useUpdatePicture();
 
   const watchLocation = watch('location');
+
+  useEffect(() => {
+    if (profileData) {
+      setValue('name', profileData?.full_name);
+      setValue('jobTitle', profileData?.job_titles);
+      setValue('salary', profileData?.expected_salary);
+      setValue('email', profileData?.contact?.email);
+      setValue('cover', profileData?.resume_bio);
+
+      const location = {
+        address: profileData?.contact?.google_location,
+        city: profileData?.contact?.country_name,
+        country: profileData?.contact?.city_name,
+      };
+      setSelectedLocation(location);
+    }
+  }, [profileData]);
 
   const onSubmit = (data: EditProfileFormType) => {
     const body: any = {
@@ -128,7 +149,7 @@ export const EditProfile = () => {
       body.country_id = selectedLocation?.country;
     }
 
-    console.log('body', JSON.stringify(body, null, 2));
+    /// console.log('body', JSON.stringify(body, null, 2));
 
     updateProfile(body, {
       onSuccess: (responseData) => {
@@ -291,10 +312,10 @@ export const EditProfile = () => {
   };
 
   return (
-    <Screen backgroundColor={colors.white} edges={['top']}>
+    <Screen backgroundColor={colors.white} edges={['top', 'bottom']}>
       <ScreenHeader title="Edit Profile" showBorder={true} icon="close" />
 
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
+      <KeyboardAwareScrollView contentContainerStyle={styles.scrollContainer}>
         <View>
           <View>
             <Image
@@ -412,12 +433,11 @@ export const EditProfile = () => {
             name="cover"
           />
         </View>
-        <View height={scale(24)} />
-        <View flex={1} justifyContent={'flex-end'} paddingHorizontal={'large'}>
-          <Button label="Update" onPress={handleSubmit(onSubmit)} loading={updating} />
-        </View>
-      </ScrollView>
-
+      </KeyboardAwareScrollView>
+      <View height={scale(24)} />
+      <View paddingHorizontal={'large'}>
+        <Button label="Update" onPress={handleSubmit(onSubmit)} loading={updating} />
+      </View>
       <Loader isVisible={savingPic} />
     </Screen>
   );

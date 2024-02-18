@@ -48,9 +48,11 @@ export const Search = () => {
   const { data: seachData } = useSearchVacancies({
     enabled: debouncedSearch?.length ? true : false,
     variables: {
-      keyword: debouncedSearch,
+      keyword: debouncedSearch?.toLocaleLowerCase(),
     },
   });
+
+  //console.log('seachData', JSON.stringify(seachData, null, 2));
 
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   // variables
@@ -65,6 +67,11 @@ export const Search = () => {
   const handleDismissModalPress = useCallback(() => {
     bottomSheetModalRef.current?.dismiss();
   }, []);
+
+  // callbacks
+  const onKeyPress = (data) => {
+    console.log('data', data.nativeEvent.key);
+  };
 
   const renderItem = useCallback(
     ({ item }) => {
@@ -112,6 +119,11 @@ export const Search = () => {
           showBorder={true}
           value={searchQuery}
           onChangeText={setSearchQuery}
+          returnKeyType="search"
+          returnKeyLabel="Search"
+          onSubmitEditing={(e) => {
+            navigate('SearchResults', { searchKeyword: debouncedSearch });
+          }}
         />
       </View>
 

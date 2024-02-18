@@ -25,7 +25,7 @@ const Applied = () => {
       return (
         <JobItem
           data={item}
-          onPress={() => navigate('MyJobDetail')}
+          onPress={() => navigate('MyJobDetail', { data: item })}
           onOptionPress={function (): void {}}
         />
       );
@@ -41,7 +41,7 @@ const Applied = () => {
     );
   }
 
-  //console.log('data?.response?.data', JSON.stringify(data?.response?.data, null, 2));
+  // console.log('applied jobs', JSON.stringify(data?.response?.data, null, 2));
 
   return (
     <View flex={1} backgroundColor={'grey500'}>

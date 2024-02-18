@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { FlashList } from '@shopify/flash-list';
 import { useTheme } from '@shopify/restyle';
 import { scale } from 'react-native-size-matters';
@@ -11,18 +11,40 @@ import { useNotifications, useNotificationMarkAsRead } from '@/services/api/noti
 import ActivityIndicator from '@/components/activity-indicator';
 import { showErrorMessage, showSuccessMessage } from '@/utils';
 import { queryClient } from '@/services/api/api-provider';
-
-const menu = [
-  { heading: 'Profile 1', active: true },
-  { heading: 'Profile 2', active: false },
-];
+import { useUser } from '@/store/user';
 
 export const Notifications = () => {
   const { colors } = useTheme<Theme>();
 
-  const { isLoading, data } = useNotifications();
+  const profiles = useUser((state) => state?.userProfiles);
+
+  const selectedProfile = useUser((state) => state?.profile);
+
+  const [menu, setMenu] = useState([]);
+
+  const [selectedIndex, setSelectedIndex] = useState(null);
+
+  const { isLoading, data } = useNotifications({
+    variables: {
+      unique_id:
+        selectedIndex === null ? selectedProfile?.unique_id : selectedIndex?.unique_id,
+    },
+  });
+
   const { mutate: markNotificationAsRead, isLoading: markingAsRead } =
     useNotificationMarkAsRead();
+
+  useEffect(() => {
+    let makeMenu = profiles?.map((item, index) => {
+      return {
+        ...item,
+        heading: `Profile ${index + 1}`,
+        active: selectedProfile?.unique_id === item?.unique_id ? true : false,
+      };
+    });
+
+    setMenu(makeMenu);
+  }, []);
 
   const renderItem = useCallback(({ item, index }) => {
     return <NotificationListItem key={index} item={item} />;
@@ -79,7 +101,27 @@ export const Notifications = () => {
           backgroundColor={'white'}
         >
           {menu.map((element) => {
-            return <CapsuleView key={element?.heading} element={element} />;
+            return (
+              <CapsuleView
+                key={element?.heading}
+                element={element}
+                onPress={(element) => {
+                  setSelectedIndex(element);
+
+                  let existingMenu = [...menu];
+
+                  let yes = existingMenu.map((item) => {
+                    return {
+                      ...item,
+                      active: item?.unique_id === element?.unique_id ? true : false,
+                    };
+                  });
+
+                  setMenu(yes);
+                  queryClient.invalidateQueries(useNotifications.getKey());
+                }}
+              />
+            );
           })}
         </View>
 

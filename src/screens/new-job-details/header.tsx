@@ -11,7 +11,7 @@ type DetailContainerProps = {
 const Header = ({ data }: DetailContainerProps) => {
   const navigation = useNavigation();
 
-  console.log('Header', JSON.stringify(data, null, 2));
+  console.log('data', JSON.stringify(data, null, 2));
 
   return (
     <PressableScale onPress={() => {}}>
@@ -25,7 +25,11 @@ const Header = ({ data }: DetailContainerProps) => {
         </Text>
         <View flexDirection={'row'} marginTop={'small'}>
           <Image
-            source={{ uri: 'https://fakeimg.pl/400x400/cccccc/cccccc' }}
+            source={{
+              uri: data?.company_images?.pic
+                ? data?.company_images?.pic
+                : 'https://fakeimg.pl/400x400/cccccc/cccccc',
+            }}
             placeholder={{ uri: 'https://fakeimg.pl/400x400/cccccc/cccccc' }}
             transition={1000}
             style={{
@@ -48,6 +52,7 @@ const Header = ({ data }: DetailContainerProps) => {
           gap={'medium'}
           alignItems={'center'}
           paddingTop={'small'}
+          flexWrap={'wrap'}
         >
           {data?.skills?.map((item, index) => {
             return (

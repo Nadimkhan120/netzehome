@@ -91,12 +91,14 @@ interface UserState {
   user: User;
   company: Company;
   roles: Role[];
+  userProfiles: any[];
   setUserData: (data: any) => void;
   removeUserData: () => void;
   setUserWithProfile: (data: any) => void;
   setUserCompanyWithRoles: (data: any) => void;
   setProfilePic: (data: any) => void;
   setCoverPic: (data: any) => void;
+  setUserProfiles: (data: any) => void;
 }
 
 export const useUser = create<UserState>()(
@@ -106,6 +108,7 @@ export const useUser = create<UserState>()(
       user: null,
       company: null,
       roles: [],
+      userProfiles: [],
       setUserData: (data: any) => {
         set({
           profile: data?.profile,
@@ -151,6 +154,11 @@ export const useUser = create<UserState>()(
           company: data?.company,
         });
       },
+      setUserProfiles: (data: any) => {
+        set({
+          userProfiles: data,
+        });
+      },
     }),
     {
       name: 'user-storage', // name of item in the storage (must be unique)
@@ -187,4 +195,9 @@ export const setProfilePic = (data) => {
 // set user data
 export const setCoverPic = (data) => {
   return useUser.getState().setCoverPic(data);
+};
+
+// set user data
+export const setUserProfiles = (data) => {
+  return useUser.getState().setUserProfiles(data);
 };

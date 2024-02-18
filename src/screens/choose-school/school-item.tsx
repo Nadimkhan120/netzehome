@@ -6,12 +6,12 @@ import { PressableScale, Text, View } from '@/ui';
 
 type SchoolItem = {
   data: any;
-  onPress: () => void;
+  onPress: (data: any) => void;
 };
 
 const SchoolItem = ({ onPress, data }: SchoolItem) => {
   return (
-    <PressableScale onPress={onPress}>
+    <PressableScale onPress={() => onPress(data)}>
       <View
         flexDirection={'row'}
         paddingHorizontal={'large'}

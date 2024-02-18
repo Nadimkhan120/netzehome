@@ -11,6 +11,8 @@ type SaveJob = { job_id: number };
 type JobVariables = { id: number };
 type SearchVariable = { id: number; keyword: string };
 
+type AppliedJobDetailPaylaod = { person_id: number; job_id: any };
+
 type VariableAny = void;
 
 type Variable2 = { id: number };
@@ -113,9 +115,22 @@ export const useAppliedJobs = createQuery<Response4, SuggestedJobs, AxiosError>(
   queryFn: ({ queryKey: [primaryKey, variables] }) => {
     return NetWorkService.Get({
       url: `${primaryKey}?person_id=${variables?.person_id}`,
-      // data: {
-      //   person_id: variables?.person_id,
-      // },
+
+      //@ts-ignore
+    }).then((response) => response.data);
+  },
+});
+
+export const useAppliedJobDetails = createQuery<
+  Response4,
+  AppliedJobDetailPaylaod,
+  AxiosError
+>({
+  primaryKey: 'applicant/applied-job-detail',
+  queryFn: ({ queryKey: [primaryKey, variables] }) => {
+    return NetWorkService.Get({
+      url: `${primaryKey}?person_id=${variables?.person_id}&job_id=${variables.job_id}`,
+
       //@ts-ignore
     }).then((response) => response.data);
   },

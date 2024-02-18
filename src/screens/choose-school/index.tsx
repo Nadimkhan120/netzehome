@@ -10,8 +10,10 @@ import type { User } from '@/services/api/user';
 import { useGetUser } from '@/services/api/user';
 import { useUser } from '@/store/user';
 import type { Theme } from '@/theme';
-import { Screen, Text, View } from '@/ui';
+import { PressableScale, Screen, Text, View } from '@/ui';
 import DegreeItem from './school-item';
+import { useSchools } from '@/services/api/settings';
+import { setSelectedSchool, useExperience } from '@/store/experience';
 
 const employees = [
   { id: 1, name: 'Harvard University' },
@@ -31,34 +33,53 @@ export const ChooseSchool = () => {
 
   const { goBack } = useNavigation();
 
-  const company = useUser((state) => state?.company);
+  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+
   const [selectUser, setSelectUser] = useState<User | null>(null);
 
-  const { data, isLoading } = useGetUser({
-    variables: {
-      id: company?.id,
-    },
-  });
+  const selectedSchool = useExperience((state) => state?.selectedSchool);
 
-  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+  const { data, isLoading } = useSchools();
+
+  const goBackToScreen = () => {
+    if (selectedSchool !== '') {
+      goBack();
+    }
+  };
 
   const renderItem = useCallback(
     ({ item }) => {
       return (
         <DegreeItem
           data={item}
-          onPress={() => {
-            console.log('hello');
+          onPress={(payload) => {
+            setSelectedSchool(payload);
           }}
         />
       );
     },
-    [data, bottomSheetModalRef, selectUser, setSelectUser]
+    [
+      data,
+      bottomSheetModalRef,
+      selectUser,
+      setSelectUser,
+      setSelectedSchool,
+      selectedSchool,
+    ]
   );
 
   return (
     <Screen backgroundColor={colors.white} edges={['top']}>
-      <ScreenHeader title="School" />
+      <ScreenHeader
+        title="School"
+        rightElement={
+          <PressableScale onPress={goBackToScreen}>
+            <Text variant={'medium17'} color={'primary'}>
+              Done
+            </Text>
+          </PressableScale>
+        }
+      />
 
       <View
         backgroundColor={'grey500'}
@@ -72,15 +93,11 @@ export const ChooseSchool = () => {
       <View flex={1} backgroundColor={'grey500'}>
         <FlashList
           //@ts-ignore
-          data={employees}
+          data={data}
           renderItem={renderItem}
           estimatedItemSize={150}
           ListEmptyComponent={
-            <View
-              height={scale(300)}
-              justifyContent={'center'}
-              alignItems={'center'}
-            >
+            <View height={scale(300)} justifyContent={'center'} alignItems={'center'}>
               <Text>No Users Found</Text>
             </View>
           }

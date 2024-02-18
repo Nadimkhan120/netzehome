@@ -26,9 +26,18 @@ const OverViewTab = ({ route, data }: any) => {
   const user = useUser((state) => state.user);
   const profile = useUser((state) => state.profile);
 
-  const { mutate: applyJobApi, isLoading } = useApplyJob();
+  const { mutate: applyJobApi, isLoading, error } = useApplyJob();
+
+  const isApplied =
+    data?.applicants?.filter((element) => element?.unique_id === profile?.unique_id)
+      ?.length > 0;
 
   const applyJob = () => {
+    if (isApplied) {
+      showErrorMessage('Already applied');
+      return;
+    }
+
     let body = { unique_id: profile?.unique_id, person_id: user?.id, job_id: data?.id };
 
     applyJobApi(body, {
@@ -36,6 +45,8 @@ const OverViewTab = ({ route, data }: any) => {
         console.log('data?.response?.message', data?.response?.message);
         if (data?.response?.status === 200) {
           queryClient.invalidateQueries(useAppliedJobs.getKey());
+          queryClient.invalidateQueries(useJobDetail.getKey());
+
           showSuccessMessage('Job applied successfully.');
         } else {
           showErrorMessage(data?.response?.message);
@@ -56,13 +67,13 @@ const OverViewTab = ({ route, data }: any) => {
       <View paddingVertical={'large'} paddingHorizontal={'large'}>
         <PressableScale onPress={applyJob}>
           <View
-            backgroundColor={'secondary'}
+            backgroundColor={isApplied ? 'secondary' : 'primary'}
             height={scale(44)}
             borderRadius={scale(8)}
             justifyContent={'center'}
             alignItems={'center'}
           >
-            <Text color={'primary'} variant={'medium14'}>
+            <Text color={isApplied ? 'primary' : 'white'} variant={'medium14'}>
               {isLoading ? '...Applying' : 'Apply Job'}
             </Text>
           </View>
@@ -152,6 +163,8 @@ export function NewJobDetails() {
     },
   });
 
+  // console.log('new job details', JSON.stringify(jobDetailsData, null, 2));
+
   const renderScene = useCallback(
     ({ route }: any) => {
       switch (route.key) {
@@ -163,6 +176,7 @@ export function NewJobDetails() {
               data={{
                 data: jobDetailsData?.response?.data?.long_description,
                 id: jobDetailsData?.response?.data?.id,
+                applicants: jobDetailsData?.response?.data?.applicants,
               }}
             />
           );

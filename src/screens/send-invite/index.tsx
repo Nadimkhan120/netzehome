@@ -170,18 +170,17 @@ export const SendInvite = () => {
             <View width={scale(100)}>
               <Button
                 backgroundColor={'black'}
-                label="Finish"
-                onPress={sendIvitesToPeople}
-                loading={isLoadingInvite}
-              />
-            </View>
-            <View width={scale(100)}>
-              <Button
                 label="Skip"
                 onPress={() => {
                   loginFromVerifyCode();
                 }}
-                backgroundColor={'grey300'}
+              />
+            </View>
+            <View width={scale(100)}>
+              <Button
+                label="Finish"
+                onPress={sendIvitesToPeople}
+                loading={isLoadingInvite}
               />
             </View>
           </View>

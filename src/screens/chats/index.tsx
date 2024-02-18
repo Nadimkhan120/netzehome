@@ -68,7 +68,7 @@ export const Chats = () => {
       chat_id: route?.params?.chat_id,
     },
     enabled: route?.params?.chat_id ? true : false,
-    //  refetchInterval: 5000,
+    refetchInterval: 3000,
   });
 
   const { data: onlineData } = usePersonOnline({
@@ -324,5 +324,6 @@ const styles = StyleSheet.create({
     marginLeft: scale(8),
     height: scale(52),
     paddingHorizontal: scale(8),
+    color: 'black',
   },
 });

@@ -39,9 +39,9 @@ export const LoginAndSecurity = () => {
               </Text>
             </PressableScale>
           </View>
-          <Text paddingTop={'small'} variant={'regular16'} color={'grey200'}>
+          {/* <Text paddingTop={'small'} variant={'regular16'} color={'grey200'}>
             Last updated 14 days ago
-          </Text>
+          </Text> */}
         </View>
         <View height={scale(12)} />
         <Text

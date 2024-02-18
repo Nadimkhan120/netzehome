@@ -10,7 +10,7 @@ type Variables = {
   google_location: string;
   experience_level_id: number;
   education_level_id: number;
-  skills: string;
+  skills?: string;
   user_id: number;
 };
 

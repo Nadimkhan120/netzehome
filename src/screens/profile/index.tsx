@@ -159,7 +159,9 @@ export const Profile = () => {
             onPress={() => {
               navigate('AddEducation', { id: route?.params?.id });
             }}
-          ></InfoRow> */}
+          >
+            <Text>hello</Text>
+          </InfoRow> */}
           <InfoRow
             label={'Skills'}
             onPress={() => {
@@ -174,20 +176,21 @@ export const Profile = () => {
               paddingHorizontal={'large'}
               paddingTop={'medium'}
             >
-              {profileData?.skills?.length &&
-                profileData?.skills?.map((element, index) => {
-                  return (
-                    <View
-                      paddingHorizontal={'large'}
-                      backgroundColor={'primary'}
-                      paddingVertical={'small'}
-                      key={index}
-                      borderRadius={44}
-                    >
-                      <Text color={'white'}>{element?.name}</Text>
-                    </View>
-                  );
-                })}
+              {profileData?.skills?.length > 0
+                ? profileData?.skills?.map((element, index) => {
+                    return (
+                      <View
+                        paddingHorizontal={'large'}
+                        backgroundColor={'primary'}
+                        paddingVertical={'small'}
+                        key={index}
+                        borderRadius={44}
+                      >
+                        <Text color={'white'}>{element?.name}</Text>
+                      </View>
+                    );
+                  })
+                : null}
             </View>
           </InfoRow>
         </View>

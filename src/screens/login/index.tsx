@@ -9,7 +9,7 @@ import { scale } from 'react-native-size-matters';
 import * as z from 'zod';
 import { icons } from '@/assets/icons';
 import { IconButton } from '@/components';
-import { useLogin } from '@/services/api/auth/login';
+import { useLogin, useSocialLogin } from '@/services/api/auth/login';
 import { login, loginFromVerifyCode } from '@/store/auth';
 import { setUserData } from '@/store/user';
 import type { Theme } from '@/theme';
@@ -49,6 +49,7 @@ export const Login = () => {
   const { navigate } = useNavigation();
 
   const { mutate: loginApi, isLoading } = useLogin();
+  const { mutate: socialApi, isLoading: isLoadingSocial } = useSocialLogin();
 
   const { handleSubmit, control } = useForm<FormType>({
     resolver: zodResolver(schema),
@@ -59,7 +60,7 @@ export const Login = () => {
       { email: data?.email, password: data?.password },
       {
         onSuccess: (data) => {
-          console.log('data', JSON.stringify(data?.response?.data, null, 2));
+          // console.log('data', JSON.stringify(data?.response?.data, null, 2));
 
           if (data?.response?.status === 200) {
             login(data?.response?.data?.token);
@@ -82,7 +83,36 @@ export const Login = () => {
     try {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
-      console.log('userInfo', userInfo);
+
+      console.log('userInfo', JSON.stringify(userInfo, null, 2));
+
+      socialApi(
+        {
+          email: userInfo?.user?.email,
+          provider: 'google',
+          token: userInfo?.user?.id,
+          user_type: '1',
+          full_name: userInfo?.user?.name,
+        },
+        {
+          onSuccess: (data) => {
+            console.log('data', JSON.stringify(data?.response?.data, null, 2));
+
+            if (data?.response?.status === 200) {
+              login(data?.response?.data?.token);
+              setUserData(data?.response?.data);
+            } else {
+              showErrorMessage(data?.response?.message);
+            }
+          },
+          onError: (error) => {
+            console.log('error', error?.response);
+
+            // An error happened!
+            console.log(`error`, error?.response?.data);
+          },
+        }
+      );
     } catch (error) {
       console.log('error', error);
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {

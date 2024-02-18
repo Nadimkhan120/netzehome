@@ -5,24 +5,9 @@ import { Image } from 'expo-image';
 import { icons } from '@/assets/icons';
 import { Avatar } from '@/components/avatar';
 import { PressableScale, Text, View } from '@/ui';
+import { parseISO, formatDistanceToNow } from 'date-fns';
 
 type JobItemProps = {
-  //   data: {
-  //     full_name: string;
-  //     is_block: string;
-  //     bio: string;
-  //     email: string;
-  //     phone: string;
-  //     person_resume_id: string;
-  //     description: string;
-  //     cover_pic: string | null;
-  //     profile_pic: string | null;
-  //     unique_id: string;
-  //     expected_salary: string;
-  //     job_title: string;
-  //     country: string;
-  //     city: string;
-  //   };
   data: any;
   showStatus?: boolean;
   onPress: () => void;
@@ -30,7 +15,17 @@ type JobItemProps = {
 };
 
 const JobItem = ({ data, showStatus, onPress, onOptionPress }: JobItemProps) => {
-  console.log('data', JSON.stringify(data, null, 2));
+  // console.log('JobItem', JSON.stringify(data, null, 2));
+
+  // Parse the given date string into a Date object
+  const parsedDate = parseISO(data?.updated_at);
+
+  // Calculate the difference between the current time and the parsed date in hours
+  // @ts-ignore
+  const hoursDifference = Math.round((new Date() - parsedDate) / (1000 * 60 * 60));
+
+  // Format the difference in hours as "X hours ago"
+  const formattedDifference = formatDistanceToNow(parsedDate, { addSuffix: true });
 
   return (
     <PressableScale onPress={onPress}>
@@ -61,7 +56,7 @@ const JobItem = ({ data, showStatus, onPress, onOptionPress }: JobItemProps) => 
             justifyContent={'space-between'}
           >
             <Text variant={'semiBold14'} color={'black'}>
-              React Native Developer
+              {data?.job_titles}
             </Text>
             <PressableScale onPress={() => onOptionPress?.()}>
               <Image
@@ -78,7 +73,7 @@ const JobItem = ({ data, showStatus, onPress, onOptionPress }: JobItemProps) => 
             marginVertical={'tiny'}
             color={'grey100'}
           >
-            Brandzmate
+            {data?.company_name}
           </Text>
           <Text
             variant={'regular12'}
@@ -86,18 +81,18 @@ const JobItem = ({ data, showStatus, onPress, onOptionPress }: JobItemProps) => 
             marginVertical={'tiny'}
             color={'black'}
           >
-            Lahore, Pakistan
+            {data?.city_name}, {data?.country_name}
           </Text>
 
           <View flexDirection={'row'} marginVertical={'tiny'}>
             <View>
               <Text variant={'semiBold12'} style={{ color: 'red' }}>
-                Rejected{' '}
+                {data?.applied_job_status}{' '}
               </Text>
             </View>
             <View>
               <Text variant={'regular12'} color={'grey200'}>
-                Updated 6 hours ago
+                Updated {formattedDifference}
               </Text>
             </View>
           </View>

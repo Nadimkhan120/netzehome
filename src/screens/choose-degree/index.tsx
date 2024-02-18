@@ -7,24 +7,12 @@ import { scale } from 'react-native-size-matters';
 import { ScreenHeader } from '@/components/screen-header';
 import { SearchField } from '@/components/search-field';
 import type { User } from '@/services/api/user';
-import { useGetUser } from '@/services/api/user';
 import { useUser } from '@/store/user';
 import type { Theme } from '@/theme';
-import { Screen, Text, View } from '@/ui';
+import { PressableScale, Screen, Text, View } from '@/ui';
 import DegreeItem from './degree-item';
-
-const employees = [
-  { id: 1, name: 'Bachelor of Science (B.Sc.)' },
-  { id: 2, name: 'Bachelor of Arts (B.A.)' },
-  { id: 3, name: 'Master of Business Administration (MBA)' },
-  { id: 4, name: 'Doctor of Medicine (M.D.)' },
-  { id: 5, name: 'Master of Science (M.Sc.)' },
-  { id: 6, name: 'Bachelor of Engineering (B.Eng.)' },
-  { id: 7, name: 'Bachelor of Fine Arts (B.F.A.)' },
-  { id: 8, name: 'Doctor of Philosophy (Ph.D.)' },
-  { id: 9, name: 'Master of Education (M.Ed.)' },
-  { id: 10, name: 'Juris Doctor (J.D.)' },
-];
+import { setSelectedDegree, useExperience } from '@/store/experience';
+import { useDegree } from '@/services/api/settings';
 
 export const ChooseDegree = () => {
   const { colors } = useTheme<Theme>();
@@ -34,11 +22,17 @@ export const ChooseDegree = () => {
   const company = useUser((state) => state?.company);
   const [selectUser, setSelectUser] = useState<User | null>(null);
 
-  const { data, isLoading } = useGetUser({
-    variables: {
-      id: company?.id,
-    },
-  });
+  const selectedDegree = useExperience((state) => state?.selectedDegree);
+
+  const { data, isLoading } = useDegree();
+
+  const goBackToScreen = () => {
+    if (selectedDegree !== '') {
+      goBack();
+    }
+  };
+
+  // console.log('data', JSON.stringify(data, null, 2));
 
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
@@ -47,8 +41,8 @@ export const ChooseDegree = () => {
       return (
         <DegreeItem
           data={item}
-          onPress={() => {
-            console.log('hello');
+          onPress={(payload) => {
+            setSelectedDegree(payload);
           }}
         />
       );
@@ -58,7 +52,16 @@ export const ChooseDegree = () => {
 
   return (
     <Screen backgroundColor={colors.white} edges={['top']}>
-      <ScreenHeader title="Degree" />
+      <ScreenHeader
+        title="Degree"
+        rightElement={
+          <PressableScale onPress={goBackToScreen}>
+            <Text variant={'medium17'} color={'primary'}>
+              Done
+            </Text>
+          </PressableScale>
+        }
+      />
 
       <View
         backgroundColor={'grey500'}
@@ -72,7 +75,7 @@ export const ChooseDegree = () => {
       <View flex={1} backgroundColor={'grey500'}>
         <FlashList
           //@ts-ignore
-          data={employees}
+          data={data}
           renderItem={renderItem}
           estimatedItemSize={150}
           ListEmptyComponent={

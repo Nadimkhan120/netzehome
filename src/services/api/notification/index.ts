@@ -3,7 +3,8 @@ import { createQuery, createMutation } from 'react-query-kit';
 
 import { NetWorkService } from '@/services/apinetworkservice';
 
-type Variables = void;
+type Variables = { unique_id: string };
+type SearchQuery = { query: string };
 type MarkRead = { notifications: any };
 
 export type Notification = {
@@ -45,9 +46,11 @@ type Response = any;
 
 export const useNotifications = createQuery<NotificationResponse, Variables, AxiosError>({
   primaryKey: 'notifications/all?page=1&type=internal',
-  queryFn: ({ queryKey: [primaryKey] }) => {
+  queryFn: ({ queryKey: [primaryKey, variables] }) => {
     //@ts-ignore
-    return NetWorkService.Get({ url: primaryKey }).then(
+    return NetWorkService.Get({
+      url: `${primaryKey}&unique_id=${variables?.unique_id}`,
+    }).then(
       //@ts-ignore
       (response) => response.data
     );
@@ -61,4 +64,16 @@ export const useNotificationMarkAsRead = createMutation<Response, MarkRead, Axio
       body: variables,
       // @ts-ignore
     }).then((response) => response?.data),
+});
+
+export const useAllSearch = createQuery<Response, SearchQuery, AxiosError>({
+  primaryKey: 'search',
+  queryFn: ({ queryKey: [primaryKey, variables] }) => {
+    return NetWorkService.Get({
+      url: `${primaryKey}?keyword=${variables?.query}`,
+    }).then(
+      //@ts-ignore
+      (response) => response.data
+    );
+  },
 });

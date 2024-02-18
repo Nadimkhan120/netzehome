@@ -5,6 +5,7 @@ import { NetWorkService } from '@/services/apinetworkservice';
 import { getAuthToken } from '@/store/auth';
 
 type UpdateSkills = { unique_id: number; skills: number[] };
+
 type UpdateExperience = {
   unique_id: number;
   from_date: string;
@@ -17,6 +18,11 @@ type UpdateExperience = {
   job_title: string;
   is_current: string;
   company_description: string;
+};
+
+type DetailPayload = {
+  unique_id: any;
+  person_id: any;
 };
 
 type UpdateProfile = any;
@@ -46,6 +52,16 @@ export const useUpdateExperience = createMutation<Response, UpdateExperience, Ax
     },
   }
 );
+
+export const useProfileDetails = createMutation<Response, DetailPayload, AxiosError>({
+  mutationFn: async (variables) => {
+    return NetWorkService.Post({
+      url: 'candidate/detail',
+      body: variables,
+      // @ts-ignore
+    }).then((response) => response?.data);
+  },
+});
 
 export const useUpdatePicture = createMutation<Response, UpdateProfile, AxiosError>({
   mutationFn: async (variables) => {

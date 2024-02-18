@@ -5,6 +5,8 @@ import { Image } from 'expo-image';
 import { icons } from '@/assets/icons';
 import { Avatar } from '@/components/avatar';
 import { useNavigation } from '@react-navigation/native';
+import { ScrollView, StyleSheet, Dimensions } from 'react-native';
+const { height, width } = Dimensions.get('window');
 
 type HomeSliderItemProps = {
   data: any;
@@ -22,7 +24,7 @@ export const HomeSliderItem = ({ data }: HomeSliderItemProps) => {
           padding={'large'}
           backgroundColor={'white'}
           height={scale(160)}
-          width={scale(300)}
+          width={width}
           justifyContent={'center'}
           alignItems={'center'}
         >
@@ -46,7 +48,8 @@ export const HomeSliderItem = ({ data }: HomeSliderItemProps) => {
         padding={'large'}
         //backgroundColor={'black'}
         height={scale(160)}
-        width={scale(300)}
+        width={width}
+        //width={scale(300)}
         justifyContent={'center'}
         alignItems={'center'}
         style={{
@@ -54,9 +57,9 @@ export const HomeSliderItem = ({ data }: HomeSliderItemProps) => {
         }}
       >
         <View position={'absolute'} left={scale(16)} top={scale(16)}>
-          <PressableScale>
+          {/* <PressableScale>
             <Image source={icons['qr']} style={{ height: scale(24), width: scale(24) }} />
-          </PressableScale>
+          </PressableScale> */}
         </View>
         <View position={'absolute'} right={scale(16)} top={scale(16)}>
           {/* <PressableScale>

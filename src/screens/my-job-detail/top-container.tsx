@@ -24,11 +24,14 @@ export const JobDetailTopContainer = ({ data }: DetailContainerProps) => {
         backgroundColor={'white'}
       >
         <Text variant={'regular20'} color={'black'}>
-          Jr. Front-End Designer
+          {data?.job_titles}
         </Text>
         <View flexDirection={'row'} marginTop={'small'}>
           <Image
-            source={{ uri: 'https://fakeimg.pl/400x400/cccccc/cccccc' }}
+            source={{
+              uri:
+                data?.company?.images?.pic ?? 'https://fakeimg.pl/400x400/cccccc/cccccc',
+            }}
             placeholder={{ uri: 'https://fakeimg.pl/400x400/cccccc/cccccc' }}
             transition={1000}
             style={{
@@ -39,10 +42,10 @@ export const JobDetailTopContainer = ({ data }: DetailContainerProps) => {
           />
           <View marginLeft={'small'} gap={'small'}>
             <Text variant={'medium12'} color={'grey100'}>
-              Kickstarter
+              {data?.company_name}
             </Text>
             <Text variant={'regular12'} color={'grey300'}>
-              Dubai, United Arab Emirates
+              {data?.city_name}, {data?.country_name}
             </Text>
           </View>
         </View>
@@ -51,8 +54,9 @@ export const JobDetailTopContainer = ({ data }: DetailContainerProps) => {
           gap={'medium'}
           alignItems={'center'}
           paddingTop={'small'}
+          flexWrap={'wrap'}
         >
-          {['React', 'MangoDb'].map((item, index) => {
+          {data?.skills?.map((item, index) => {
             return (
               <View
                 key={index}
@@ -65,7 +69,7 @@ export const JobDetailTopContainer = ({ data }: DetailContainerProps) => {
                 flexDirection={'row'}
               >
                 <Text variant={'regular13'} color={'grey100'}>
-                  {item}
+                  {item?.skill}
                 </Text>
               </View>
             );

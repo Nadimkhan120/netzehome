@@ -17,7 +17,7 @@ const JobDetailItem = ({ element }: JobDetailsProps) => {
       gap={'xSmall'}
     >
       <Text variant={'medium14'} color={'black'}>
-        {element?.heading}
+        {element?.step_name}
       </Text>
       <Text variant={'regular12'} color={'grey200'}>
         {element?.description}
