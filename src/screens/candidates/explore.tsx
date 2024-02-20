@@ -14,9 +14,12 @@ import ActivityIndicator from '@/components/activity-indicator';
 import { useUser } from '@/store/user';
 import { queryClient } from '@/services/api/api-provider';
 import { scale } from 'react-native-size-matters';
+import { useNavigation } from '@react-navigation/native';
 
 const Explore = () => {
   const user = useUser((state) => state?.user);
+
+  const { navigate } = useNavigation();
 
   const { isLoading, data } = useAllCandidates({
     variables: {
@@ -35,6 +38,14 @@ const Explore = () => {
       return (
         <CadidateItem
           data={item}
+          onMessage={(person) => {
+            navigate('Chats', {
+              person_id: person?.person_id,
+              profile_pic: person?.profile_pic,
+              name: person?.full_name,
+              chat_id: '0',
+            });
+          }}
           onHandShake={(person) => {
             if (person?.is_friend === 0) {
               addHandShakeApi(
@@ -101,7 +112,7 @@ const Explore = () => {
         />
       );
     },
-    [user]
+    [user, navigate]
   );
 
   const renderLoading = () => {

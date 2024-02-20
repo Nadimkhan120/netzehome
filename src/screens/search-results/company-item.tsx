@@ -36,7 +36,7 @@ export const CompanyItem = ({
   return (
     <PressableScale
       onPress={() => {
-        navigation?.navigate('NewJobDetails', { id: data?.id });
+        navigation?.navigate('NewCompanyDetails', { id: data?.id });
         onItemPress?.(data);
       }}
     >

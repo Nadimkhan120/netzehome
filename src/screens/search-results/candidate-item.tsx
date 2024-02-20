@@ -39,7 +39,7 @@ export const CandidateItem = ({
   return (
     <PressableScale
       onPress={() => {
-        navigation?.navigate('NewJobDetails', { id: data?.id });
+        navigation.navigate('Job', { id: data?.unique_id });
         onItemPress?.(data);
       }}
     >
