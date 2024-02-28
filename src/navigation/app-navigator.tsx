@@ -1,5 +1,6 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
+import notifee, { AndroidImportance, EventType } from '@notifee/react-native';
 
 import {
   AddPaymentCard,
@@ -58,6 +59,11 @@ import { Job } from '@/screens/job';
 import JobDetail from '@/screens/job-detail';
 import { TabNavigator } from './tab-navigator';
 import { SearchResults } from '@/screens/search-results';
+import {
+  getDeviceToken,
+  requestNotificationPermission,
+  useInAppNotification,
+} from '@/services/notification';
 
 export type AppStackParamList = {
   TabNavigator: undefined;
@@ -120,7 +126,78 @@ export type AppStackParamList = {
 
 const Stack = createNativeStackNavigator<AppStackParamList>();
 
+async function onDisplayNotification(remoteNotification) {
+  // Request permissions (required for iOS)
+  await notifee.requestPermission({
+    criticalAlert: true,
+  });
+
+  // Create a channel (required for Android)
+  const channelId = await notifee.createChannel({
+    id: 'order',
+    name: 'order',
+    importance: AndroidImportance.HIGH,
+    sound: 'sound',
+    vibration: true,
+    vibrationPattern: [300, 500],
+  });
+
+  // Display a notification
+  await notifee.displayNotification({
+    title: remoteNotification?.data.title,
+    body: remoteNotification?.data.body,
+    android: {
+      channelId,
+      vibrationPattern: [300, 500],
+      //smallIcon: 'name-of-a-small-icon', // optional, defaults to 'ic_launcher'.
+      // pressAction is needed if you want the notification to open the app when pressed
+      pressAction: {
+        id: '100',
+      },
+    },
+
+    ios: {
+      critical: true,
+      sound: 'default',
+    },
+  });
+}
+
 export const AppNavigator = () => {
+  // send fcm token to backend
+  const getFcmToken = async () => {
+    let permissionEnabled = requestNotificationPermission();
+
+    if (permissionEnabled) {
+      let token = await getDeviceToken();
+
+      console.log('token', token);
+    }
+  };
+
+  React.useEffect(() => {
+    getFcmToken();
+  }, []);
+
+  // in app notifications
+  useInAppNotification(async (remoteNotification) => {
+    onDisplayNotification(remoteNotification);
+  });
+
+  // Subscribe to events
+  React.useEffect(() => {
+    return notifee.onForegroundEvent(({ type, detail }) => {
+      switch (type) {
+        case EventType.DISMISSED:
+          console.log('User dismissed notification', detail.notification);
+          break;
+        case EventType.PRESS:
+          console.log('User pressed notification', detail.notification);
+          break;
+      }
+    });
+  }, []);
+
   return (
     <Stack.Navigator>
       <Stack.Group

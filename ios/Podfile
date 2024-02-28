@@ -54,6 +54,9 @@ target 'Jobulus' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
+  use_frameworks! :linkage => :static
+ $RNFirebaseAsStaticFramework = true
+
   target 'JobulusTests' do
     inherit! :complete
     # Pods for testing

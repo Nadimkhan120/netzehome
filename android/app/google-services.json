@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "797038419658",
+    "project_id": "candidate-2edd6",
+    "storage_bucket": "candidate-2edd6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:797038419658:android:91adbaf44772e5197f5e33",
+        "android_client_info": {
+          "package_name": "com.jubulus.candidate"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCqXVgr2ka03PcAZ2EnxSxruhXU-hen6WI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
