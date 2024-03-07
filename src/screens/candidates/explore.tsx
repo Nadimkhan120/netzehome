@@ -32,85 +32,91 @@ const Explore = () => {
   const { mutate: saveCandidateApi, isLoading: isSaving } = useSaveCandidate();
   const { mutate: saveUnCandidateApi, isLoading: isUnSaving } = useUnsaveSaveCandidate();
   const { mutate: addHandShakeApi, isLoading: isHandShaking } = useAddContactCandidate();
-
+    
   const renderItem = useCallback(
     ({ item }) => {
-      return (
-        <CadidateItem
-          data={item}
-          onMessage={(person) => {
-            navigate('Chats', {
-              person_id: person?.person_id,
-              profile_pic: person?.profile_pic,
-              name: person?.full_name,
-              chat_id: '0',
-            });
-          }}
-          onHandShake={(person) => {
-            if (person?.is_friend === 0) {
-              addHandShakeApi(
-                { company_id: 0, person_id: person?.id, emails: person?.email },
-                {
-                  onSuccess: (data) => {
-                    if (data?.response?.status === 200) {
-                      queryClient.invalidateQueries(useAllCandidates.getKey());
-                      queryClient.invalidateQueries(useMyNetworks.getKey());
-                      queryClient.invalidateQueries(useSavedCandidates.getKey());
-                    } else {
-                    }
-                  },
-                  onError: (error) => {
-                    // An error happened!
-                    console.log(`error`, error);
-                  },
-                }
-              );
-            } else {
-            }
-          }}
-          onSavePress={(person) => {
-            if (person?.isSaved === 0) {
-              saveCandidateApi(
-                { candidate_id: person?.id, person_id: user?.id },
-                {
-                  onSuccess: (data) => {
-                    console.log('data', data);
-
-                    if (data?.response?.status === 200) {
-                      queryClient.invalidateQueries(useAllCandidates.getKey());
-                      queryClient.invalidateQueries(useMyNetworks.getKey());
-                      queryClient.invalidateQueries(useSavedCandidates.getKey());
-                    } else {
-                    }
-                  },
-                  onError: (error) => {
-                    // An error happened!
-                    console.log(`error`, error);
-                  },
-                }
-              );
-            } else {
-              saveUnCandidateApi(
-                { candidate_id: person?.id, person_id: user?.id },
-                {
-                  onSuccess: (data) => {
-                    if (data?.response?.status === 200) {
-                      queryClient.invalidateQueries(useAllCandidates.getKey());
-                      queryClient.invalidateQueries(useMyNetworks.getKey());
-                      queryClient.invalidateQueries(useSavedCandidates.getKey());
-                    } else {
-                    }
-                  },
-                  onError: (error) => {
-                    // An error happened!
-                    console.log(`error`, error);
-                  },
-                }
-              );
-            }
-          }}
-        />
-      );
+      console.log(item);
+      if(item?.id === user?.id){
+        return null
+      }
+      else {
+        return (
+          <CadidateItem
+            data={item}
+            onMessage={(person) => {
+              navigate('Chats', {
+                person_id: person?.person_id,
+                profile_pic: person?.profile_pic,
+                name: person?.full_name,
+                chat_id: '0',
+              });
+            }}
+            onHandShake={(person) => {
+              if (person?.is_friend === 0) {
+                addHandShakeApi(
+                  { company_id: 0, person_id: person?.id, emails: person?.email },
+                  {
+                    onSuccess: (data) => {
+                      if (data?.response?.status === 200) {
+                        queryClient.invalidateQueries(useAllCandidates.getKey());
+                        queryClient.invalidateQueries(useMyNetworks.getKey());
+                        queryClient.invalidateQueries(useSavedCandidates.getKey());
+                      } else {
+                      }
+                    },
+                    onError: (error) => {
+                      // An error happened!
+                      console.log(`error`, error);
+                    },
+                  }
+                );
+              } else {
+              }
+            }}
+            onSavePress={(person) => {
+              if (person?.isSaved === 0) {
+                saveCandidateApi(
+                  { candidate_id: person?.id, person_id: user?.id },
+                  {
+                    onSuccess: (data) => {
+                      console.log('data', data);
+  
+                      if (data?.response?.status === 200) {
+                        queryClient.invalidateQueries(useAllCandidates.getKey());
+                        queryClient.invalidateQueries(useMyNetworks.getKey());
+                        queryClient.invalidateQueries(useSavedCandidates.getKey());
+                      } else {
+                      }
+                    },
+                    onError: (error) => {
+                      // An error happened!
+                      console.log(`error`, error);
+                    },
+                  }
+                );
+              } else {
+                saveUnCandidateApi(
+                  { candidate_id: person?.id, person_id: user?.id },
+                  {
+                    onSuccess: (data) => {
+                      if (data?.response?.status === 200) {
+                        queryClient.invalidateQueries(useAllCandidates.getKey());
+                        queryClient.invalidateQueries(useMyNetworks.getKey());
+                        queryClient.invalidateQueries(useSavedCandidates.getKey());
+                      } else {
+                      }
+                    },
+                    onError: (error) => {
+                      // An error happened!
+                      console.log(`error`, error);
+                    },
+                  }
+                );
+              }
+            }}
+          />
+        );
+      }
     },
     [user, navigate]
   );

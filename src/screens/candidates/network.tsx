@@ -22,56 +22,61 @@ const Network = () => {
   console.log('useMyNetworks', JSON.stringify(data, null, 2));
 
   const renderItem = useCallback(({ item }) => {
-    return (
-      <CadidateItem
-        data={item}
-        onHandShake={(person) => {
-          console.log('person', person);
-        }}
-        onSavePress={(person) => {
-          console.log('person', person);
-
-          if (person?.isSaved === 0) {
-            saveCandidateApi(
-              { candidate_id: person?.id, person_id: user?.id },
-              {
-                onSuccess: (data) => {
-                  console.log('data', data);
-
-                  if (data?.response?.status === 200) {
-                    queryClient.invalidateQueries(useAllCandidates.getKey());
-                    // queryClient.invalidateQueries(useSavedJobs.getKey());
-                  } else {
-                  }
-                },
-                onError: (error) => {
-                  // An error happened!
-                  console.log(`error`, error);
-                },
-              }
-            );
-          } else {
-            saveUnCandidateApi(
-              { candidate_id: person?.id, person_id: user?.id },
-              {
-                onSuccess: (data) => {
-                  console.log('data', data);
-
-                  if (data?.response?.status === 200) {
-                    queryClient.invalidateQueries(useAllCandidates.getKey());
-                  } else {
-                  }
-                },
-                onError: (error) => {
-                  // An error happened!
-                  console.log(`error`, error);
-                },
-              }
-            );
-          }
-        }}
-      />
-    );
+    if(item?.id === user?.id){
+      return null
+    }
+    else {
+      return (
+        <CadidateItem
+          data={item}
+          onHandShake={(person) => {
+            console.log('person', person);
+          }}
+          onSavePress={(person) => {
+            console.log('person', person);
+  
+            if (person?.isSaved === 0) {
+              saveCandidateApi(
+                { candidate_id: person?.id, person_id: user?.id },
+                {
+                  onSuccess: (data) => {
+                    console.log('data', data);
+  
+                    if (data?.response?.status === 200) {
+                      queryClient.invalidateQueries(useAllCandidates.getKey());
+                      // queryClient.invalidateQueries(useSavedJobs.getKey());
+                    } else {
+                    }
+                  },
+                  onError: (error) => {
+                    // An error happened!
+                    console.log(`error`, error);
+                  },
+                }
+              );
+            } else {
+              saveUnCandidateApi(
+                { candidate_id: person?.id, person_id: user?.id },
+                {
+                  onSuccess: (data) => {
+                    console.log('data', data);
+  
+                    if (data?.response?.status === 200) {
+                      queryClient.invalidateQueries(useAllCandidates.getKey());
+                    } else {
+                    }
+                  },
+                  onError: (error) => {
+                    // An error happened!
+                    console.log(`error`, error);
+                  },
+                }
+              );
+            }
+          }}
+        />
+      );
+    }
   }, []);
 
   const renderLoading = () => {

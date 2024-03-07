@@ -10,7 +10,7 @@ import { useSoftKeyboardEffect } from '@/hooks';
 import { useRegisterCompany } from '@/services/api/auth/register-company';
 import type { Theme } from '@/theme';
 import { Button, ControlledInput, PressableScale, Screen, Text, View } from '@/ui';
-import { extractError, showErrorMessage } from '@/utils';
+import { extractError, showErrorMessage, showSuccessMessage } from '@/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useNavigation } from '@react-navigation/native';
 import { useTheme } from '@shopify/restyle';

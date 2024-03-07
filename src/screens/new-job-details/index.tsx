@@ -65,7 +65,9 @@ const OverViewTab = ({ route, data }: any) => {
         <OverView data={data?.data} />
       </TabScrollView>
       <View paddingVertical={'large'} paddingHorizontal={'large'}>
-        <PressableScale onPress={applyJob}>
+        <PressableScale 
+        disabled={isApplied}
+        onPress={applyJob}>
           <View
             backgroundColor={isApplied ? 'secondary' : 'primary'}
             height={scale(44)}
@@ -74,7 +76,7 @@ const OverViewTab = ({ route, data }: any) => {
             alignItems={'center'}
           >
             <Text color={isApplied ? 'primary' : 'white'} variant={'medium14'}>
-              {isLoading ? '...Applying' : 'Apply Job'}
+              {isLoading ? '...Applying' : isApplied ? "Applied" : 'Apply Job'}
             </Text>
           </View>
         </PressableScale>

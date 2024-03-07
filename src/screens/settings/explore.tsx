@@ -14,9 +14,11 @@ import ActivityIndicator from '@/components/activity-indicator';
 import { useUser } from '@/store/user';
 import { queryClient } from '@/services/api/api-provider';
 import { scale } from 'react-native-size-matters';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 const Explore = () => {
   const user = useUser((state) => state?.user);
+  const { navigate } = useNavigation();
 
   const { isLoading, data } = useCompaniesList({
     variables: {
@@ -30,6 +32,7 @@ const Explore = () => {
   const { mutate: unSaveCompanyApi, isLoading: isUnSaving } = useUnsaveSaveCompany();
   const { mutate: followCompmayApi, isLoading: isFollowing } = useAddContactCompany();
 
+  
   const renderItem = useCallback(
     ({ item }) => {
       return (
@@ -104,6 +107,25 @@ const Explore = () => {
                 }
               );
             }
+          }}
+          onMessage={() => {
+            console.log("ITEM >>> ", JSON.stringify(item, null, 2));
+            navigate('Chats', {
+              person_id: item?.id,
+              profile_pic: item?.images?.pic,
+              name: item?.name,
+              chat_id: '0',
+            });
+            // navigate('Chats', {
+            //   person_id: checkUser ? item?.Reciever_Detail?.id : item?.Person_Detail?.id,
+            //   chat_id: item?.lastMessage?.chat_id,
+            //   profile_pic: checkUser
+            //     ? item?.Reciever_Detail?.profile_pic
+            //     : item?.Person_Detail?.profile_pic,
+            //   name: checkUser
+            //     ? item?.Reciever_Detail?.full_name
+            //     : item?.Person_Detail?.full_name,
+            // })
           }}
         />
       );
