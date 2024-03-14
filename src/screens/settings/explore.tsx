@@ -109,8 +109,8 @@ const Explore = () => {
             }
           }}
           onMessage={() => {
-            console.log("ITEM >>> ", JSON.stringify(item, null, 2));
             navigate('Chats', {
+              isCompingFrom: "Explore",
               person_id: item?.id,
               profile_pic: item?.images?.pic,
               name: item?.name,

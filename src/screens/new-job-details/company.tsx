@@ -47,7 +47,8 @@ const Company = ({ companyData }: CompanyProps) => {
   });
 
   if (isLoading) return;
-
+  console.log("INFO ", JSON.stringify(data, null, 2));
+  
   return (
     <>
       <View height={scale(119)}>
@@ -122,7 +123,7 @@ const Company = ({ companyData }: CompanyProps) => {
         />
         <InfoRow
           label={'Work Time'}
-          value={`${data?.start_time}-${data?.end_time}`}
+          value={`${data?.start_time ? data?.start_time + " -" : ""}${data?.end_time? data?.end_time : ""}`}
           isGrey={true}
         />
         <InfoRow label={'Average Wage'} value={data?.average_wage} isGrey={true} />

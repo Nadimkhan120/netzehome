@@ -5,6 +5,8 @@ import { NetWorkService } from '@/services/apinetworkservice';
 
 type Variables = { person_id: number };
 type ChatMessagePayload = { chat_id: any };
+type ChatMessageDetails = { person_id: any, reciever_id: any };
+
 type MarkRead = { notifications: any };
 
 type ChatPayLoad = {
@@ -83,6 +85,27 @@ export const useGetChatMessages = createQuery<
     );
   },
 });
+
+
+export const useGetChatWhenComeFromExplore = createQuery<
+  ChatMessagesResponse,
+  ChatMessageDetails,
+  AxiosError
+>({
+  primaryKey: 'company/chatshistory',
+  queryFn: ({ queryKey: [primaryKey, variables] }) => {
+    //@ts-ignore
+    return NetWorkService.Get({
+      url: `${primaryKey}?person_id=${variables.person_id}&reciever_id=${variables.reciever_id}`,
+    }).then(
+      //@ts-ignore
+      (response) => response.data
+    );
+  },  
+});
+
+
+
 
 export const useChatHistory = createMutation<Response, MarkRead, AxiosError>({
   mutationFn: async (variables) =>

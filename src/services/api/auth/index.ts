@@ -27,6 +27,14 @@ type Response = {
   };
 };
 
+interface UpdatePasswordData {
+  email: string;
+  oldpassword: string;
+  newpassword: string;
+  newpassword_confirmation: String;
+}
+
+
 export const useForgotPassword = createMutation<Response, Variables, AxiosError>({
   mutationFn: async (variables) =>
     NetWorkService.Post({
@@ -60,5 +68,15 @@ export const useSendFcmToken = createMutation<Response, InviteBody, AxiosError>(
       url: 'person/fcm',
       body: variables,
       // @ts-ignore
+    }).then((response) => response?.data),
+});
+
+
+export const useUpdatePassword = createMutation<Response, UpdatePasswordData, AxiosError>({
+  mutationFn: async (variables) =>
+    NetWorkService.Post({
+      url: "update-password",
+      body: variables,
+      // No need for ts-ignore, variables is of correct type
     }).then((response) => response?.data),
 });

@@ -58,13 +58,13 @@ const JobItem = ({ data, showStatus, onPress, onOptionPress }: JobItemProps) => 
             <Text variant={'semiBold14'} color={'black'}>
               {data?.job_titles}
             </Text>
-            <PressableScale onPress={() => onOptionPress?.()}>
+            {/* <PressableScale onPress={() => onOptionPress?.()}>
               <Image
                 source={icons['more-horizontal']}
                 style={style.dot}
                 contentFit="contain"
               />
-            </PressableScale>
+            </PressableScale> */}
           </View>
 
           <Text

@@ -27,6 +27,7 @@ import {
   useChatLists,
   useGetChatMessages,
   usePersonOnline,
+  useGetChatWhenComeFromExplore,
 } from '@/services/api/chats';
 import { showErrorMessage } from '@/utils';
 import { queryClient } from '@/services/api/api-provider';
@@ -52,7 +53,8 @@ const employees = [
 export const Chats = () => {
   const { colors } = useTheme<Theme>();
   const route = useRoute<any>();
-
+  console.log("ROUTE ",route.params);
+  
   const [messages, setMessages] = useState<MessageType.Any[]>([]);
   const [message, setMessage] = useState<string>('');
 
@@ -69,7 +71,22 @@ export const Chats = () => {
     },
     enabled: route?.params?.chat_id ? true : false,
     refetchInterval: 3000,
-  });
+  });  
+
+  const {
+    data: chatMessages,
+    isLoadingHistory,
+  } = useGetChatWhenComeFromExplore({
+    variables: {
+      person_id: myUser?.id,
+      reciever_id: route?.params?.person_id,
+    },
+    enabled: route?.params?.chat_id ? true : false,
+    refetchInterval: 3000,
+  });  
+  console.log("HITORY",chatMessages );
+  
+  
 
   const { data: onlineData } = usePersonOnline({
     variables: {
@@ -101,6 +118,25 @@ export const Chats = () => {
   const handleDismissModalPress = useCallback(() => {
     bottomSheetModalRef.current?.dismiss();
   }, []);
+
+  useEffect(() => {
+    if (chatMessages?.messages?.length && route?.params?.isCompingFrom) {
+      let makeMessage = chatMessages?.messages?.map((item, index) => {
+        return {
+          author: {
+            id: item?.person_id,
+          },
+          createdAt: item?.created_at,
+          id: `${item?.id}`,
+          text: item?.message,
+          type: 'text',
+        };
+      });
+
+      //@ts-ignore
+      setMessages(makeMessage);
+    }
+  }, [chatMessages, route?.params?.isCompingFrom]);
 
   useEffect(() => {
     if (chatMessage?.messages?.length) {
@@ -142,10 +178,10 @@ export const Chats = () => {
       message: message,
       chat_id: route?.params?.chat_id ?? 0,
     };
-
+    
     sendMessage(body, {
       onSuccess: (data) => {
-        console.log('data', data);
+        console.log('Message send -->>  data', data);
         if (data?.message?.chat_id) {
           queryClient.invalidateQueries(useChatLists.getKey());
         } else {
@@ -273,7 +309,7 @@ export const Chats = () => {
     <Screen backgroundColor={colors.white}>
       <Header onRightPress={handlePresentModalPress} data={chatHeaderData} />
 
-      {isLoading ? (
+      {isLoading || isLoadingHistory ? (
         <RenderLoader />
       ) : (
         <View flex={1} backgroundColor={'grey500'}>

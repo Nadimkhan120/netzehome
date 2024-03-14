@@ -14,6 +14,7 @@ import { theme } from '@/theme';
 import { ActionSheetProvider } from '@expo/react-native-action-sheet';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { AppOverlayLoader } from '@/components/overlay';
+import Toast from 'react-native-toast-message';
 
 GoogleSignin.configure({
   offlineAccess: false, // if you want to access Google API on behalf of the user FROM YOUR SERVER
@@ -22,7 +23,6 @@ GoogleSignin.configure({
   accountName: '', // [Android] specifies an account name on the device that should be used
   iosClientId:
     '1056415638644-vu2fbrmnkgcmki8toton39h2pqfj23jd.apps.googleusercontent.com', // [iOS] if you want to specify the client ID of type iOS (otherwise, it is taken from GoogleService-Info.plist)
-
   openIdRealm: '', // [iOS] The OpenID2 realm of the home web server. This allows Google to include the user's OpenID Identifier in the OpenID Connect ID token.
   profileImageSize: 120, // [iOS] The desired height (and width) of the profile image. Defaults to 120px
 });
@@ -57,6 +57,7 @@ const App = () => {
               <BottomSheetModalProvider>
                 <Root />
                 <AppOverlayLoader />
+                <Toast position='top' />
                 <FlashMessage position="bottom" />
               </BottomSheetModalProvider>
             </APIProvider>

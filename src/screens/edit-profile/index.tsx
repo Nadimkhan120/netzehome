@@ -33,6 +33,7 @@ import { useUpdateCandidateProfile } from '@/services/api/candidate';
 import { useExperience, setSelectedLocation } from '@/store/experience';
 import { SelectOptionButton } from '@/components/select-option-button';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { MultiTextField } from '@/ui/multine-text-field';
 
 const schema = z.object({
   name: z.string({
@@ -426,12 +427,19 @@ export const EditProfile = () => {
             }}
           />
 
-          <ControlledInput
+          <DescriptionField
             placeholder="Write here"
             label="Bio"
             control={control}
             name="cover"
           />
+
+          {/* <ControlledInput
+            placeholder="Write here"
+            label="Bio"
+            control={control}
+            name="cover"
+          /> */}
         </View>
       </KeyboardAwareScrollView>
       <View height={scale(24)} />
