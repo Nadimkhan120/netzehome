@@ -47,15 +47,18 @@
 		</dict>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>Please  your camera permission so that you can update your profile</string>
+	<string>Please your gallary permission so that you can update your profile</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Please your gallary permission so that you can update your profile</string>
-	<key>NSCameraUsageDescription</key>
-	<string>Please your gallary permission so that you can update your profile</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Please your gallary permission so that you can update your profile</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Please your gallary permission so that you can update your profile</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+		<string>remote-notification</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>BootSplash.storyboard</string>
 	<key>UIRequiredDeviceCapabilities</key>

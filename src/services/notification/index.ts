@@ -22,7 +22,7 @@ export const requestNotificationPermission = async () => {
 };
 
 export const getDeviceToken = async () => {
-  //await messaging().registerDeviceForRemoteMessages();
+  // await messaging().registerDeviceForRemoteMessages();
   if (__DEV__ && Platform.OS === 'ios') {
     await messaging().setAPNSToken('test');
   }
