@@ -61,7 +61,14 @@ export const VerifyCode = () => {
         },
         onError: (error) => {
           // An error happened!
-          console.log(`rolling back optimistic update with id ${error}`);
+
+          //@ts-ignore
+          showErrorMessage(error?.response?.data?.message);
+
+          console.log(
+            `rolling back optimistic update with id`,
+            JSON.stringify(error.response.data, null, 2)
+          );
         },
       }
     );
@@ -77,11 +84,7 @@ export const VerifyCode = () => {
         <View alignItems={'center'} justifyContent={'center'}>
           <Image source={icons.logo} contentFit="contain" style={styles.logo} />
           <View height={scale(16)} />
-          <View
-            paddingTop={'large'}
-            alignItems={'center'}
-            justifyContent={'center'}
-          >
+          <View paddingTop={'large'} alignItems={'center'} justifyContent={'center'}>
             <Text variant={'semiBold24'} textAlign={'center'} color={'black'}>
               Verify Code
             </Text>
@@ -109,11 +112,7 @@ export const VerifyCode = () => {
           <View height={scale(8)} />
         </View>
         <View height={scale(24)} />
-        <Button
-          label="Verify"
-          onPress={handleSubmit(onSubmit)}
-          loading={isLoading}
-        />
+        <Button label="Verify" onPress={handleSubmit(onSubmit)} loading={isLoading} />
       </View>
     </Screen>
   );

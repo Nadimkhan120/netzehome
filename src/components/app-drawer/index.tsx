@@ -70,6 +70,8 @@ export function AppDrawer({ children }: AppDrawer) {
                     textTransform={'capitalize'}
                     paddingLeft={'medium'}
                     color={'black'}
+                    numberOfLines={2}
+                    maxWidth={200}
                   >
                     {user?.full_name} 👋
                   </Text>

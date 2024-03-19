@@ -50,11 +50,15 @@ export const Login = () => {
       { email: data?.email, password: data?.password },
       {
         onSuccess: (data) => {
-          // console.log('data', JSON.stringify(data?.response?.data, null, 2));
+          console.log('data', JSON.stringify(data, null, 2));
 
           if (data?.response?.status === 200) {
-            login(data?.response?.data?.token);
-            setUserData(data?.response?.data);
+            if (data?.response?.message === 'This Account deleted Successfully') {
+              showErrorMessage(data?.response?.message);
+            } else {
+              login(data?.response?.data?.token);
+              setUserData(data?.response?.data);
+            }
           } else {
             showErrorMessage(data?.response?.message);
           }

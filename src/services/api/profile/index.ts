@@ -27,6 +27,10 @@ type DetailPayload = {
 
 type UpdateProfile = any;
 
+type DeleteAccount = {
+  person_id: any;
+};
+
 type Response = any;
 
 export const useUpdateSkills = createMutation<Response, UpdateSkills, AxiosError>({
@@ -79,6 +83,17 @@ export const useUpdatePicture = createMutation<Response, UpdateProfile, AxiosErr
       transformRequest: (data) => {
         return data;
       },
+      // @ts-ignore
+    }).then((response) => response?.data);
+  },
+});
+
+export const useDeleteAccount = createMutation<Response, DeleteAccount, AxiosError>({
+  mutationFn: async (variables) => {
+    return NetWorkService.Delete({
+      url: `person/delete/${variables?.person_id}`,
+      body: {},
+
       // @ts-ignore
     }).then((response) => response?.data);
   },
