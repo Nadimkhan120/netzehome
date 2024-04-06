@@ -80,9 +80,9 @@ const CadidateItem = ({
         <View marginTop={'small'}>
           <PressableScale
             onPress={() =>
-              data?.is_friend === 0
+              data?.is_friend == 0
                 ? onHandShake?.(data)
-                : data?.is_request_sent === 1
+                : data?.is_request_sent == 1
                 ? null
                 : onMessage?.(data)
             }
@@ -119,9 +119,9 @@ const CadidateItem = ({
                     : 'primary'
                 }
               >
-                {data?.is_request_sent === 1
+                {data?.is_request_sent == 1
                   ? 'Request Sent'
-                  : data?.is_friend === 1
+                  : data?.is_friend == 1
                   ? 'Message'
                   : 'HandShake'}
               </Text>

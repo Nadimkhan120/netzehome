@@ -34,6 +34,7 @@ import { useExperience, setSelectedLocation } from '@/store/experience';
 import { SelectOptionButton } from '@/components/select-option-button';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { MultiTextField } from '@/ui/multine-text-field';
+import { PriceControlledInput } from '@/ui/price-controlled-input';
 
 const schema = z.object({
   name: z.string({
@@ -397,7 +398,7 @@ export const EditProfile = () => {
             name="jobTitle"
           />
 
-          <ControlledInput
+          <PriceControlledInput
             placeholder="Enter salary"
             label="Expected Salary"
             control={control}

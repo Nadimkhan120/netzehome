@@ -87,7 +87,7 @@ const Company = ({ companyData }: CompanyProps) => {
         </Text>
       </View>
 
-      <View paddingHorizontal={'large'} paddingTop={'medium'}>
+      {/* <View paddingHorizontal={'large'} paddingTop={'medium'}>
         <Text variant={'medium20'} color={'black'}>
           About Company
         </Text>
@@ -98,9 +98,9 @@ const Company = ({ companyData }: CompanyProps) => {
           color={'grey200'}
           lineHeight={21}
         />
-      </View>
+      </View> */}
 
-      <View height={scale(16)} />
+      {/* <View height={scale(10)} /> */}
 
       <View paddingTop={'large'}>
         <Text paddingHorizontal={'large'} variant={'medium20'} color={'black'}>

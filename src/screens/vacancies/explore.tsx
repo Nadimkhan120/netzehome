@@ -9,9 +9,10 @@ import {
 } from '@/services/api/home';
 import { useUser } from '@/store/user';
 import ActivityIndicator from '@/components/activity-indicator';
-import { View } from '@/ui';
 import { useRefreshOnFocus } from '@/hooks';
 import { queryClient } from '@/services/api/api-provider';
+import { View, Text } from '@/ui';
+import { scale } from 'react-native-size-matters';
 
 const Explore = () => {
   const user = useUser((state) => state?.user);
@@ -92,6 +93,11 @@ const Explore = () => {
           data={data?.response?.data}
           estimatedItemSize={100}
           renderItem={renderItem}
+          ListEmptyComponent={
+            <View height={scale(300)} justifyContent={'center'} alignItems={'center'}>
+              <Text>No Job Found</Text>
+            </View>
+          }
           contentContainerStyle={{
             paddingTop: 20,
             paddingBottom: 100,

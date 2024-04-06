@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { FlashList } from '@shopify/flash-list';
 import CadidateItem from '@/components/candidate-item';
 import { View, Text, Screen } from '@/ui';
@@ -17,11 +17,13 @@ import { scale } from 'react-native-size-matters';
 import { useTheme } from '@shopify/restyle';
 import { Theme } from '@/theme';
 import { ScreenHeader } from '@/components/screen-header';
+import { useNavigation } from '@react-navigation/native';
 
 export const MyContacts = () => {
   const { colors } = useTheme<Theme>();
-
+  const [contactList, setContactList] = useState([]);
   const user = useUser((state) => state?.user);
+  const { navigate } = useNavigation();
 
   const { isLoading, data } = useMyNetworks();
 
@@ -30,6 +32,24 @@ export const MyContacts = () => {
   const { mutate: addHandShakeApi, isLoading: isHandShaking } = useAddContactCandidate();
 
   //console.log('data?.response?.data', JSON.stringify(data?.response?.data, null, 2));
+  useEffect(() => {
+    if(data?.response?.data?.length > 0){
+      removeMyUSer()
+    }
+  },[data])
+
+  const removeMyUSer = () => {
+    let dummyArr = []
+
+     data?.response?.data?.map((item) => {
+      if(item?.id !== user?.id){
+        dummyArr.push(item)
+      }
+    })
+
+    setContactList(dummyArr);
+  }
+
 
   const renderItem = useCallback(
     ({ item }) => {
@@ -37,6 +57,8 @@ export const MyContacts = () => {
         <CadidateItem
           data={item}
           onHandShake={(person) => {
+            console.log("HAND SHAKE",person);
+            
             if (person?.is_friend === 0) {
               addHandShakeApi(
                 { company_id: 0, person_id: person?.id, emails: person?.email },
@@ -58,6 +80,8 @@ export const MyContacts = () => {
                 }
               );
             } else {
+              console.log("NO HADN SHAKE");
+              
             }
           }}
           onSavePress={(person) => {
@@ -101,6 +125,16 @@ export const MyContacts = () => {
               );
             }
           }}
+          onMessage={(person) => {
+            console.log("PERSON",person);
+            
+            navigate('Chats', {
+              person_id: person?.person_id,
+              profile_pic: person?.profile_pic,
+              name: person?.full_name,
+              chat_id: '0',
+            });
+          }}
         />
       );
     },
@@ -123,7 +157,8 @@ export const MyContacts = () => {
           renderLoading()
         ) : (
           <FlashList
-            data={data?.response?.data}
+            // data={data?.response?.data}
+            data={contactList}
             numColumns={2}
             estimatedItemSize={100}
             renderItem={renderItem}
@@ -133,7 +168,7 @@ export const MyContacts = () => {
             }}
             ListEmptyComponent={
               <View height={scale(300)} justifyContent={'center'} alignItems={'center'}>
-                <Text>No Network Found</Text>
+                <Text>No Contact Found</Text>
               </View>
             }
           />
