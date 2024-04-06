@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Dimensions } from 'react-native';
+import { Dimensions, TouchableOpacity } from 'react-native';
 import { Drawer } from 'react-native-drawer-layout';
 import { scale } from 'react-native-size-matters';
 import { icons } from '@/assets/icons';
@@ -64,26 +64,28 @@ export function AppDrawer({ children }: AppDrawer) {
                   size="medium"
                   onPress={() => navigate('EditProfile', { user })}
                 />
-                <View>
-                  <Text
-                    variant={'medium16'}
-                    textTransform={'capitalize'}
-                    paddingLeft={'medium'}
-                    color={'black'}
-                    numberOfLines={2}
-                    maxWidth={200}
-                  >
-                    {user?.full_name} 👋
-                  </Text>
-                  <Text
-                    variant={'regular14'}
-                    paddingLeft={'medium'}
-                    paddingTop={'tiny'}
-                    color={'grey200'}
-                  >
-                    View profile
-                  </Text>
-                </View>
+                <TouchableOpacity  onPress={() => navigate('EditProfile', { user })}>
+                  <View>
+                    <Text
+                      variant={'medium16'}
+                      textTransform={'capitalize'}
+                      paddingLeft={'medium'}
+                      color={'black'}
+                      numberOfLines={2}
+                      maxWidth={200}
+                    >
+                      {user?.full_name} 👋
+                    </Text>
+                    <Text
+                      variant={'regular14'}
+                      paddingLeft={'medium'}
+                      paddingTop={'tiny'}
+                      color={'grey200'}
+                    >
+                      View profile
+                    </Text>
+                  </View>
+                </TouchableOpacity>
               </View>
 
               <View height={30} />

@@ -26,11 +26,13 @@ if linkage != nil
   use_frameworks! :linkage => linkage.to_sym
 end
 
-use_frameworks! :linkage => :static
-$RNFirebaseAsStaticFramework = true
+# use_frameworks! :linkage => :static
+# $RNFirebaseAsStaticFramework = true
 
 target 'Jobulus' do
   use_expo_modules!
+  use_frameworks!
+
   post_integrate do |installer|
     begin
       expo_patch_react_imports!(installer)

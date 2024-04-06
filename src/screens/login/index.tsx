@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useTheme } from '@shopify/restyle';
 import { Image } from 'expo-image';
 import { useForm } from 'react-hook-form';
-import { StyleSheet } from 'react-native';
+import { ScrollView, StyleSheet } from 'react-native';
 import { scale } from 'react-native-size-matters';
 import * as z from 'zod';
 import { icons } from '@/assets/icons';
@@ -189,7 +189,7 @@ export const Login = () => {
 
   return (
     <Screen backgroundColor={colors.white}>
-      <View flex={1} paddingHorizontal={'large'}>
+      <ScrollView style={{marginHorizontal:scale(15)}}>
         <View height={scale(72)} />
         <Image source={icons.logo} contentFit="contain" style={styles.logo} />
         <View paddingTop={'large'}>
@@ -254,7 +254,7 @@ export const Login = () => {
             </Text>
           </PressableScale>
         </View>
-      </View>
+      </ScrollView>
     </Screen>
   );
 };
