@@ -50,6 +50,8 @@
 	<string>Please allow your gallary permission so that you can update your profile</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Please allow your gallary permissions so that you can update your profile</string>
+	<key>NSMicroPhoneUsageDescription</key>
+	<string>Please allow your micro phone  permissions</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
