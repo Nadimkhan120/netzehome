@@ -26,8 +26,6 @@ export const MyJobDetail = () => {
     },
   });
 
-  //console.log('data', JSON.stringify(data, null, 2));
-
   if (isLoading) return;
 
   return (

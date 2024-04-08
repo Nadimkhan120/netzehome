@@ -16,7 +16,7 @@ import { BottomModal } from '@/components/bottom-modal';
 import { Header } from './header';
 import { useUser } from '@/store/user';
 import type { Theme } from '@/theme';
-import { PressableScale, Screen, View } from '@/ui';
+import { PressableScale, Screen, Text, View } from '@/ui';
 import { Chat, MessageType } from '@flyerhq/react-native-chat-ui';
 import { AvoidSoftInput } from 'react-native-avoid-softinput';
 import { icons } from '@/assets/icons';
@@ -53,8 +53,7 @@ const employees = [
 export const Chats = () => {
   const { colors } = useTheme<Theme>();
   const route = useRoute<any>();
-  console.log("ROUTE ",route.params);
-  
+
   const [messages, setMessages] = useState<MessageType.Any[]>([]);
   const [message, setMessage] = useState<string>('');
 
@@ -71,22 +70,17 @@ export const Chats = () => {
     },
     enabled: route?.params?.chat_id ? true : false,
     refetchInterval: 3000,
-  });  
+  });
 
-  const {
-    data: chatMessages,
-    isLoadingHistory,
-  } = useGetChatWhenComeFromExplore({
-    variables: {
-      person_id: myUser?.id,
-      reciever_id: route?.params?.person_id,
-    },
-    enabled: route?.params?.chat_id ? true : false,
-    refetchInterval: 3000,
-  });  
-  console.log("HITORY",chatMessages );
-  
-  
+  const { data: chatMessages, isLoading: isLoadingHistory } =
+    useGetChatWhenComeFromExplore({
+      variables: {
+        person_id: myUser?.id,
+        reciever_id: route?.params?.person_id,
+      },
+      enabled: route?.params?.chat_id ? true : false,
+      refetchInterval: 3000,
+    });
 
   const { data: onlineData } = usePersonOnline({
     variables: {
@@ -178,7 +172,7 @@ export const Chats = () => {
       message: message,
       chat_id: route?.params?.chat_id ?? 0,
     };
-    
+
     sendMessage(body, {
       onSuccess: (data) => {
         console.log('Message send -->>  data', data);
@@ -320,6 +314,13 @@ export const Chats = () => {
             customBottomComponent={renderBottomComponent}
             onSendPress={function (message: MessageType.PartialText): void {
               //throw new Error("Function not implemented.");
+            }}
+            flatListProps={{
+              ListEmptyComponent: (
+                <View alignItems={'center'}>
+                  <Text variant={'medium14'}>No Chats Found</Text>
+                </View>
+              ),
             }}
           />
         </View>

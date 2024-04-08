@@ -64,6 +64,9 @@ import {
   requestNotificationPermission,
   useInAppNotification,
 } from '@/services/notification';
+import { useUser } from '@/store/user';
+import { useChatLists } from '@/services/api/chats';
+import { setUserChatCount } from '@/store/app';
 
 export type AppStackParamList = {
   TabNavigator: undefined;
@@ -164,6 +167,30 @@ async function onDisplayNotification(remoteNotification) {
 }
 
 export const AppNavigator = () => {
+  const myUser = useUser((state) => state?.user);
+
+  const {
+    data: chatLists,
+    isLoading: loadingChats,
+    refetch,
+  } = useChatLists({
+    variables: {
+      person_id: myUser?.id,
+    },
+
+    refetchInterval: 5000,
+  });
+
+  const chatListsUnReadCouns = React.useMemo(() => {
+    let unReadCounts = 0;
+    if (chatLists?.chats?.length) {
+      chatLists?.chats?.forEach((element) => {
+        unReadCounts += element?.unreadMessages;
+      });
+    }
+    return unReadCounts;
+  }, [chatLists]);
+
   // send fcm token to backend
   const getFcmToken = async () => {
     let permissionEnabled = requestNotificationPermission();
@@ -171,13 +198,17 @@ export const AppNavigator = () => {
     if (permissionEnabled) {
       let token = await getDeviceToken();
 
-      console.log('token', token);
+      //  console.log('token', token);
     }
   };
 
   React.useEffect(() => {
     getFcmToken();
   }, []);
+
+  React.useEffect(() => {
+    setUserChatCount(chatListsUnReadCouns);
+  }, [chatListsUnReadCouns]);
 
   // in app notifications
   useInAppNotification(async (remoteNotification) => {

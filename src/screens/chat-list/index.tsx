@@ -65,7 +65,7 @@ export const ChatList = () => {
     return unReadCounts;
   }, [chatLists]);
 
-  console.log('chatLists', JSON.stringify(chatLists, null, 2));
+  // console.log('chatLists', JSON.stringify(chatLists, null, 2));
 
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   // variables

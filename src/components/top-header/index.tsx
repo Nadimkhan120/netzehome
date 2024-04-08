@@ -1,7 +1,7 @@
 import React from 'react';
 import {} from 'react-native';
 import { scale } from 'react-native-size-matters';
-import { openDrawer } from '@/store/app';
+import { openDrawer, useApp } from '@/store/app';
 import { PressableScale, Text, View } from '@/ui';
 import { Avatar } from '../avatar';
 import { icons } from '@/assets/icons';
@@ -13,6 +13,8 @@ export const TopHeader = () => {
   const { navigate } = useNavigation();
 
   const user = useUser((state) => state?.profile);
+
+  const chatCount = useApp((state) => state?.userChatCount);
 
   return (
     <View
@@ -52,6 +54,29 @@ export const TopHeader = () => {
                 style={{ height: scale(24), width: scale(24) }}
                 contentFit="contain"
               />
+              {chatCount > 0 ? (
+                <View
+                  position={'absolute'}
+                  top={-4}
+                  right={-4}
+                  backgroundColor={'error'}
+                  borderRadius={8}
+                  height={16}
+                  width={16}
+                  justifyContent={'center'}
+                  alignItems={'center'}
+                >
+                  <Text
+                    color={'white'}
+                    variant={'regular10'}
+                    style={{
+                      marginTop: 2,
+                    }}
+                  >
+                    {chatCount}
+                  </Text>
+                </View>
+              ) : null}
             </View>
           </PressableScale>
           <PressableScale onPress={() => navigate('Notifications')}>

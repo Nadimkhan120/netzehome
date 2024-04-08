@@ -18,14 +18,7 @@ import Toast from 'react-native-toast-message';
 
 GoogleSignin.configure({
   offlineAccess: false, // if you want to access Google API on behalf of the user FROM YOUR SERVER
-  hostedDomain: '', // specifies a hosted domain restriction
-  forceCodeForRefreshToken: true, // [Android] related to `serverAuthCode`, read the docs link below *.
-  accountName: '', // [Android] specifies an account name on the device that should be used
-  webClientId:'1056415638644-k402ue7fdihbgui3sdnace1dsh3g877m.apps.googleusercontent.com',
-  iosClientId:
-    '1056415638644-vu2fbrmnkgcmki8toton39h2pqfj23jd.apps.googleusercontent.com', // [iOS] if you want to specify the client ID of type iOS (otherwise, it is taken from GoogleService-Info.plist)
-  openIdRealm: '', // [iOS] The OpenID2 realm of the home web server. This allows Google to include the user's OpenID Identifier in the OpenID Connect ID token.
-  profileImageSize: 120, // [iOS] The desired height (and width) of the profile image. Defaults to 120px
+  webClientId: '353398465240-ji9uf84r9gjlqrk1ucgf8t2f5c545bi2.apps.googleusercontent.com',
 });
 
 const App = () => {
@@ -58,7 +51,7 @@ const App = () => {
               <BottomSheetModalProvider>
                 <Root />
                 <AppOverlayLoader />
-                <Toast position='top' />
+                <Toast position="top" />
                 <FlashMessage position="bottom" />
               </BottomSheetModalProvider>
             </APIProvider>

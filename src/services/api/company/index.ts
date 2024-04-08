@@ -5,6 +5,7 @@ import { NetWorkService } from '@/services/apinetworkservice';
 type Variables = void;
 type CompanyVariables = { id: number };
 type SaveCompany = { company_id: number };
+
 type AddContactCompany = {
   emails: number;
   person_id: number;
@@ -12,6 +13,8 @@ type AddContactCompany = {
 };
 
 type Variables2 = { person_id: number };
+
+type LogoutVariables = void;
 
 type EditCompanyVariables = {
   name: string;
@@ -153,7 +156,11 @@ export const useCompanies = createQuery<Response, Variables, AxiosError>({
   },
 });
 
-export const useGetCompanyDetails = createQuery<SingleCompany, CompanyVariables, AxiosError>({
+export const useGetCompanyDetails = createQuery<
+  SingleCompany,
+  CompanyVariables,
+  AxiosError
+>({
   primaryKey: 'company/detail/',
   queryFn: ({ queryKey: [primaryKey, variables] }) => {
     return NetWorkService.Get({ url: `${primaryKey}company_id/${variables?.id}` }).then(
@@ -175,7 +182,9 @@ export const useEditCompany = createMutation<Response, EditCompanyVariables, Axi
 export const useCompaniesList = createQuery<Response, Variables2, AxiosError>({
   primaryKey: 'companies-list',
   queryFn: ({ queryKey: [primaryKey, variables] }) => {
-    return NetWorkService.Get({ url: `${primaryKey}?person_id=${variables?.person_id}` }).then(
+    return NetWorkService.Get({
+      url: `${primaryKey}?person_id=${variables?.person_id}`,
+    }).then(
       //@ts-ignore
       (response) => response.data
     );
@@ -225,7 +234,11 @@ export const useUnsaveSaveCompany = createMutation<Response3, SaveCompany, Axios
     }).then((response) => response?.data),
 });
 
-export const useAddContactCompany = createMutation<Response3, AddContactCompany, AxiosError>({
+export const useAddContactCompany = createMutation<
+  Response3,
+  AddContactCompany,
+  AxiosError
+>({
   mutationFn: async (variables) =>
     NetWorkService.Post({
       url: 'applicant/add-contact-candidate',
@@ -234,6 +247,15 @@ export const useAddContactCompany = createMutation<Response3, AddContactCompany,
         person_id: variables?.person_id,
         company_id: variables?.company_id,
       },
+      // @ts-ignore
+    }).then((response) => response?.data),
+});
+
+export const useLogout = createMutation<Response3, LogoutVariables, AxiosError>({
+  mutationFn: async () =>
+    NetWorkService.Put({
+      url: 'logout',
+      body: {},
       // @ts-ignore
     }).then((response) => response?.data),
 });

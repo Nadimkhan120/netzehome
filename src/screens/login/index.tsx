@@ -147,23 +147,26 @@ export const Login = () => {
     if (credentialState === appleAuth.State.AUTHORIZED) {
       // user is authenticated
 
-      // console.log(
-      //   'appleAuthRequestResponse',
-      //   JSON.stringify(appleAuthRequestResponse, null, 2)
-      // );
+      console.log(
+        'appleAuthRequestResponse',
+        JSON.stringify(appleAuthRequestResponse, null, 2)
+      );
 
       let body = {
         email: appleAuthRequestResponse?.email,
         provider: 'apple',
         token: appleAuthRequestResponse?.user,
         user_type: '1',
-        full_name: appleAuthRequestResponse?.fullName?.givenName,
+        full_name:
+          appleAuthRequestResponse?.fullName?.givenName === null
+            ? 'My Name'
+            : appleAuthRequestResponse?.fullName?.givenName,
       };
 
       //@ts-ignore
       socialApi(body, {
         onSuccess: (data) => {
-          // console.log('data', JSON.stringify(data, null, 2));
+          console.log('data', JSON.stringify(data, null, 2));
 
           if (data?.response?.status === 200) {
             setShowLoading(false);
@@ -189,7 +192,7 @@ export const Login = () => {
 
   return (
     <Screen backgroundColor={colors.white}>
-      <ScrollView style={{marginHorizontal:scale(15)}}>
+      <ScrollView style={{ marginHorizontal: scale(15) }}>
         <View height={scale(72)} />
         <Image source={icons.logo} contentFit="contain" style={styles.logo} />
         <View paddingTop={'large'}>

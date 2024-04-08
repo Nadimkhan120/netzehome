@@ -3,7 +3,7 @@ import { Dimensions, TouchableOpacity } from 'react-native';
 import { Drawer } from 'react-native-drawer-layout';
 import { scale } from 'react-native-size-matters';
 import { icons } from '@/assets/icons';
-import { useCompanies } from '@/services/api/company';
+import { useCompanies, useLogout } from '@/services/api/company';
 import { closeDrawer, openDrawer, useApp } from '@/store/app';
 import { logOut } from '@/store/auth';
 import { useUser, removeUserData } from '@/store/user';
@@ -12,6 +12,7 @@ import { Avatar } from '../avatar';
 import { useNavigation } from '@react-navigation/native';
 import { useRefreshOnFocus } from '@/hooks';
 import { Image } from 'expo-image';
+import { showErrorMessage } from '@/utils';
 
 const { width } = Dimensions.get('screen');
 
@@ -28,6 +29,8 @@ export function AppDrawer({ children }: AppDrawer) {
 
   const { data: companies, refetch } = useCompanies();
 
+  const { mutate: logOutApi, error, isLoading } = useLogout();
+
   useRefreshOnFocus(refetch);
 
   React.useEffect(() => {
@@ -37,6 +40,29 @@ export function AppDrawer({ children }: AppDrawer) {
     }
     // @ts-ignore
   }, [companies?.response?.status]);
+
+  const logoutUSer = () => {
+    logOutApi(
+      //@ts-ignore
+      {},
+      {
+        onSuccess: (response) => {
+          if (response?.message === 'User logged out successfully') {
+            closeDrawer();
+            removeUserData();
+            logOut();
+          } else {
+            showErrorMessage('Error in logout');
+          }
+        },
+        onError: (error) => {
+          // An error happened!
+          // @ts-ignore
+          console.log(`error`, error?.response.data?.message);
+        },
+      }
+    );
+  };
 
   return (
     <Drawer
@@ -64,7 +90,7 @@ export function AppDrawer({ children }: AppDrawer) {
                   size="medium"
                   onPress={() => navigate('EditProfile', { user })}
                 />
-                <TouchableOpacity  onPress={() => navigate('EditProfile', { user })}>
+                <TouchableOpacity onPress={() => navigate('EditProfile', { user })}>
                   <View>
                     <Text
                       variant={'medium16'}
@@ -177,13 +203,7 @@ export function AppDrawer({ children }: AppDrawer) {
               </View>
 
               <View flex={1} paddingBottom={'large'} justifyContent={'flex-end'}>
-                <PressableScale
-                  onPress={() => {
-                    closeDrawer();
-                    removeUserData();
-                    logOut();
-                  }}
-                >
+                <PressableScale onPress={logoutUSer}>
                   <View
                     height={scale(56)}
                     backgroundColor={'grey500'}

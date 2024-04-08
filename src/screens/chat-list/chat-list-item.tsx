@@ -7,6 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import { ChatListItems } from '@/services/api/chats';
 import { timeAgo } from '@/utils';
 import { useUser } from '@/store/user';
+import { editUserChatCount } from '@/store/app';
 
 type ChatListItemProps = {
   item: ChatListItems;
@@ -22,7 +23,8 @@ const ChatListItem = ({ item }: ChatListItemProps) => {
 
   return (
     <PressableScale
-      onPress={() =>
+      onPress={() => {
+        editUserChatCount(item?.unreadMessages);
         navigate('Chats', {
           person_id: checkUser ? item?.Reciever_Detail?.id : item?.Person_Detail?.id,
           chat_id: item?.lastMessage?.chat_id,
@@ -32,8 +34,8 @@ const ChatListItem = ({ item }: ChatListItemProps) => {
           name: checkUser
             ? item?.Reciever_Detail?.full_name
             : item?.Person_Detail?.full_name,
-        })
-      }
+        });
+      }}
     >
       <View
         flexDirection={'row'}

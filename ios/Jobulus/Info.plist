@@ -23,9 +23,11 @@
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.1056415638644-vu2fbrmnkgcmki8toton39h2pqfj23jd</string>
+				<string>com.googleusercontent.apps.353398465240-tb7b29alq25bb4g79omhh4f8i24pomdd</string>
 			</array>
 		</dict>
 	</array>
@@ -48,10 +50,10 @@
 	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>Please allow your gallary permission so that you can update your profile</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Please allow your micro phone  permissions</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Please allow your gallary permissions so that you can update your profile</string>
-	<key>NSMicroPhoneUsageDescription</key>
-	<string>Please allow your micro phone  permissions</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
