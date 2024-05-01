@@ -21,14 +21,13 @@ type StatsProps = {
 
 const Applicants = ({ data }: StatsProps) => {
   const user = useUser((state) => state?.user);
+  const profile = useUser((state) => state?.profile);
 
   const { data: people, isLoading } = useTopVacancies({
     variables: {
       id: data?.id,
     },
   });
-
-  console.log('people', JSON.stringify(people, null, 2));
 
   const { mutate: saveCandidateApi, isLoading: isSaving } = useSaveCandidate();
   const { mutate: saveUnCandidateApi, isLoading: isUnSaving } = useUnsaveSaveCandidate();
@@ -64,7 +63,11 @@ const Applicants = ({ data }: StatsProps) => {
           onSavePress={(person) => {
             if (person?.isSaved === 0) {
               saveCandidateApi(
-                { candidate_id: person?.id, person_id: user?.id },
+                {
+                  candidate_id: person?.id,
+                  person_id: user?.id,
+                  unique_id: profile?.unique_id,
+                },
                 {
                   onSuccess: (data) => {
                     console.log('data', data);
@@ -84,7 +87,11 @@ const Applicants = ({ data }: StatsProps) => {
               );
             } else {
               saveUnCandidateApi(
-                { candidate_id: person?.id, person_id: user?.id },
+                {
+                  candidate_id: person?.id,
+                  person_id: user?.id,
+                  unique_id: profile?.unique_id,
+                },
                 {
                   onSuccess: (data) => {
                     if (data?.response?.status === 200) {
@@ -105,7 +112,7 @@ const Applicants = ({ data }: StatsProps) => {
         />
       );
     },
-    [user]
+    [user, profile]
   );
 
   if (isLoading) return;

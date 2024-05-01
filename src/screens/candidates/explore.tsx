@@ -18,12 +18,14 @@ import { useNavigation } from '@react-navigation/native';
 
 const Explore = () => {
   const user = useUser((state) => state?.user);
+  const profile = useUser((state) => state?.profile);
 
   const { navigate } = useNavigation();
 
   const { isLoading, data } = useAllCandidates({
     variables: {
       person_id: user?.id,
+      unique_id: profile?.unique_id,
     },
   });
 
@@ -32,14 +34,13 @@ const Explore = () => {
   const { mutate: saveCandidateApi, isLoading: isSaving } = useSaveCandidate();
   const { mutate: saveUnCandidateApi, isLoading: isUnSaving } = useUnsaveSaveCandidate();
   const { mutate: addHandShakeApi, isLoading: isHandShaking } = useAddContactCandidate();
-    
+
   const renderItem = useCallback(
     ({ item }) => {
       console.log(item);
-      if(item?.id === user?.id){
-        return null
-      }
-      else {
+      if (item?.id === user?.id) {
+        return null;
+      } else {
         return (
           <CadidateItem
             data={item}
@@ -76,11 +77,15 @@ const Explore = () => {
             onSavePress={(person) => {
               if (person?.isSaved === 0) {
                 saveCandidateApi(
-                  { candidate_id: person?.id, person_id: user?.id },
+                  {
+                    candidate_id: person?.id,
+                    person_id: user?.id,
+                    unique_id: profile?.unique_id,
+                  },
                   {
                     onSuccess: (data) => {
                       console.log('data', data);
-  
+
                       if (data?.response?.status === 200) {
                         queryClient.invalidateQueries(useAllCandidates.getKey());
                         queryClient.invalidateQueries(useMyNetworks.getKey());
@@ -96,7 +101,11 @@ const Explore = () => {
                 );
               } else {
                 saveUnCandidateApi(
-                  { candidate_id: person?.id, person_id: user?.id },
+                  {
+                    candidate_id: person?.id,
+                    person_id: user?.id,
+                    unique_id: profile?.unique_id,
+                  },
                   {
                     onSuccess: (data) => {
                       if (data?.response?.status === 200) {
@@ -118,7 +127,7 @@ const Explore = () => {
         );
       }
     },
-    [user, navigate]
+    [user, navigate, profile]
   );
 
   const renderLoading = () => {

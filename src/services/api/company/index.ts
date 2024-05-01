@@ -4,7 +4,7 @@ import { NetWorkService } from '@/services/apinetworkservice';
 
 type Variables = void;
 type CompanyVariables = { id: number };
-type SaveCompany = { company_id: number };
+type SaveCompany = { company_id: number; unique_id: string };
 
 type AddContactCompany = {
   emails: number;
@@ -13,6 +13,7 @@ type AddContactCompany = {
 };
 
 type Variables2 = { person_id: number };
+type SavedCompanies = { unique_id: string };
 
 type LogoutVariables = void;
 
@@ -201,11 +202,11 @@ export const useFollowedCompanies = createQuery<Response, Variables, AxiosError>
   },
 });
 
-export const useSavedCompanies = createQuery<Response, Variables2, AxiosError>({
+export const useSavedCompanies = createQuery<Response, SavedCompanies, AxiosError>({
   primaryKey: 'saved-companies',
   queryFn: ({ queryKey: [primaryKey, variables] }) => {
     return (
-      NetWorkService.Get({ url: `${primaryKey}?person_id=${variables?.person_id}` })
+      NetWorkService.Get({ url: `${primaryKey}?unique_id=${variables?.unique_id}` })
         // @ts-ignore
         .then((response) => response.data)
     );
@@ -218,6 +219,7 @@ export const useSaveCompany = createMutation<Response3, SaveCompany, AxiosError>
       url: 'company/save',
       body: {
         company_id: variables?.company_id,
+        unique_id: variables?.unique_id,
       },
       // @ts-ignore
     }).then((response) => response?.data),
@@ -229,6 +231,7 @@ export const useUnsaveSaveCompany = createMutation<Response3, SaveCompany, Axios
       url: 'company/unsave',
       body: {
         company_id: variables?.company_id,
+        unique_id: variables?.unique_id,
       },
       // @ts-ignore
     }).then((response) => response?.data),

@@ -21,8 +21,12 @@ import { useNavigation } from '@react-navigation/native';
 
 export const MyContacts = () => {
   const { colors } = useTheme<Theme>();
-  const [contactList, setContactList] = useState([]);
+
   const user = useUser((state) => state?.user);
+  const profile = useUser((state) => state?.profile);
+
+  const [contactList, setContactList] = useState([]);
+
   const { navigate } = useNavigation();
 
   const { isLoading, data } = useMyNetworks();
@@ -33,23 +37,22 @@ export const MyContacts = () => {
 
   //console.log('data?.response?.data', JSON.stringify(data?.response?.data, null, 2));
   useEffect(() => {
-    if(data?.response?.data?.length > 0){
-      removeMyUSer()
+    if (data?.response?.data?.length > 0) {
+      removeMyUSer();
     }
-  },[data])
+  }, [data]);
 
   const removeMyUSer = () => {
-    let dummyArr = []
+    let dummyArr = [];
 
-     data?.response?.data?.map((item) => {
-      if(item?.id !== user?.id){
-        dummyArr.push(item)
+    data?.response?.data?.map((item) => {
+      if (item?.id !== user?.id) {
+        dummyArr.push(item);
       }
-    })
+    });
 
     setContactList(dummyArr);
-  }
-
+  };
 
   const renderItem = useCallback(
     ({ item }) => {
@@ -57,8 +60,8 @@ export const MyContacts = () => {
         <CadidateItem
           data={item}
           onHandShake={(person) => {
-            console.log("HAND SHAKE",person);
-            
+            console.log('HAND SHAKE', person);
+
             if (person?.is_friend === 0) {
               addHandShakeApi(
                 { company_id: 0, person_id: person?.id, emails: person?.email },
@@ -80,14 +83,17 @@ export const MyContacts = () => {
                 }
               );
             } else {
-              console.log("NO HADN SHAKE");
-              
+              console.log('NO HADN SHAKE');
             }
           }}
           onSavePress={(person) => {
             if (person?.isSaved === 0) {
               saveCandidateApi(
-                { candidate_id: person?.id, person_id: user?.id },
+                {
+                  candidate_id: person?.id,
+                  person_id: user?.id,
+                  unique_id: profile?.unique_id,
+                },
                 {
                   onSuccess: (data) => {
                     console.log('data', data);
@@ -107,7 +113,11 @@ export const MyContacts = () => {
               );
             } else {
               saveUnCandidateApi(
-                { candidate_id: person?.id, person_id: user?.id },
+                {
+                  candidate_id: person?.id,
+                  person_id: user?.id,
+                  unique_id: profile?.unique_id,
+                },
                 {
                   onSuccess: (data) => {
                     if (data?.response?.status === 200) {
@@ -126,8 +136,8 @@ export const MyContacts = () => {
             }
           }}
           onMessage={(person) => {
-            console.log("PERSON",person);
-            
+            console.log('PERSON', person);
+
             navigate('Chats', {
               person_id: person?.person_id,
               profile_pic: person?.profile_pic,

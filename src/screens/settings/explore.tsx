@@ -18,6 +18,8 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 
 const Explore = () => {
   const user = useUser((state) => state?.user);
+  const profile = useUser((state) => state?.profile);
+
   const { navigate } = useNavigation();
 
   const { isLoading, data } = useCompaniesList({
@@ -26,13 +28,10 @@ const Explore = () => {
     },
   });
 
-  //console.log('useCompaniesList', JSON.stringify(data, null, 2));
-
   const { mutate: saveCompanyApi, isLoading: isSaving } = useSaveCompany();
   const { mutate: unSaveCompanyApi, isLoading: isUnSaving } = useUnsaveSaveCompany();
   const { mutate: followCompmayApi, isLoading: isFollowing } = useAddContactCompany();
 
-  
   const renderItem = useCallback(
     ({ item }) => {
       return (
@@ -68,7 +67,7 @@ const Explore = () => {
 
             if (company?.is_saved === 0) {
               saveCompanyApi(
-                { company_id: company?.id },
+                { company_id: company?.id, unique_id: profile?.unique_id },
                 {
                   onSuccess: (data) => {
                     console.log('saveCompanyApi', data);
@@ -88,7 +87,7 @@ const Explore = () => {
               );
             } else {
               unSaveCompanyApi(
-                { company_id: company?.id },
+                { company_id: company?.id, unique_id: profile?.unique_id },
                 {
                   onSuccess: (data) => {
                     console.log('data', data);
@@ -110,7 +109,8 @@ const Explore = () => {
           }}
           onMessage={() => {
             navigate('Chats', {
-              isCompingFrom: "Explore",
+              //@ts-ignore
+              isCompingFrom: 'Explore',
               person_id: item?.id,
               profile_pic: item?.images?.pic,
               name: item?.name,
@@ -130,7 +130,7 @@ const Explore = () => {
         />
       );
     },
-    [user]
+    [user, profile]
   );
 
   const renderLoading = () => {

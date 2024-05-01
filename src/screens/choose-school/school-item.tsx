@@ -3,13 +3,18 @@ import { StyleSheet } from 'react-native';
 import { scale } from 'react-native-size-matters';
 import { Image } from 'expo-image';
 import { PressableScale, Text, View } from '@/ui';
+import { CheckBox } from '@/components/checkbox';
+import { useExperience } from '@/store/experience';
 
 type SchoolItem = {
   data: any;
   onPress: (data: any) => void;
+  selected?: any;
 };
 
-const SchoolItem = ({ onPress, data }: SchoolItem) => {
+const SchoolItem = ({ onPress, data, selected }: SchoolItem) => {
+  const selectedSchool = useExperience((state) => state?.selectedSchool);
+
   return (
     <PressableScale onPress={() => onPress(data)}>
       <View
@@ -39,7 +44,10 @@ const SchoolItem = ({ onPress, data }: SchoolItem) => {
             alignItems={'center'}
             justifyContent={'space-between'}
           >
-            <Text variant={'semiBold14'} color={'black'}>
+            <Text
+              variant={'semiBold14'}
+              color={selectedSchool?.id === data?.id ? 'primary' : 'black'}
+            >
               {data?.name}
             </Text>
           </View>
@@ -48,7 +56,7 @@ const SchoolItem = ({ onPress, data }: SchoolItem) => {
             variant={'regular13'}
             textTransform={'capitalize'}
             marginVertical={'tiny'}
-            color={'grey100'}
+            color={selectedSchool?.id === data?.id ? 'primary' : 'grey100'}
           >
             United State
           </Text>

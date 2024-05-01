@@ -155,8 +155,6 @@ export const AddExperience = () => {
         },
       }
     );
-
-    return;
   };
 
   const watchStartDate = watch('startDate');
@@ -346,6 +344,7 @@ export const AddExperience = () => {
           )}
 
           <DescriptionField
+            //@ts-ignore
             placeholder="Enter company details"
             label="About Company"
             control={control}

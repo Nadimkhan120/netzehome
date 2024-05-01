@@ -10,16 +10,18 @@ import { useRefreshOnFocus } from '@/hooks';
 
 const Applied = () => {
   const user = useUser((state) => state?.user);
+  const profile = useUser((state) => state?.profile);
 
-  const { data, isLoading, refetch } = useAppliedJobs({
+  const { data, isLoading, refetch, error } = useAppliedJobs({
     variables: {
       person_id: user?.id,
+      unique_id: profile?.unique_id,
     },
   });
 
   useRefreshOnFocus(refetch);
 
-  console.log('data?.response?.data', JSON.stringify(data?.response?.data, null, 2));
+  console.log('error===', error);
 
   const renderItem = useCallback(({ item }) => {
     return <PersonItem data={item} />;

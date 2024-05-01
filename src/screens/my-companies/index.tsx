@@ -21,6 +21,7 @@ import { scale } from 'react-native-size-matters';
 export const MyCompanies = () => {
   const { colors } = useTheme<Theme>();
   const user = useUser((state) => state?.user);
+  const profile = useUser((state) => state?.profile);
 
   const { isLoading, data } = useFollowedCompanies();
 
@@ -57,7 +58,7 @@ export const MyCompanies = () => {
           onSavePress={(company) => {
             if (company?.is_saved === 0) {
               saveCompanyApi(
-                { company_id: company?.id },
+                { company_id: company?.id, unique_id: profile?.unique_id },
                 {
                   onSuccess: (data) => {
                     if (data?.response?.status === 200) {
@@ -75,7 +76,7 @@ export const MyCompanies = () => {
               );
             } else {
               unSaveCompanyApi(
-                { company_id: company?.id },
+                { company_id: company?.id, unique_id: profile?.unique_id },
                 {
                   onSuccess: (data) => {
                     if (data?.response?.status === 200) {
@@ -96,7 +97,7 @@ export const MyCompanies = () => {
         />
       );
     },
-    [user]
+    [user, profile]
   );
 
   const renderLoading = () => {

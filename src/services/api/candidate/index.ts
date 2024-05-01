@@ -5,8 +5,13 @@ import { NetWorkService } from '@/services/apinetworkservice';
 
 type Variables = { statusId: number; id: number };
 type Variables2 = { person_id: number };
+
+type Variables4 = { person_id: number; unique_id: string };
+
+type SavedCandidates = { person_id: number; unique_id: string };
+
 type VariablesVoid = void;
-type SaveCandidate = { candidate_id: number; person_id: number };
+type SaveCandidate = { candidate_id: number; person_id: number; unique_id: string };
 
 type UpdateCandidatePaylaod = {
   job_title_id: any;
@@ -211,21 +216,23 @@ export const useCandidates = createQuery<Response, Variables, AxiosError>({
   },
 });
 
-export const useAllCandidates = createQuery<Response4, Variables2, AxiosError>({
+export const useAllCandidates = createQuery<Response4, Variables4, AxiosError>({
   primaryKey: 'applicants',
   queryFn: ({ queryKey: [primaryKey, variables] }) => {
     return NetWorkService.Get({
-      url: `${primaryKey}?person_id=${variables?.person_id}`,
+      url: `${primaryKey}?person_id=${variables?.person_id}&unique_id=${variables?.unique_id}`,
       //@ts-ignore
     }).then((response) => response.data);
   },
 });
 
-export const useSavedCandidates = createQuery<Response4, Variables2, AxiosError>({
+export const useSavedCandidates = createQuery<Response4, SavedCandidates, AxiosError>({
   primaryKey: 'applicant/saved-candidate',
   queryFn: ({ queryKey: [primaryKey, variables] }) => {
+    console.log('variables', variables);
+
     return NetWorkService.Get({
-      url: `${primaryKey}?person_id=${variables?.person_id}`,
+      url: `${primaryKey}?person_id=${variables?.person_id}&unique_id=${variables?.unique_id}`,
       //@ts-ignore
     }).then((response) => response.data);
   },
@@ -284,7 +291,7 @@ export const useCandidateByName = createQuery<Candidates, Search, AxiosError>({
 });
 
 export const useFilterCandidates = createQuery<Candidates, Filter, AxiosError>({
-  primaryKey: 'find-candidates?skill=2&industries=1&name=Shafqat jan',
+  primaryKey: 'find-candidates',
   queryFn: ({ queryKey: [primaryKey, variables] }) => {
     return NetWorkService.Get({
       url: `${primaryKey}?skill=${variables?.skill}&industries=${variables?.industries}`,
@@ -300,6 +307,7 @@ export const useSaveCandidate = createMutation<Response3, SaveCandidate, AxiosEr
       body: {
         candidate_id: variables?.candidate_id,
         company_id: variables?.person_id,
+        unique_id: variables?.unique_id,
       },
       // @ts-ignore
     }).then((response) => response?.data),
@@ -316,6 +324,7 @@ export const useUnsaveSaveCandidate = createMutation<
       body: {
         candidate_id: variables?.candidate_id,
         company_id: variables?.person_id,
+        unique_id: variables?.unique_id,
       },
       // @ts-ignore
     }).then((response) => response?.data),

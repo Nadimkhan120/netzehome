@@ -13,10 +13,12 @@ const Applied = () => {
   const { navigate } = useNavigation();
 
   const user = useUser((state) => state?.user);
+  const profile = useUser((state) => state?.profile);
 
   const { data, isLoading } = useAppliedJobs({
     variables: {
       person_id: user?.id,
+      unique_id: profile?.unique_id,
     },
   });
 

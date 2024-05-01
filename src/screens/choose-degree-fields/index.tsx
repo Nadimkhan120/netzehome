@@ -1,69 +1,55 @@
-import React, { useCallback, useRef, useState } from 'react';
-import type { BottomSheetModal } from '@gorhom/bottom-sheet';
+import React, { useCallback } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { FlashList } from '@shopify/flash-list';
 import { useTheme } from '@shopify/restyle';
 import { scale } from 'react-native-size-matters';
 import { ScreenHeader } from '@/components/screen-header';
 import { SearchField } from '@/components/search-field';
-import type { User } from '@/services/api/user';
-import { useGetUser } from '@/services/api/user';
-import { useUser } from '@/store/user';
 import type { Theme } from '@/theme';
-import { Screen, Text, View } from '@/ui';
+import { PressableScale, Screen, Text, View } from '@/ui';
 import DegreeFieldItem from './degree-field-item';
-
-const employees = [
-  { id: 1, name: 'Computer Science' },
-  { id: 2, name: 'Engineering' },
-  { id: 3, name: 'Psychology' },
-  { id: 4, name: 'Business Administration' },
-  { id: 5, name: 'Biology' },
-  { id: 6, name: 'Economics' },
-  { id: 7, name: 'Medicine' },
-  { id: 8, name: 'Art History' },
-  { id: 9, name: 'Political Science' },
-  { id: 10, name: 'Mathematics' },
-  { id: 11, name: 'Environmental Science' },
-  { id: 12, name: 'Linguistics' },
-  { id: 13, name: 'History' },
-  { id: 14, name: 'Sociology' },
-  { id: 15, name: 'Music Theory' },
-];
+import { useFields } from '@/services/api/settings';
+import { setSelectedField, useExperience } from '@/store/experience';
 
 export const ChooseDegreeField = () => {
   const { colors } = useTheme<Theme>();
-
   const { goBack } = useNavigation();
+  const { data } = useFields();
 
-  const company = useUser((state) => state?.company);
-  const [selectUser, setSelectUser] = useState<User | null>(null);
+  const selectedField = useExperience((state) => state?.selectedField);
 
-  const { data, isLoading } = useGetUser({
-    variables: {
-      id: company?.id,
-    },
-  });
-
-  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+  const goBackToScreen = () => {
+    if (selectedField !== '') {
+      goBack();
+    }
+  };
 
   const renderItem = useCallback(
     ({ item }) => {
       return (
         <DegreeFieldItem
           data={item}
-          onPress={() => {
-            console.log('hello');
+          onPress={(payload) => {
+            setSelectedField(payload);
           }}
         />
       );
     },
-    [data, bottomSheetModalRef, selectUser, setSelectUser]
+    [data]
   );
 
   return (
     <Screen backgroundColor={colors.white} edges={['top']}>
-      <ScreenHeader title="Field" />
+      <ScreenHeader
+        title="Field"
+        rightElement={
+          <PressableScale onPress={goBackToScreen}>
+            <Text variant={'medium17'} color={'primary'}>
+              Done
+            </Text>
+          </PressableScale>
+        }
+      />
 
       <View
         backgroundColor={'grey500'}
@@ -77,15 +63,11 @@ export const ChooseDegreeField = () => {
       <View flex={1} backgroundColor={'grey500'}>
         <FlashList
           //@ts-ignore
-          data={employees}
+          data={data}
           renderItem={renderItem}
           estimatedItemSize={150}
           ListEmptyComponent={
-            <View
-              height={scale(300)}
-              justifyContent={'center'}
-              alignItems={'center'}
-            >
+            <View height={scale(300)} justifyContent={'center'} alignItems={'center'}>
               <Text>No Users Found</Text>
             </View>
           }

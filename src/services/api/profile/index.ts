@@ -20,6 +20,18 @@ type UpdateExperience = {
   company_description: string;
 };
 
+type UpdateEducation = {
+  unique_id: number;
+  created_by: number;
+  from_date: string;
+  to_date: string;
+  description: string;
+  institute_id: number;
+  education_level_id: number;
+  education_field_id: number;
+  grade: string;
+};
+
 type DetailPayload = {
   unique_id: any;
   person_id: any;
@@ -56,6 +68,16 @@ export const useUpdateExperience = createMutation<Response, UpdateExperience, Ax
     },
   }
 );
+
+export const useUpdateEducation = createMutation<Response, UpdateEducation, AxiosError>({
+  mutationFn: async (variables) => {
+    return NetWorkService.Post({
+      url: 'person/update-education',
+      body: variables,
+      // @ts-ignore
+    }).then((response) => response?.data);
+  },
+});
 
 export const useProfileDetails = createMutation<Response, DetailPayload, AxiosError>({
   mutationFn: async (variables) => {

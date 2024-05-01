@@ -53,10 +53,12 @@ export function Home() {
   const { colors } = useTheme<Theme>();
 
   const user = useUser((state) => state?.user);
+  const profile = useUser((state) => state?.profile);
 
   const { data, isLoading, refetch } = useSuggestedJobs({
     variables: {
       person_id: user?.id,
+      unique_id: profile?.unique_id,
     },
     enabled: user?.id ? true : false,
   });
@@ -73,9 +75,10 @@ export function Home() {
         onStartPress={(job) => {
           if (job?.isSaved === 0) {
             saveJobApi(
-              { job_id: job?.id },
+              { job_id: job?.id, unique_id: profile?.unique_id },
               {
                 onSuccess: (data) => {
+                  console.log('data', data);
                   if (data?.response?.status === 200) {
                     queryClient.invalidateQueries(useSuggestedJobs.getKey());
                   } else {
@@ -89,7 +92,7 @@ export function Home() {
             );
           } else {
             saveUnJobApi(
-              { job_id: job?.id },
+              { job_id: job?.id, unique_id: profile?.unique_id },
               {
                 onSuccess: (data) => {
                   console.log('data', data);

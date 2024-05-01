@@ -1,8 +1,7 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import { scale } from 'react-native-size-matters';
-import { Image } from 'expo-image';
 import { PressableScale, Text, View } from '@/ui';
+import { useExperience } from '@/store/experience';
 
 type DegreeItem = {
   data: any;
@@ -10,6 +9,8 @@ type DegreeItem = {
 };
 
 const DegreeItem = ({ onPress, data }: DegreeItem) => {
+  const selectedDegree = useExperience((state) => state?.selectedDegree);
+
   return (
     <PressableScale onPress={() => onPress(data)}>
       <View
@@ -26,7 +27,10 @@ const DegreeItem = ({ onPress, data }: DegreeItem) => {
             alignItems={'center'}
             justifyContent={'space-between'}
           >
-            <Text variant={'medium14'} color={'black'}>
+            <Text
+              variant={'medium14'}
+              color={selectedDegree?.id === data?.id ? 'primary' : 'black'}
+            >
               {data?.name}
             </Text>
           </View>

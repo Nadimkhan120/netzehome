@@ -17,11 +17,18 @@ import { scale } from 'react-native-size-matters';
 
 const Saved = () => {
   const user = useUser((state) => state?.user);
-  const { isLoading, data } = useSavedCandidates({
+  const profile = useUser((state) => state?.profile);
+
+  const { isLoading, data, error } = useSavedCandidates({
     variables: {
       person_id: user?.id,
+      unique_id: profile?.unique_id,
     },
   });
+
+  console.log('data', data);
+
+  console.log('error', error);
 
   const { mutate: saveCandidateApi, isLoading: isSaving } = useSaveCandidate();
   const { mutate: saveUnCandidateApi, isLoading: isUnSaving } = useUnsaveSaveCandidate();
@@ -29,10 +36,9 @@ const Saved = () => {
 
   const renderItem = useCallback(
     ({ item }) => {
-      if(item?.id === user?.id){
-        return null
-      }
-      else {
+      if (item?.id === user?.id) {
+        return null;
+      } else {
         return (
           <CadidateItem
             data={item}
@@ -61,11 +67,15 @@ const Saved = () => {
             onSavePress={(person) => {
               if (person?.isSaved === 0) {
                 saveCandidateApi(
-                  { candidate_id: person?.id, person_id: user?.id },
+                  {
+                    candidate_id: person?.id,
+                    person_id: user?.id,
+                    unique_id: profile?.unique_id,
+                  },
                   {
                     onSuccess: (data) => {
                       console.log('data', data);
-  
+
                       if (data?.response?.status === 200) {
                         queryClient.invalidateQueries(useAllCandidates.getKey());
                         queryClient.invalidateQueries(useMyNetworks.getKey());
@@ -81,7 +91,11 @@ const Saved = () => {
                 );
               } else {
                 saveUnCandidateApi(
-                  { candidate_id: person?.id, person_id: user?.id },
+                  {
+                    candidate_id: person?.id,
+                    person_id: user?.id,
+                    unique_id: profile?.unique_id,
+                  },
                   {
                     onSuccess: (data) => {
                       if (data?.response?.status === 200) {
@@ -103,7 +117,7 @@ const Saved = () => {
         );
       }
     },
-    [user]
+    [user, profile]
   );
 
   const renderLoading = () => {

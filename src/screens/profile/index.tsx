@@ -17,6 +17,7 @@ import { Avatar } from '@/components/avatar';
 import { useGetUserProfileDetails } from '@/services/api/home';
 import { useRefreshOnFocus } from '@/hooks';
 import { ExperienceItem } from './experience-item';
+import { EducationItem } from './education-item';
 
 const InfoRow = ({ label, onPress, children }) => {
   return (
@@ -50,7 +51,7 @@ export const Profile = () => {
 
   const route = useRoute<any>();
 
-  const { data, isLoading, refetch } = useGetUserProfileDetails({
+  const { data, refetch } = useGetUserProfileDetails({
     variables: {
       id: route?.params?.id,
     },
@@ -130,11 +131,7 @@ export const Profile = () => {
             color={'grey200'}
             lineHeight={21}
           >
-            I’m a strategist who constantly strives to achieve success through in-depth
-            research and constant learning. Creating an optimal flow from the beginning of
-            the process to the end is critical to any campaign’s outcome regardless of
-            what mediums it occupies. My work helps both the team and the client to keep
-            the user’s motivations, goals, and roles top of mind.
+            {profileData?.resume_bio}
           </Text>
         </View>
 
@@ -154,14 +151,18 @@ export const Profile = () => {
             </View>
           </InfoRow>
 
-          {/* <InfoRow
+          <InfoRow
             label={'Education'}
             onPress={() => {
               navigate('AddEducation', { id: route?.params?.id });
             }}
           >
-            <Text>hello</Text>
-          </InfoRow> */}
+            <View paddingTop={'medium'}>
+              {profileData?.education?.map((element, index) => {
+                return <EducationItem key={index} data={element} />;
+              })}
+            </View>
+          </InfoRow>
           <InfoRow
             label={'Skills'}
             onPress={() => {

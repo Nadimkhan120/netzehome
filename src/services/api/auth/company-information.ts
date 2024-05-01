@@ -32,6 +32,6 @@ export const useCompanyInformation = createMutation<Response, Variables, AxiosEr
         return response?.data;
       })
       .catch((error) => {
-        console.log('error1', error?.response);
+        console.log('error1', error?.response?.data);
       }),
 });

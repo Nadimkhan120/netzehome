@@ -47,26 +47,19 @@ export const ChooseSchool = () => {
     }
   };
 
-  const renderItem = useCallback(
-    ({ item }) => {
-      return (
-        <DegreeItem
-          data={item}
-          onPress={(payload) => {
-            setSelectedSchool(payload);
-          }}
-        />
-      );
-    },
-    [
-      data,
-      bottomSheetModalRef,
-      selectUser,
-      setSelectUser,
-      setSelectedSchool,
-      selectedSchool,
-    ]
-  );
+  const renderItem = ({ item }) => {
+    return (
+      <DegreeItem
+        data={item}
+        selected={selectedSchool}
+        onPress={(payload) => {
+          setSelectedSchool(payload);
+        }}
+      />
+    );
+  };
+
+  console.log('selectedSchool', selectedSchool);
 
   return (
     <Screen backgroundColor={colors.white} edges={['top']}>

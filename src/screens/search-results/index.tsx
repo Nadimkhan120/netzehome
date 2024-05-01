@@ -27,12 +27,14 @@ import {
   useUnsaveSaveCandidate,
 } from '@/services/api/candidate';
 import { useUser } from '@/store/user';
+import { use } from 'i18next';
 
 export const SearchResults = () => {
   const { colors } = useTheme<Theme>();
 
   const route = useRoute<any>();
   const user = useUser((state) => state?.user);
+  const profile = useUser((state) => state?.profile);
 
   const [menu, setMenu] = useState([
     { heading: 'Jobs', id: 1, active: true },
@@ -59,101 +61,113 @@ export const SearchResults = () => {
   const candidates = data?.applicants?.original?.response?.data;
   const companies = data?.companies?.original?.response?.data;
 
-  console.log('companies', JSON.stringify(companies, null, 2));
+  const renderCandidateItem = useCallback(
+    ({ item }) => {
+      return (
+        <CandidateItem
+          data={item}
+          onStartPress={(person) => {
+            if (person?.isSaved === 0) {
+              saveCandidateApi(
+                {
+                  candidate_id: person?.id,
+                  person_id: user?.id,
+                  unique_id: profile?.unique_id,
+                },
+                {
+                  onSuccess: (data) => {
+                    console.log('data', data);
 
-  const renderCandidateItem = useCallback(({ item }) => {
-    return (
-      <CandidateItem
-        data={item}
-        onStartPress={(person) => {
-          if (person?.isSaved === 0) {
-            saveCandidateApi(
-              { candidate_id: person?.id, person_id: user?.id },
-              {
-                onSuccess: (data) => {
-                  console.log('data', data);
+                    if (data?.response?.status === 200) {
+                      queryClient.invalidateQueries(useAllCandidates.getKey());
+                      queryClient.invalidateQueries(useMyNetworks.getKey());
+                      queryClient.invalidateQueries(useSavedCandidates.getKey());
+                    } else {
+                    }
+                  },
+                  onError: (error) => {
+                    // An error happened!
+                    console.log(`error`, error);
+                  },
+                }
+              );
+            } else {
+              saveUnCandidateApi(
+                {
+                  candidate_id: person?.id,
+                  person_id: user?.id,
+                  unique_id: profile?.unique_id,
+                },
+                {
+                  onSuccess: (data) => {
+                    if (data?.response?.status === 200) {
+                      queryClient.invalidateQueries(useAllCandidates.getKey());
+                      queryClient.invalidateQueries(useMyNetworks.getKey());
+                      queryClient.invalidateQueries(useSavedCandidates.getKey());
+                    } else {
+                    }
+                  },
+                  onError: (error) => {
+                    // An error happened!
+                    console.log(`error`, error);
+                  },
+                }
+              );
+            }
+          }}
+        />
+      );
+    },
+    [user, profile]
+  );
 
-                  if (data?.response?.status === 200) {
-                    queryClient.invalidateQueries(useAllCandidates.getKey());
-                    queryClient.invalidateQueries(useMyNetworks.getKey());
-                    queryClient.invalidateQueries(useSavedCandidates.getKey());
-                  } else {
-                  }
-                },
-                onError: (error) => {
-                  // An error happened!
-                  console.log(`error`, error);
-                },
-              }
-            );
-          } else {
-            saveUnCandidateApi(
-              { candidate_id: person?.id, person_id: user?.id },
-              {
-                onSuccess: (data) => {
-                  if (data?.response?.status === 200) {
-                    queryClient.invalidateQueries(useAllCandidates.getKey());
-                    queryClient.invalidateQueries(useMyNetworks.getKey());
-                    queryClient.invalidateQueries(useSavedCandidates.getKey());
-                  } else {
-                  }
-                },
-                onError: (error) => {
-                  // An error happened!
-                  console.log(`error`, error);
-                },
-              }
-            );
-          }
-        }}
-      />
-    );
-  }, []);
+  const renderJobItem = useCallback(
+    ({ item, index }) => {
+      return (
+        <JobItem
+          data={item}
+          onStartPress={(job) => {
+            if (job?.isSaved === 0) {
+              saveJobApi(
+                { job_id: job?.id, unique_id: profile?.unique_id },
+                {
+                  onSuccess: (data) => {
+                    if (data?.response?.status === 200) {
+                      queryClient.invalidateQueries(useSuggestedJobs.getKey());
+                    } else {
+                    }
+                  },
+                  onError: (error) => {
+                    // An error happened!
+                    console.log(`error`, error);
+                  },
+                }
+              );
+            } else {
+              saveUnJobApi(
+                { job_id: job?.id, unique_id: profile?.unique_id },
+                {
+                  onSuccess: (data) => {
+                    console.log('data', data);
 
-  const renderJobItem = useCallback(({ item, index }) => {
-    return (
-      <JobItem
-        data={item}
-        onStartPress={(job) => {
-          if (job?.isSaved === 0) {
-            saveJobApi(
-              { job_id: job?.id },
-              {
-                onSuccess: (data) => {
-                  if (data?.response?.status === 200) {
-                    queryClient.invalidateQueries(useSuggestedJobs.getKey());
-                  } else {
-                  }
-                },
-                onError: (error) => {
-                  // An error happened!
-                  console.log(`error`, error);
-                },
-              }
-            );
-          } else {
-            saveUnJobApi(
-              { job_id: job?.id },
-              {
-                onSuccess: (data) => {
-                  console.log('data', data);
-
-                  if (data?.response?.status === 200) {
-                    queryClient.invalidateQueries(useSuggestedJobs.getKey());
-                  } else {
-                  }
-                },
-                onError: (error) => {
-                  // An error happened!
-                  console.log(`error`, error);
-                },
-              }
-            );
-          }
-        }}
-      />
-    );
-  }, []);
+                    if (data?.response?.status === 200) {
+                      queryClient.invalidateQueries(useSuggestedJobs.getKey());
+                    } else {
+                    }
+                  },
+                  onError: (error) => {
+                    // An error happened!
+                    console.log(`error`, error);
+                  },
+                }
+              );
+            }
+          }}
+        />
+      );
+    },
+    [user, profile]
+  );
 
   const renderCompanyItem = useCallback(({ item, index }) => {
     return (
@@ -162,7 +176,7 @@ export const SearchResults = () => {
         onStartPress={(job) => {
           if (job?.isSaved === 0) {
             saveJobApi(
-              { job_id: job?.id },
+              { job_id: job?.id, unique_id: profile?.unique_id },
               {
                 onSuccess: (data) => {
                   if (data?.response?.status === 200) {
@@ -178,7 +192,7 @@ export const SearchResults = () => {
             );
           } else {
             saveUnJobApi(
-              { job_id: job?.id },
+              { job_id: job?.id, unique_id: profile?.unique_id },
               {
                 onSuccess: (data) => {
                   console.log('data', data);

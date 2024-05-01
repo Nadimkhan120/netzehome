@@ -17,6 +17,7 @@ import { scale } from 'react-native-size-matters';
 
 const Followed = () => {
   const user = useUser((state) => state?.user);
+  const profile = useUser((state) => state?.profile);
 
   const { isLoading, data } = useFollowedCompanies();
 
@@ -53,7 +54,7 @@ const Followed = () => {
           onSavePress={(company) => {
             if (company?.is_saved === 0) {
               saveCompanyApi(
-                { company_id: company?.id },
+                { company_id: company?.id, unique_id: profile?.unique_id },
                 {
                   onSuccess: (data) => {
                     if (data?.response?.status === 200) {
@@ -71,7 +72,7 @@ const Followed = () => {
               );
             } else {
               unSaveCompanyApi(
-                { company_id: company?.id },
+                { company_id: company?.id, unique_id: profile?.unique_id },
                 {
                   onSuccess: (data) => {
                     console.log('data', data);

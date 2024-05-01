@@ -17,10 +17,11 @@ import { scale } from 'react-native-size-matters';
 
 const Saved = () => {
   const user = useUser((state) => state?.user);
+  const profile = useUser((state) => state?.profile);
 
   const { isLoading, data } = useSavedCompanies({
     variables: {
-      person_id: user?.id,
+      unique_id: profile?.unique_id,
     },
   });
 
@@ -65,7 +66,7 @@ const Saved = () => {
 
             if (company?.is_saved === 0) {
               saveCompanyApi(
-                { company_id: company?.id },
+                { company_id: company?.id, unique_id: profile?.unique_id },
                 {
                   onSuccess: (data) => {
                     console.log('saveCompanyApi', data);
@@ -85,7 +86,7 @@ const Saved = () => {
               );
             } else {
               unSaveCompanyApi(
-                { company_id: company?.id },
+                { company_id: company?.id, unique_id: profile?.unique_id },
                 {
                   onSuccess: (data) => {
                     console.log('data', data);
@@ -108,7 +109,7 @@ const Saved = () => {
         />
       );
     },
-    [user]
+    [user, profile]
   );
 
   const renderLoading = () => {

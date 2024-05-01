@@ -4,11 +4,12 @@ import { scale } from 'react-native-size-matters';
 import { Image } from 'expo-image';
 import { Text, View } from '@/ui';
 
-type ExperienceItemProps = {
+type EducationItemProps = {
   data?: any;
+  onStartPress?: (data: any) => void;
 };
 
-export const ExperienceItem = ({ data }: ExperienceItemProps) => {
+export const EducationItem = ({ data }: EducationItemProps) => {
   return (
     <View flexDirection={'row'} marginBottom={'large'} paddingHorizontal={'large'}>
       <View>
@@ -29,16 +30,16 @@ export const ExperienceItem = ({ data }: ExperienceItemProps) => {
       </View>
       <View flex={1} paddingHorizontal={'medium'}>
         <Text textTransform={'capitalize'} variant={'medium16'} color={'black'}>
-          {data?.job_title}
+          {data?.institute}
         </Text>
         <View paddingTop={'xSmall'} flexDirection={'row'} alignItems={'center'}>
           <Text textTransform={'capitalize'} variant={'medium12'} color={'grey100'}>
-            {data?.location}
+            {data?.education_level} In {data?.education_field}
           </Text>
         </View>
         <View paddingTop={'xSmall'} flexDirection={'row'} alignItems={'center'}>
           <Text textTransform={'capitalize'} variant={'medium12'} color={'grey100'}>
-            {data?.from_date}- {data?.is_current === '1' ? 'Present' : data?.to_date}
+            {data?.from_date}- {data?.to_date}
           </Text>
         </View>
       </View>

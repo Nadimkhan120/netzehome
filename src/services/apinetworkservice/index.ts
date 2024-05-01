@@ -19,99 +19,6 @@ import type { ResponseBase } from './type';
 
 const AxiosInstance = Axios.create({});
 
-//let refreshTokenRequest: Promise<string | null> | null = null;
-
-// AxiosInstance.interceptors.response.use(
-//   (response) => response,
-//   async function (error) {
-//     const originalRequest = error.config;
-//     if (
-//       error &&
-//       error.response &&
-//       (error.response.status === 403 || error.response.status === 401) &&
-//       !originalRequest._retry
-//     ) {
-//       originalRequest._retry = true;
-//       return AxiosInstance(originalRequest);
-//     }
-//     return Promise.reject(error);
-//   }
-// );
-
-// AxiosInstance.interceptors.response.use(
-//   (response) => response,
-//   async function (error) {
-//     const originalRequest = error.config;
-
-//     console.log("error.response", error.response);
-
-//     if (
-//       error &&
-//       error.response &&
-//       (error.response.status === 403 || error.response.status === 401) &&
-//       !originalRequest._retry
-//     ) {
-//       originalRequest._retry = true;
-
-//       refreshTokenRequest = refreshTokenRequest ? refreshTokenRequest : refreshToken();
-
-//       const newToken = await refreshTokenRequest;
-
-//       console.log("newToken", newToken);
-
-//       refreshTokenRequest = null;
-
-//       if (newToken === null) {
-//         return Promise.reject(error);
-//       }
-
-//       setUserToken(newToken);
-
-//       originalRequest.headers["authorization"] = "Bearer " + newToken ?? "";
-
-//       return AxiosInstance(originalRequest);
-//     }
-
-//     return Promise.reject(error);
-//   }
-// );
-
-// Response interceptor for API calls
-// AxiosInstance.interceptors.response.use(
-//   (response) => {
-//     return response;
-//   },
-//   async function (error) {
-//     console.log("error", error);
-
-//     const originalRequest = error.config;
-//     if (error.response.status === 403 && !originalRequest._retry) {
-//       originalRequest._retry = true;
-//       const access_token = await refreshToken();
-//       Axios.defaults.headers.common["Authorization"] = "Bearer " + access_token;
-//       return AxiosInstance(originalRequest);
-//     }
-//     return Promise.reject(error);
-//   }
-// );
-
-// // refresh token
-// async function refreshToken(): Promise<any | null> {
-//   return new Promise<any | null>((rs) => {
-//     AxiosInstance.request({
-//       method: "POST",
-//       url: "company/refresh",
-//       _retry: true,
-//       baseURL: Config.API_URL,
-//       data: {},
-//     } as AxiosRequestConfig)
-//       .then((res: AxiosResponse<any>) => rs(res.data))
-//       .catch((error) => {
-//         console.log("error", error);
-//       });
-//   });
-// }
-
 // base
 function Request(config: ParamsNetwork) {
   const token = getAuthToken();
@@ -140,6 +47,8 @@ function Request(config: ParamsNetwork) {
       })
       .catch((error) => {
         reject(error);
+
+        console.log('error', error?.response);
       });
   });
 }

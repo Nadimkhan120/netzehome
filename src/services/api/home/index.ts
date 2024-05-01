@@ -4,10 +4,10 @@ import { createMutation, createQuery } from 'react-query-kit';
 import { NetWorkService } from '@/services/apinetworkservice';
 
 type Variables = { status: string; id: number };
-type SuggestedJobs = { person_id: number };
+type SuggestedJobs = { person_id: number; unique_id: string };
 type CompanyJobs = { person_id: number; company_id: number };
-type SavedJobs = { person_id: number };
-type SaveJob = { job_id: number };
+type SavedJobs = { unique_id: string; person_id: number };
+type SaveJob = { job_id: number; unique_id: string };
 type JobVariables = { id: number };
 type SearchVariable = { id: number; keyword: string };
 
@@ -84,7 +84,7 @@ export const useSuggestedJobs = createQuery<Response4, SuggestedJobs, AxiosError
   primaryKey: 'applicant/suggested-jobs',
   queryFn: ({ queryKey: [primaryKey, variables] }) => {
     return NetWorkService.Get({
-      url: `${primaryKey}?person_id=${variables?.person_id}`,
+      url: `${primaryKey}?person_id=${variables.person_id}&unique_id=${variables?.unique_id}`,
       //@ts-ignore
     }).then((response) => response.data);
   },
@@ -104,7 +104,7 @@ export const useSavedJobs = createQuery<Response4, SavedJobs, AxiosError>({
   primaryKey: 'applicant/saved-jobs',
   queryFn: ({ queryKey: [primaryKey, variables] }) => {
     return NetWorkService.Get({
-      url: `${primaryKey}?person_id=${variables?.person_id}`,
+      url: `${primaryKey}?person_id=${variables?.person_id}&unique_id=${variables?.unique_id}`,
       //@ts-ignore
     }).then((response) => response.data);
   },
@@ -114,7 +114,7 @@ export const useAppliedJobs = createQuery<Response4, SuggestedJobs, AxiosError>(
   primaryKey: 'applicant/applied-jobs',
   queryFn: ({ queryKey: [primaryKey, variables] }) => {
     return NetWorkService.Get({
-      url: `${primaryKey}?person_id=${variables?.person_id}`,
+      url: `${primaryKey}?person_id=${variables?.person_id}&unique_id=${variables?.unique_id}`,
 
       //@ts-ignore
     }).then((response) => response.data);
@@ -176,14 +176,16 @@ export const useDeleteVacancy = createMutation<DeleteResponse, TopVariables, Axi
 });
 
 export const useSaveJob = createMutation<DeleteResponse, SaveJob, AxiosError>({
-  mutationFn: async (variables) =>
-    NetWorkService.Post({
+  mutationFn: async (variables) => {
+    return NetWorkService.Post({
       url: 'job/save',
       body: {
         job_id: variables?.job_id,
+        unique_id: variables?.unique_id,
       },
       // @ts-ignore
-    }).then((response) => response?.data),
+    }).then((response) => response?.data);
+  },
 });
 
 export const useUnSaveJob = createMutation<DeleteResponse, SaveJob, AxiosError>({
@@ -192,6 +194,7 @@ export const useUnSaveJob = createMutation<DeleteResponse, SaveJob, AxiosError>(
       url: 'job/unsave',
       body: {
         job_id: variables?.job_id,
+        unique_id: variables?.unique_id,
       },
       // @ts-ignore
     }).then((response) => response?.data),

@@ -1,15 +1,18 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import { PressableScale, Text, View } from '@/ui';
+import { useExperience } from '@/store/experience';
 
 type DegreeFieldItem = {
   data: any;
-  onPress: () => void;
+  onPress: (data) => void;
 };
 
 const DegreeFieldItem = ({ onPress, data }: DegreeFieldItem) => {
+  const selectedField = useExperience((state) => state?.selectedField);
+
   return (
-    <PressableScale onPress={onPress}>
+    <PressableScale onPress={() => onPress(data)}>
       <View
         flexDirection={'row'}
         paddingHorizontal={'large'}
@@ -24,7 +27,10 @@ const DegreeFieldItem = ({ onPress, data }: DegreeFieldItem) => {
             alignItems={'center'}
             justifyContent={'space-between'}
           >
-            <Text variant={'medium14'} color={'black'}>
+            <Text
+              variant={'medium14'}
+              color={selectedField?.id === data?.id ? 'primary' : 'black'}
+            >
               {data?.name}
             </Text>
           </View>

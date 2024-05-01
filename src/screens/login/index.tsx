@@ -10,8 +10,8 @@ import * as z from 'zod';
 import { icons } from '@/assets/icons';
 import { IconButton } from '@/components';
 import { useLogin, useSocialLogin } from '@/services/api/auth/login';
-import { login, loginFromVerifyCode } from '@/store/auth';
-import { setUserData } from '@/store/user';
+import { login, loginFromVerifyCode, setUserToken } from '@/store/auth';
+import { setUserData, setUserWithProfile } from '@/store/user';
 import type { Theme } from '@/theme';
 import { Button, ControlledInput, PressableScale, Screen, Text, View } from '@/ui';
 import { showErrorMessage } from '@/utils';
@@ -96,9 +96,15 @@ export const Login = () => {
 
             if (data?.response?.status === 200) {
               setShowLoading(false);
-              //setTimeout(()=>{},)
-              login(data?.response?.data?.token);
-              setUserData(data?.response?.data);
+              //@ts-ignore
+              if (data?.response?.data?.profile?.is_registration_done === 0) {
+                setUserToken(data?.response?.data?.token);
+                setUserWithProfile(data?.response?.data);
+                navigate('CompanyInformation');
+              } else {
+                login(data?.response?.data?.token);
+                setUserData(data?.response?.data);
+              }
             } else {
               showErrorMessage(data?.response?.message);
             }
@@ -170,9 +176,15 @@ export const Login = () => {
 
           if (data?.response?.status === 200) {
             setShowLoading(false);
-            //setTimeout(()=>{},)
-            login(data?.response?.data?.token);
-            setUserData(data?.response?.data);
+            //@ts-ignore
+            if (data?.response?.data?.profile?.is_registration_done === 0) {
+              setUserToken(data?.response?.data?.token);
+              setUserWithProfile(data?.response?.data);
+              navigate('CompanyInformation');
+            } else {
+              login(data?.response?.data?.token);
+              setUserData(data?.response?.data);
+            }
           } else {
             showErrorMessage(data?.response?.message);
           }

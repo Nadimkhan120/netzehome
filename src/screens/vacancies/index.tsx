@@ -100,8 +100,8 @@ export const Vacancies = () => {
 
   const company = useUser((state) => state?.company);
 
-  const [selectedIndex, setSelectedIndex] = useState<number>(1);
-  const [selectedStatus, setSelectedStatus] = useState<string>('Published');
+  // const [selectedIndex, setSelectedIndex] = useState<number>(1);
+  // const [selectedStatus, setSelectedStatus] = useState<string>('Published');
   const [selectedVacancy, setSelectedVacancy] = useState<any>(null);
   const [date, setDate] = useState(new Date());
   const [formatedDate, setFormatedDate] = useState('');
@@ -121,38 +121,38 @@ export const Vacancies = () => {
   const snapPoints2 = useMemo(() => ['35%'], []);
 
   const { data: statuses, isLoading, refetch } = useJobStatuses();
-  const { data: vacancies, refetch: refetchVacancy } = useVacancies({
-    enabled: statuses?.length ? true : false,
-    variables: {
-      id: company?.id,
-      status: selectedStatus,
-    },
-  });
+  // const { data: vacancies, refetch: refetchVacancy } = useVacancies({
+  //   enabled: statuses?.length ? true : false,
+  //   variables: {
+  //     id: company?.id,
+  //     status: selectedStatus,
+  //   },
+  // });
 
-  const { data: seachData } = useSearchVacancies({
-    enabled: debouncedSearch?.length ? true : false,
-    variables: {
-      //@ts-ignore
-      id: company?.id,
-      keyword: debouncedSearch,
-    },
-  });
+  // const { data: seachData } = useSearchVacancies({
+  //   enabled: debouncedSearch?.length ? true : false,
+  //   variables: {
+  //     //@ts-ignore
+  //     id: company?.id,
+  //     keyword: debouncedSearch,
+  //   },
+  // });
 
-  const { data: filteredVacancies } = useFilterVacancies({
-    enabled: showFilter,
-    variables: {
-      id: company?.id,
-      job_status: status,
-      date_posted: formatedDate,
-      job_type_id: vacancyType,
-      job_category_id: category,
-    },
-  });
+  // const { data: filteredVacancies } = useFilterVacancies({
+  //   enabled: showFilter,
+  //   variables: {
+  //     id: company?.id,
+  //     job_status: status,
+  //     date_posted: formatedDate,
+  //     job_type_id: vacancyType,
+  //     job_category_id: category,
+  //   },
+  // });
 
-  const { data: jobTypes } = useJobTypes();
-  const { data: jobCategores } = useJobCategories();
+  // const { data: jobTypes } = useJobTypes();
+  // const { data: jobCategores } = useJobCategories();
 
-  const { mutate: deletePost } = useDeleteVacancy();
+  // const { mutate: deletePost } = useDeleteVacancy();
 
   const layout = useWindowDimensions();
 
@@ -163,8 +163,8 @@ export const Vacancies = () => {
     { key: 'third', title: 'Saved' },
   ]);
 
-  useRefreshOnFocus(refetch);
-  useRefreshOnFocus(refetchVacancy);
+  // useRefreshOnFocus(refetch);
+  // useRefreshOnFocus(refetchVacancy);
 
   // callbacks
   const handlePresentModalPress = useCallback(() => {
@@ -205,67 +205,67 @@ export const Vacancies = () => {
     [showFilter, setShowFilter]
   );
 
-  const renderItem = useCallback(
-    ({ item }: any) => {
-      return (
-        <SelectModalItem
-          title={item?.title}
-          icon={item?.icon}
-          item={item}
-          onPress={(data) => {
-            if (data?.name === 'Applicants') {
-              handleDismissOptionsModalPress();
-              setTimeout(() => {
-                navigation.navigate('Applicants', { id: selectedVacancy?.id });
-              }, 200);
-            } else if (data?.name === 'View Details') {
-              handleDismissOptionsModalPress();
-              setTimeout(() => {
-                navigation.navigate('Applicants', { id: selectedVacancy?.id });
-              }, 200);
-            } else if (data?.name === 'Delete Job') {
-              Alert.alert('Confirmation', 'Are you sure? you want to delete this job ', [
-                {
-                  text: 'Cancel',
-                  onPress: () => console.log('Cancel Pressed'),
-                  style: 'cancel',
-                },
-                {
-                  text: 'Delete',
-                  onPress: () => {
-                    deletePost(
-                      { id: selectedVacancy?.id },
-                      {
-                        onSuccess: (data) => {
-                          console.log(
-                            'data?.response?.data',
-                            JSON.stringify(data, null, 2)
-                          );
+  // const renderItem = useCallback(
+  //   ({ item }: any) => {
+  //     return (
+  //       <SelectModalItem
+  //         title={item?.title}
+  //         icon={item?.icon}
+  //         item={item}
+  //         onPress={(data) => {
+  //           if (data?.name === 'Applicants') {
+  //             handleDismissOptionsModalPress();
+  //             setTimeout(() => {
+  //               navigation.navigate('Applicants', { id: selectedVacancy?.id });
+  //             }, 200);
+  //           } else if (data?.name === 'View Details') {
+  //             handleDismissOptionsModalPress();
+  //             setTimeout(() => {
+  //               navigation.navigate('Applicants', { id: selectedVacancy?.id });
+  //             }, 200);
+  //           } else if (data?.name === 'Delete Job') {
+  //             Alert.alert('Confirmation', 'Are you sure? you want to delete this job ', [
+  //               {
+  //                 text: 'Cancel',
+  //                 onPress: () => console.log('Cancel Pressed'),
+  //                 style: 'cancel',
+  //               },
+  //               {
+  //                 text: 'Delete',
+  //                 onPress: () => {
+  //                   deletePost(
+  //                     { id: selectedVacancy?.id },
+  //                     {
+  //                       onSuccess: (data) => {
+  //                         console.log(
+  //                           'data?.response?.data',
+  //                           JSON.stringify(data, null, 2)
+  //                         );
 
-                          if (data?.response?.status === 200) {
-                            queryClient.invalidateQueries(useVacancies.getKey());
-                            handleDismissOptionsModalPress();
-                          } else {
-                            //@ts-ignore
-                            showErrorMessage(data?.response?.message);
-                          }
-                        },
-                        onError: (error) => {
-                          // An error happened!
-                          console.log(`error`, error?.response?.data);
-                        },
-                      }
-                    );
-                  },
-                },
-              ]);
-            }
-          }}
-        />
-      );
-    },
-    [selectedVacancy]
-  );
+  //                         if (data?.response?.status === 200) {
+  //                           queryClient.invalidateQueries(useVacancies.getKey());
+  //                           handleDismissOptionsModalPress();
+  //                         } else {
+  //                           //@ts-ignore
+  //                           showErrorMessage(data?.response?.message);
+  //                         }
+  //                       },
+  //                       onError: (error) => {
+  //                         // An error happened!
+  //                         console.log(`error`, error?.response?.data);
+  //                       },
+  //                     }
+  //                   );
+  //                 },
+  //               },
+  //             ]);
+  //           }
+  //         }}
+  //       />
+  //     );
+  //   },
+  //   [selectedVacancy]
+  // );
 
   return (
     <Screen edges={['top']} backgroundColor={colors.white} barStyle="dark-content">
@@ -319,7 +319,7 @@ export const Vacancies = () => {
         </>
       )} */}
 
-      <BottomModal
+      {/* <BottomModal
         ref={bottomSheetOptionsModalRef}
         index={0}
         snapPoints={snapPoints2}
@@ -331,9 +331,9 @@ export const Vacancies = () => {
           keyExtractor={(item, index) => index.toString()}
           renderItem={renderItem}
         />
-      </BottomModal>
+      </BottomModal> */}
 
-      <BottomModal
+      {/* <BottomModal
         ref={bottomSheetModalRef}
         index={0}
         snapPoints={snapPoints}
@@ -380,9 +380,9 @@ export const Vacancies = () => {
             }}
           />
         </BottomSheetView>
-      </BottomModal>
+      </BottomModal> */}
 
-      <DatePicker
+      {/* <DatePicker
         modal
         locale="en"
         open={open}
@@ -397,7 +397,7 @@ export const Vacancies = () => {
         onCancel={() => {
           setOpen(false);
         }}
-      />
+      /> */}
     </Screen>
   );
 };

@@ -5,7 +5,12 @@ import { useUser } from '@/store/user';
 import { FlashList } from '@shopify/flash-list';
 import { scale } from 'react-native-size-matters';
 import { useTopVacancies } from '@/services/api/vacancies';
-import { useGetJobByCompany, useSaveJob, useSuggestedJobs, useUnSaveJob } from '@/services/api/home';
+import {
+  useGetJobByCompany,
+  useSaveJob,
+  useSuggestedJobs,
+  useUnSaveJob,
+} from '@/services/api/home';
 import { PersonItem } from '@/components/person-item';
 
 type JobsProps = {
@@ -14,6 +19,7 @@ type JobsProps = {
 
 const Jobs = ({ data }: JobsProps) => {
   const user = useUser((state) => state?.user);
+  const profile = useUser((state) => state?.profile);
 
   const { data: jobs, isLoading } = useGetJobByCompany({
     variables: {
@@ -34,7 +40,7 @@ const Jobs = ({ data }: JobsProps) => {
         onStartPress={(job) => {
           if (job?.isSaved === 0) {
             saveJobApi(
-              { job_id: job?.id },
+              { job_id: job?.id, unique_id: profile?.unique_id },
               {
                 onSuccess: (data) => {
                   console.log('data', data);
@@ -52,7 +58,7 @@ const Jobs = ({ data }: JobsProps) => {
             );
           } else {
             saveUnJobApi(
-              { job_id: job?.id },
+              { job_id: job?.id, unique_id: profile?.unique_id },
               {
                 onSuccess: (data) => {
                   console.log('data', data);

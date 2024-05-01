@@ -125,7 +125,9 @@ export const AddProfile = () => {
       onSuccess: (responseData) => {
         console.log('body', JSON.stringify(responseData, null, 2));
         if (responseData?.response?.status === 200) {
-          showSuccessMessage(responseData?.response?.message ?? '');
+          showSuccessMessage(
+            responseData?.response?.message ?? 'Profile added successfully'
+          );
           queryClient.invalidateQueries(useGetProfile.getKey());
           setSelectedLocation('');
           goBack();
@@ -186,7 +188,7 @@ export const AddProfile = () => {
 
     updateProfilePic(data, {
       onSuccess: (response) => {
-        console.log('response', response);
+        // console.log('response', response);
 
         if (response?.response?.status === 200) {
           if (picType === 'pic') {
@@ -300,8 +302,6 @@ export const AddProfile = () => {
         <View>
           <View>
             <Image
-              // cachePolicy="memory-disk"
-              // source={'https://fakeimg.pl/400x400/cccccc/cccccc'}
               source={
                 coverImage ? coverImage : 'https://fakeimg.pl/400x400/cccccc/cccccc'
               }

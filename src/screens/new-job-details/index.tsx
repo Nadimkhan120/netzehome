@@ -40,6 +40,8 @@ const OverViewTab = ({ route, data }: any) => {
 
     let body = { unique_id: profile?.unique_id, person_id: user?.id, job_id: data?.id };
 
+    console.log('body', body);
+
     applyJobApi(body, {
       onSuccess: (data) => {
         console.log('data?.response?.message', data?.response?.message);
@@ -65,9 +67,7 @@ const OverViewTab = ({ route, data }: any) => {
         <OverView data={data?.data} />
       </TabScrollView>
       <View paddingVertical={'large'} paddingHorizontal={'large'}>
-        <PressableScale 
-        disabled={isApplied}
-        onPress={applyJob}>
+        <PressableScale disabled={isApplied} onPress={applyJob}>
           <View
             backgroundColor={isApplied ? 'secondary' : 'primary'}
             height={scale(44)}
@@ -76,7 +76,7 @@ const OverViewTab = ({ route, data }: any) => {
             alignItems={'center'}
           >
             <Text color={isApplied ? 'primary' : 'white'} variant={'medium14'}>
-              {isLoading ? '...Applying' : isApplied ? "Applied" : 'Apply Job'}
+              {isLoading ? '...Applying' : isApplied ? 'Applied' : 'Apply Job'}
             </Text>
           </View>
         </PressableScale>

@@ -41,6 +41,8 @@ const InfoRow = ({ label, value, isGrey = true }) => {
 
 const Stats = ({ data }: StatsProps) => {
   const user = useUser((state) => state?.user);
+  const profile = useUser((state) => state?.profile);
+
   const { mutate: saveCandidateApi, isLoading: isSaving } = useSaveCandidate();
   const { mutate: saveUnCandidateApi, isLoading: isUnSaving } = useUnsaveSaveCandidate();
   const { mutate: addHandShakeApi, isLoading: isHandShaking } = useAddContactCandidate();
@@ -80,7 +82,11 @@ const Stats = ({ data }: StatsProps) => {
           onSavePress={(person) => {
             if (person?.isSaved === 0) {
               saveCandidateApi(
-                { candidate_id: person?.id, person_id: user?.id },
+                {
+                  candidate_id: person?.id,
+                  person_id: user?.id,
+                  unique_id: profile?.unique_id,
+                },
                 {
                   onSuccess: (data) => {
                     console.log('data', data);
@@ -100,7 +106,11 @@ const Stats = ({ data }: StatsProps) => {
               );
             } else {
               saveUnCandidateApi(
-                { candidate_id: person?.id, person_id: user?.id },
+                {
+                  candidate_id: person?.id,
+                  person_id: user?.id,
+                  unique_id: profile?.unique_id,
+                },
                 {
                   onSuccess: (data) => {
                     if (data?.response?.status === 200) {
@@ -121,7 +131,7 @@ const Stats = ({ data }: StatsProps) => {
         />
       );
     },
-    [user]
+    [user, profile]
   );
 
   console.log('data?.applicants', JSON.stringify(data?.applicants, null, 2));

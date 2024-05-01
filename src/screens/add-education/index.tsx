@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { ScrollView, StyleSheet, useWindowDimensions } from 'react-native';
 import { scale } from 'react-native-size-matters';
@@ -6,53 +6,43 @@ import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useTheme } from '@shopify/restyle';
-import { Image } from 'expo-image';
-import { icons } from '@/assets/icons';
 import { ScreenHeader } from '@/components/screen-header';
 import { useSoftKeyboardEffect } from '@/hooks';
 import { queryClient } from '@/services/api/api-provider';
-import {
-  useCompanies,
-  useEditCompany,
-  useGetCompanyDetails,
-} from '@/services/api/company';
-import { useUser } from '@/store/user';
 import { palette, type Theme } from '@/theme';
-import { Button, ControlledInput, PressableScale, Screen, Text, View } from '@/ui';
+import { Button, ControlledInput, Screen, Text, View } from '@/ui';
 import { DescriptionField } from '@/ui/description-field';
 import { showErrorMessage, showSuccessMessage } from '@/utils';
-import { Avatar } from '@/components/avatar';
 import SwitchToggle from 'react-native-switch-toggle';
-import SelectionBox from '@/components/drop-down';
 import { SelectOptionButton } from '@/components/select-option-button';
-import { CheckBox } from '@/components/checkbox';
-import { BottomModal } from '@/components/bottom-modal';
-import type { BottomSheetModal } from '@gorhom/bottom-sheet';
-import {
-  BottomSheetFlatList,
-  BottomSheetFooter,
-  BottomSheetView,
-} from '@gorhom/bottom-sheet';
-import { SelectModalItem } from '@/components/select-modal-item';
 import { format } from 'date-fns';
 import DatePicker from 'react-native-date-picker';
-import { useExperience } from '@/store/experience';
+import {
+  setSelectedDegree,
+  setSelectedField,
+  setSelectedSchool,
+  useExperience,
+} from '@/store/experience';
+import { useUpdateEducation } from '@/services/api/profile';
+import { useGetUserProfileDetails } from '@/services/api/home';
 
 const schema = z.object({
-  name: z.string({
-    required_error: 'Profile name is required',
+  school: z.string({
+    required_error: 'School is required',
   }),
-  email: z
-    .string({
-      required_error: 'Email is required',
-    })
-    .email('Invalid email format'),
-  cover: z.string({
-    required_error: 'Cover Letter is required',
+  degree: z.string({
+    required_error: 'Degree is required',
   }),
-  location: z.string().optional(),
-  salary: z.string().optional(),
-  languages: z.string().optional(),
+
+  field: z.string({
+    required_error: ' Field is required',
+  }),
+  description: z.string({
+    required_error: 'Description is required',
+  }),
+  grade: z.string({
+    required_error: 'Grade is required',
+  }),
   startDate: z.string({
     required_error: 'Start date is required',
   }),
@@ -62,15 +52,6 @@ const schema = z.object({
 });
 
 export type AddEducationFormType = z.infer<typeof schema>;
-
-const employees = [
-  { name: 'Full Time', id: 1 },
-  { name: 'Part Time', id: 2 },
-  { name: 'Freelance', id: 3 },
-  { name: 'Contract', id: 4 },
-  { name: 'Self Employed', id: 5 },
-  { name: 'Seasonal', id: 6 },
-];
 
 export const AddEducation = () => {
   const { colors } = useTheme<Theme>();
@@ -86,54 +67,82 @@ export const AddEducation = () => {
   const [endDate, setEndDate] = useState(new Date());
   const [openEndDate, setOpenEndDate] = useState(false);
 
-  const company = useUser((state) => state?.company);
-
-  const { mutate: editCompanyApi, isLoading } = useEditCompany();
-
-  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-  // variables
-  const snapPoints = useMemo(() => ['60%'], []);
-
-  // callbacks
-  const handlePresentModalPress = useCallback(() => {
-    bottomSheetModalRef.current?.present();
-  }, []);
-
-  // callbacks
-  const handleDismissModalPress = useCallback(() => {
-    bottomSheetModalRef.current?.dismiss();
-  }, []);
-
-  const data = route?.params?.data;
+  const { mutate: updateEducationApi, isLoading } = useUpdateEducation();
 
   const selectedSchool = useExperience((state) => state?.selectedSchool);
   const selectedField = useExperience((state) => state?.selectedField);
   const selectedDegree = useExperience((state) => state?.selectedDegree);
 
-  const { handleSubmit, control, setValue, watch } = useForm<AddEducationFormType>({
+  const {
+    handleSubmit,
+    control,
+    setValue,
+    watch,
+    trigger,
+    formState: { errors },
+  } = useForm<AddEducationFormType>({
     resolver: zodResolver(schema),
   });
 
-  const onSubmit = (data: AddEducationFormType) => {
+  const onSubmit = (formData: AddEducationFormType) => {
+    updateEducationApi(
+      {
+        unique_id: route?.params?.id,
+        from_date: formData?.startDate,
+        to_date: formData?.startDate,
+        created_by: 1,
+        description: formData?.description,
+        institute_id: selectedSchool?.id,
+        education_level_id: selectedDegree?.id,
+        education_field_id: selectedField?.id,
+        grade: formData?.grade,
+      },
+      {
+        onSuccess: (response) => {
+          console.log('response', response);
+          if (response?.status === 200) {
+            queryClient.invalidateQueries(useGetUserProfileDetails.getKey());
+            goBack();
+            showSuccessMessage('Experience Updated successfully');
+            setSelectedSchool(null);
+            setSelectedDegree(null);
+            setSelectedField(null);
+          } else {
+          }
+        },
+        onError: (error) => {
+          // An error happened!
+          console.log(`error`, error);
+        },
+      }
+    );
+
     return;
   };
 
   const watchStartDate = watch('startDate');
   const watchEndDate = watch('endDate');
 
-  const renderItem = useCallback(({ item }: any) => {
-    return (
-      <SelectModalItem
-        title={item?.title}
-        item={item}
-        onPress={(data) => {
-          handleDismissModalPress();
-        }}
-      />
-    );
-  }, []);
+  useEffect(() => {
+    if (selectedSchool) {
+      setValue('school', `${selectedSchool?.id}`);
+      trigger('school');
+    }
+  }, [selectedSchool]);
 
-  console.log('selectedSchool?.name', selectedSchool?.name);
+  useEffect(() => {
+    if (selectedDegree) {
+      setValue('degree', `${selectedDegree?.id}`);
+      trigger('degree');
+    }
+  }, [selectedDegree]);
+
+  useEffect(() => {
+    if (selectedField) {
+      setValue('field', `${selectedField?.id}`);
+      trigger('field');
+    }
+  }, [selectedField]);
 
   return (
     <Screen backgroundColor={colors.white} edges={['top']}>
@@ -176,6 +185,12 @@ export const AddEducation = () => {
             }}
           />
 
+          {errors?.school?.message ? (
+            <Text variant={'regular13'} color={'error'}>
+              {errors?.school?.message}
+            </Text>
+          ) : null}
+
           <SelectOptionButton
             label="Degree"
             isSelected={selectedDegree?.name ? true : false}
@@ -185,6 +200,12 @@ export const AddEducation = () => {
               navigate('ChooseDegree');
             }}
           />
+
+          {errors?.degree?.message ? (
+            <Text variant={'regular13'} color={'error'}>
+              {errors?.degree?.message}
+            </Text>
+          ) : null}
 
           <SelectOptionButton
             label="Field of study"
@@ -196,6 +217,12 @@ export const AddEducation = () => {
             }}
           />
 
+          {errors?.field?.message ? (
+            <Text variant={'regular13'} color={'error'}>
+              {errors?.field?.message}
+            </Text>
+          ) : null}
+
           <SelectOptionButton
             label="Start Date"
             isSelected={watchStartDate ? true : false}
@@ -205,6 +232,13 @@ export const AddEducation = () => {
               setOpenStartDate(true);
             }}
           />
+
+          {errors?.startDate?.message ? (
+            <Text variant={'regular13'} color={'error'}>
+              {errors?.startDate?.message}
+            </Text>
+          ) : null}
+
           <SelectOptionButton
             label="End Date"
             isSelected={watchEndDate ? true : false}
@@ -215,44 +249,36 @@ export const AddEducation = () => {
             }}
           />
 
+          {errors?.endDate?.message ? (
+            <Text variant={'regular13'} color={'error'}>
+              {errors?.endDate?.message}
+            </Text>
+          ) : null}
+
           <ControlledInput
             placeholder="eg A+"
             label="Grade"
             control={control}
-            name="email"
+            name="grade"
           />
 
           <DescriptionField
+            //@ts-ignore
             placeholder="Enter description"
             label="Description"
             control={control}
-            name="cover"
+            name="description"
           />
         </View>
         <View height={scale(24)} />
         <View flex={1} justifyContent={'flex-end'} paddingHorizontal={'large'}>
           <Button
-            label="Save Profile"
-            // onPress={handleSubmit(onSubmit)}
-            onPress={() => {}}
+            label="Add Education"
+            onPress={handleSubmit(onSubmit)}
             loading={isLoading}
           />
         </View>
       </ScrollView>
-
-      <BottomModal
-        ref={bottomSheetModalRef}
-        index={0}
-        snapPoints={snapPoints}
-        backgroundStyle={{ backgroundColor: colors.background }}
-      >
-        <BottomSheetFlatList
-          contentContainerStyle={styles.contentContainer}
-          data={employees}
-          keyExtractor={(item, index) => index.toString()}
-          renderItem={renderItem}
-        />
-      </BottomModal>
 
       <DatePicker
         modal
@@ -264,6 +290,7 @@ export const AddEducation = () => {
           const myDate = new Date(date);
           const formattedDate = format(myDate, 'yyyy/MM/dd');
           setValue('startDate', formattedDate);
+          trigger('startDate');
           setOpenStartDate(false);
           setStartDate(date);
         }}
@@ -282,6 +309,7 @@ export const AddEducation = () => {
           const myDate = new Date(date);
           const formattedDate = format(myDate, 'yyyy/MM/dd');
           setValue('endDate', formattedDate);
+          trigger('endDate');
           setOpenEndDate(false);
           setEndDate(date);
         }}

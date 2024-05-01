@@ -18,7 +18,7 @@ const Header = ({ data }: HeaderProps) => {
           data?.cover_pic ? data?.cover_pic : require('src/assets/images/header.png')
         }
         style={styles.image}
-        contentFit="contain"
+        contentFit="cover"
       />
       <View
         alignSelf={'center'}
