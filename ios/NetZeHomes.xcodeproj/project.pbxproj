@@ -7,17 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		00E356F31AD99517003FC87E /* JobulusTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* JobulusTests.m */; };
+		00E356F31AD99517003FC87E /* NetZeHomesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* NetZeHomesTests.m */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		533A4E572EE2D49B178BCD17 /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3B74F08F03D7BC283315BF /* ExpoModulesProvider.swift */; };
-		708DE8A36F76A7D5095503EA /* Pods_Jobulus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9BC5140433348B76F21BA84 /* Pods_Jobulus.framework */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		82213AD2A09C21DB321EBDA4 /* Pods_Jobulus_JobulusTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D67ACB93FB70C8564B0493C4 /* Pods_Jobulus_JobulusTests.framework */; };
+		97BA88C7570F0901376CDE94 /* Pods_NetZeHomes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F97907DA525003C4CEB8677F /* Pods_NetZeHomes.framework */; };
 		C53E7EDAA9C8748612545EC4 /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 886E594D73F6290E36B1F979 /* ExpoModulesProvider.swift */; };
 		FAAE44612AD93AB300749D5E /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FAAE44602AD93AB300749D5E /* BootSplash.storyboard */; };
 		FAC2594B2BD10BA300F09981 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FAC2594A2BD10BA300F09981 /* GoogleService-Info.plist */; };
+		FE9AFFF998896F18F1925E3C /* Pods_NetZeHomes_NetZeHomesTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB79F0BED9D09DF45AB647B2 /* Pods_NetZeHomes_NetZeHomesTests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -26,32 +26,32 @@
 			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
-			remoteInfo = Jobulus;
+			remoteInfo = NetZeHomes;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		00E356EE1AD99517003FC87E /* JobulusTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JobulusTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		00E356EE1AD99517003FC87E /* NetZeHomesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NetZeHomesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		00E356F21AD99517003FC87E /* JobulusTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JobulusTests.m; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* Jobulus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Jobulus.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Jobulus/AppDelegate.h; sourceTree = "<group>"; };
-		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = Jobulus/AppDelegate.mm; sourceTree = "<group>"; };
-		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = Jobulus/Images.xcassets; sourceTree = "<group>"; };
-		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Jobulus/Info.plist; sourceTree = "<group>"; };
-		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Jobulus/main.m; sourceTree = "<group>"; };
-		3B4392A12AC88292D35C810B /* Pods-Jobulus.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Jobulus.debug.xcconfig"; path = "Target Support Files/Pods-Jobulus/Pods-Jobulus.debug.xcconfig"; sourceTree = "<group>"; };
-		5709B34CF0A7D63546082F79 /* Pods-Jobulus.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Jobulus.release.xcconfig"; path = "Target Support Files/Pods-Jobulus/Pods-Jobulus.release.xcconfig"; sourceTree = "<group>"; };
-		5B7EB9410499542E8C5724F5 /* Pods-Jobulus-JobulusTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Jobulus-JobulusTests.debug.xcconfig"; path = "Target Support Files/Pods-Jobulus-JobulusTests/Pods-Jobulus-JobulusTests.debug.xcconfig"; sourceTree = "<group>"; };
-		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Jobulus/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		886E594D73F6290E36B1F979 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-Jobulus-JobulusTests/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
-		89C6BE57DB24E9ADA2F236DE /* Pods-Jobulus-JobulusTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Jobulus-JobulusTests.release.xcconfig"; path = "Target Support Files/Pods-Jobulus-JobulusTests/Pods-Jobulus-JobulusTests.release.xcconfig"; sourceTree = "<group>"; };
-		B9BC5140433348B76F21BA84 /* Pods_Jobulus.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Jobulus.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		BF3B74F08F03D7BC283315BF /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-Jobulus/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
-		D67ACB93FB70C8564B0493C4 /* Pods_Jobulus_JobulusTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Jobulus_JobulusTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		00E356F21AD99517003FC87E /* NetZeHomesTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NetZeHomesTests.m; sourceTree = "<group>"; };
+		13B07F961A680F5B00A75B9A /* NetZeHomes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NetZeHomes.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = NetZeHomes/AppDelegate.h; sourceTree = "<group>"; };
+		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = NetZeHomes/AppDelegate.mm; sourceTree = "<group>"; };
+		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = NetZeHomes/Images.xcassets; sourceTree = "<group>"; };
+		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = NetZeHomes/Info.plist; sourceTree = "<group>"; };
+		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = NetZeHomes/main.m; sourceTree = "<group>"; };
+		3B4392A12AC88292D35C810B /* Pods-NetZeHomes.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NetZeHomes.debug.xcconfig"; path = "Target Support Files/Pods-NetZeHomes/Pods-NetZeHomes.debug.xcconfig"; sourceTree = "<group>"; };
+		5709B34CF0A7D63546082F79 /* Pods-NetZeHomes.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NetZeHomes.release.xcconfig"; path = "Target Support Files/Pods-NetZeHomes/Pods-NetZeHomes.release.xcconfig"; sourceTree = "<group>"; };
+		5B7EB9410499542E8C5724F5 /* Pods-NetZeHomes-NetZeHomesTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NetZeHomes-NetZeHomesTests.debug.xcconfig"; path = "Target Support Files/Pods-NetZeHomes-NetZeHomesTests/Pods-NetZeHomes-NetZeHomesTests.debug.xcconfig"; sourceTree = "<group>"; };
+		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = NetZeHomes/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		886E594D73F6290E36B1F979 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-NetZeHomes-NetZeHomesTests/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
+		89C6BE57DB24E9ADA2F236DE /* Pods-NetZeHomes-NetZeHomesTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NetZeHomes-NetZeHomesTests.release.xcconfig"; path = "Target Support Files/Pods-NetZeHomes-NetZeHomesTests/Pods-NetZeHomes-NetZeHomesTests.release.xcconfig"; sourceTree = "<group>"; };
+		AB79F0BED9D09DF45AB647B2 /* Pods_NetZeHomes_NetZeHomesTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NetZeHomes_NetZeHomesTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BF3B74F08F03D7BC283315BF /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-NetZeHomes/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		FAAE44602AD93AB300749D5E /* BootSplash.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = BootSplash.storyboard; path = Jobulus/BootSplash.storyboard; sourceTree = "<group>"; };
-		FAC2592E2BA450A500F09981 /* Jobulus.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Jobulus.entitlements; path = Jobulus/Jobulus.entitlements; sourceTree = "<group>"; };
+		F97907DA525003C4CEB8677F /* Pods_NetZeHomes.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NetZeHomes.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FAAE44602AD93AB300749D5E /* BootSplash.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = BootSplash.storyboard; path = NetZeHomes/BootSplash.storyboard; sourceTree = "<group>"; };
+		FAC2592E2BA450A500F09981 /* NetZeHomes.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = NetZeHomes.entitlements; path = NetZeHomes/NetZeHomes.entitlements; sourceTree = "<group>"; };
 		FAC2594A2BD10BA300F09981 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../jobulus credentials/candidate/GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -60,7 +60,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				82213AD2A09C21DB321EBDA4 /* Pods_Jobulus_JobulusTests.framework in Frameworks */,
+				FE9AFFF998896F18F1925E3C /* Pods_NetZeHomes_NetZeHomesTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -68,20 +68,20 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				708DE8A36F76A7D5095503EA /* Pods_Jobulus.framework in Frameworks */,
+				97BA88C7570F0901376CDE94 /* Pods_NetZeHomes.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		00E356EF1AD99517003FC87E /* JobulusTests */ = {
+		00E356EF1AD99517003FC87E /* NetZeHomesTests */ = {
 			isa = PBXGroup;
 			children = (
-				00E356F21AD99517003FC87E /* JobulusTests.m */,
+				00E356F21AD99517003FC87E /* NetZeHomesTests.m */,
 				00E356F01AD99517003FC87E /* Supporting Files */,
 			);
-			path = JobulusTests;
+			path = NetZeHomesTests;
 			sourceTree = "<group>";
 		};
 		00E356F01AD99517003FC87E /* Supporting Files */ = {
@@ -95,25 +95,25 @@
 		0A50A756AF0AE5523BE67CE0 /* ExpoModulesProviders */ = {
 			isa = PBXGroup;
 			children = (
-				0E48A4053F61C35C1C138AAC /* Jobulus */,
-				CC73B3C1592A1FB18885B80E /* JobulusTests */,
+				0E48A4053F61C35C1C138AAC /* NetZeHomes */,
+				CC73B3C1592A1FB18885B80E /* NetZeHomesTests */,
 			);
 			name = ExpoModulesProviders;
 			sourceTree = "<group>";
 		};
-		0E48A4053F61C35C1C138AAC /* Jobulus */ = {
+		0E48A4053F61C35C1C138AAC /* NetZeHomes */ = {
 			isa = PBXGroup;
 			children = (
 				BF3B74F08F03D7BC283315BF /* ExpoModulesProvider.swift */,
 			);
-			name = Jobulus;
+			name = NetZeHomes;
 			sourceTree = "<group>";
 		};
-		13B07FAE1A68108700A75B9A /* Jobulus */ = {
+		13B07FAE1A68108700A75B9A /* NetZeHomes */ = {
 			isa = PBXGroup;
 			children = (
 				FAC2594A2BD10BA300F09981 /* GoogleService-Info.plist */,
-				FAC2592E2BA450A500F09981 /* Jobulus.entitlements */,
+				FAC2592E2BA450A500F09981 /* NetZeHomes.entitlements */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				FAAE44602AD93AB300749D5E /* BootSplash.storyboard */,
@@ -122,15 +122,15 @@
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
 			);
-			name = Jobulus;
+			name = NetZeHomes;
 			sourceTree = "<group>";
 		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				B9BC5140433348B76F21BA84 /* Pods_Jobulus.framework */,
-				D67ACB93FB70C8564B0493C4 /* Pods_Jobulus_JobulusTests.framework */,
+				F97907DA525003C4CEB8677F /* Pods_NetZeHomes.framework */,
+				AB79F0BED9D09DF45AB647B2 /* Pods_NetZeHomes_NetZeHomesTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -145,9 +145,9 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				13B07FAE1A68108700A75B9A /* Jobulus */,
+				13B07FAE1A68108700A75B9A /* NetZeHomes */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
-				00E356EF1AD99517003FC87E /* JobulusTests */,
+				00E356EF1AD99517003FC87E /* NetZeHomesTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
@@ -161,8 +161,8 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* Jobulus.app */,
-				00E356EE1AD99517003FC87E /* JobulusTests.xctest */,
+				13B07F961A680F5B00A75B9A /* NetZeHomes.app */,
+				00E356EE1AD99517003FC87E /* NetZeHomesTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -170,28 +170,28 @@
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				3B4392A12AC88292D35C810B /* Pods-Jobulus.debug.xcconfig */,
-				5709B34CF0A7D63546082F79 /* Pods-Jobulus.release.xcconfig */,
-				5B7EB9410499542E8C5724F5 /* Pods-Jobulus-JobulusTests.debug.xcconfig */,
-				89C6BE57DB24E9ADA2F236DE /* Pods-Jobulus-JobulusTests.release.xcconfig */,
+				3B4392A12AC88292D35C810B /* Pods-NetZeHomes.debug.xcconfig */,
+				5709B34CF0A7D63546082F79 /* Pods-NetZeHomes.release.xcconfig */,
+				5B7EB9410499542E8C5724F5 /* Pods-NetZeHomes-NetZeHomesTests.debug.xcconfig */,
+				89C6BE57DB24E9ADA2F236DE /* Pods-NetZeHomes-NetZeHomesTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
 		};
-		CC73B3C1592A1FB18885B80E /* JobulusTests */ = {
+		CC73B3C1592A1FB18885B80E /* NetZeHomesTests */ = {
 			isa = PBXGroup;
 			children = (
 				886E594D73F6290E36B1F979 /* ExpoModulesProvider.swift */,
 			);
-			name = JobulusTests;
+			name = NetZeHomesTests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		00E356ED1AD99517003FC87E /* JobulusTests */ = {
+		00E356ED1AD99517003FC87E /* NetZeHomesTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "JobulusTests" */;
+			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "NetZeHomesTests" */;
 			buildPhases = (
 				A55EABD7B0C7F3A422A6CC61 /* [CP] Check Pods Manifest.lock */,
 				71237F4AA612178131B3EF7D /* [Expo] Configure project */,
@@ -206,14 +206,14 @@
 			dependencies = (
 				00E356F51AD99517003FC87E /* PBXTargetDependency */,
 			);
-			name = JobulusTests;
-			productName = JobulusTests;
-			productReference = 00E356EE1AD99517003FC87E /* JobulusTests.xctest */;
+			name = NetZeHomesTests;
+			productName = NetZeHomesTests;
+			productReference = 00E356EE1AD99517003FC87E /* NetZeHomesTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		13B07F861A680F5B00A75B9A /* Jobulus */ = {
+		13B07F861A680F5B00A75B9A /* NetZeHomes */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Jobulus" */;
+			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "NetZeHomes" */;
 			buildPhases = (
 				C38B50BA6285516D6DCD4F65 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
@@ -230,9 +230,9 @@
 			);
 			dependencies = (
 			);
-			name = Jobulus;
-			productName = Jobulus;
-			productReference = 13B07F961A680F5B00A75B9A /* Jobulus.app */;
+			name = NetZeHomes;
+			productName = NetZeHomes;
+			productReference = 13B07F961A680F5B00A75B9A /* NetZeHomes.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -252,7 +252,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "Jobulus" */;
+			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "NetZeHomes" */;
 			compatibilityVersion = "Xcode 12.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -265,8 +265,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				13B07F861A680F5B00A75B9A /* Jobulus */,
-				00E356ED1AD99517003FC87E /* JobulusTests */,
+				13B07F861A680F5B00A75B9A /* NetZeHomes */,
+				00E356ED1AD99517003FC87E /* NetZeHomesTests */,
 			);
 		};
 /* End PBXProject section */
@@ -315,15 +315,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Jobulus/Pods-Jobulus-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-NetZeHomes/Pods-NetZeHomes-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Jobulus/Pods-Jobulus-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-NetZeHomes/Pods-NetZeHomes-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Jobulus/Pods-Jobulus-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-NetZeHomes/Pods-NetZeHomes-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		2D48014C79F9DE787FA5C6B9 /* [Expo] Configure project */ = {
@@ -343,7 +343,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# This script configures Expo modules and generates the modules provider file.\nbash -l -c \"./Pods/Target\\ Support\\ Files/Pods-Jobulus/expo-configure-project.sh\"\n";
+			shellScript = "# This script configures Expo modules and generates the modules provider file.\nbash -l -c \"./Pods/Target\\ Support\\ Files/Pods-NetZeHomes/expo-configure-project.sh\"\n";
 		};
 		71237F4AA612178131B3EF7D /* [Expo] Configure project */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -362,7 +362,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# This script configures Expo modules and generates the modules provider file.\nbash -l -c \"./Pods/Target\\ Support\\ Files/Pods-Jobulus-JobulusTests/expo-configure-project.sh\"\n";
+			shellScript = "# This script configures Expo modules and generates the modules provider file.\nbash -l -c \"./Pods/Target\\ Support\\ Files/Pods-NetZeHomes-NetZeHomesTests/expo-configure-project.sh\"\n";
 		};
 		A55EABD7B0C7F3A422A6CC61 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -379,7 +379,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Jobulus-JobulusTests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-NetZeHomes-NetZeHomesTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -414,7 +414,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Jobulus-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-NetZeHomes-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -427,15 +427,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Jobulus-JobulusTests/Pods-Jobulus-JobulusTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-NetZeHomes-NetZeHomesTests/Pods-NetZeHomes-NetZeHomesTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Jobulus-JobulusTests/Pods-Jobulus-JobulusTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-NetZeHomes-NetZeHomesTests/Pods-NetZeHomes-NetZeHomesTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Jobulus-JobulusTests/Pods-Jobulus-JobulusTests-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-NetZeHomes-NetZeHomesTests/Pods-NetZeHomes-NetZeHomesTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		E235C05ADACE081382539298 /* [CP] Copy Pods Resources */ = {
@@ -444,15 +444,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Jobulus/Pods-Jobulus-resources-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-NetZeHomes/Pods-NetZeHomes-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Jobulus/Pods-Jobulus-resources-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-NetZeHomes/Pods-NetZeHomes-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Jobulus/Pods-Jobulus-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-NetZeHomes/Pods-NetZeHomes-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		F6A41C54EA430FDDC6A6ED99 /* [CP] Copy Pods Resources */ = {
@@ -461,15 +461,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Jobulus-JobulusTests/Pods-Jobulus-JobulusTests-resources-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-NetZeHomes-NetZeHomesTests/Pods-NetZeHomes-NetZeHomesTests-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Jobulus-JobulusTests/Pods-Jobulus-JobulusTests-resources-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-NetZeHomes-NetZeHomesTests/Pods-NetZeHomes-NetZeHomesTests-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Jobulus-JobulusTests/Pods-Jobulus-JobulusTests-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-NetZeHomes-NetZeHomesTests/Pods-NetZeHomes-NetZeHomesTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
@@ -498,7 +498,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				00E356F31AD99517003FC87E /* JobulusTests.m in Sources */,
+				00E356F31AD99517003FC87E /* NetZeHomesTests.m in Sources */,
 				C53E7EDAA9C8748612545EC4 /* ExpoModulesProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -518,7 +518,7 @@
 /* Begin PBXTargetDependency section */
 		00E356F51AD99517003FC87E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 13B07F861A680F5B00A75B9A /* Jobulus */;
+			target = 13B07F861A680F5B00A75B9A /* NetZeHomes */;
 			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -526,14 +526,14 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5B7EB9410499542E8C5724F5 /* Pods-Jobulus-JobulusTests.debug.xcconfig */;
+			baseConfigurationReference = 5B7EB9410499542E8C5724F5 /* Pods-NetZeHomes-NetZeHomesTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = JobulusTests/Info.plist;
+				INFOPLIST_FILE = NetZeHomesTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -546,19 +546,19 @@
 					"$(inherited)",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.jubulus.candidate-app";
+				PRODUCT_BUNDLE_IDENTIFIER = com.netzehomes;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Jobulus.app/Jobulus";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NetZeHomes.app/NetZeHomes";
 			};
 			name = Debug;
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 89C6BE57DB24E9ADA2F236DE /* Pods-Jobulus-JobulusTests.release.xcconfig */;
+			baseConfigurationReference = 89C6BE57DB24E9ADA2F236DE /* Pods-NetZeHomes-NetZeHomesTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
-				INFOPLIST_FILE = JobulusTests/Info.plist;
+				INFOPLIST_FILE = NetZeHomesTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -571,26 +571,26 @@
 					"$(inherited)",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.jubulus.candidate-app";
+				PRODUCT_BUNDLE_IDENTIFIER = com.netzehomes;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Jobulus.app/Jobulus";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NetZeHomes.app/NetZeHomes";
 			};
 			name = Release;
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3B4392A12AC88292D35C810B /* Pods-Jobulus.debug.xcconfig */;
+			baseConfigurationReference = 3B4392A12AC88292D35C810B /* Pods-NetZeHomes.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = Jobulus/Jobulus.entitlements;
+				CODE_SIGN_ENTITLEMENTS = NetZeHomes/NetZeHomes.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = 4Y34VJ367J;
 				ENABLE_BITCODE = NO;
-				INFOPLIST_FILE = Jobulus/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = Jobulus;
+				INFOPLIST_FILE = NetZeHomes/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = NetZeHomes;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -602,9 +602,9 @@
 					"-lc++",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.jubulus.candidate-app";
+				PRODUCT_BUNDLE_IDENTIFIER = com.netzehomes;
 				"PRODUCT_BUNDLE_IDENTIFIER[sdk=iphoneos*]" = "com.jubulus.candidate-app";
-				PRODUCT_NAME = Jobulus;
+				PRODUCT_NAME = NetZeHomes;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -614,17 +614,17 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5709B34CF0A7D63546082F79 /* Pods-Jobulus.release.xcconfig */;
+			baseConfigurationReference = 5709B34CF0A7D63546082F79 /* Pods-NetZeHomes.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = Jobulus/Jobulus.entitlements;
+				CODE_SIGN_ENTITLEMENTS = NetZeHomes/NetZeHomes.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = 4Y34VJ367J;
-				INFOPLIST_FILE = Jobulus/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = Jobulus;
+				INFOPLIST_FILE = NetZeHomes/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = NetZeHomes;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -636,9 +636,9 @@
 					"-lc++",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.jubulus.candidate-app";
+				PRODUCT_BUNDLE_IDENTIFIER = com.netzehomes;
 				"PRODUCT_BUNDLE_IDENTIFIER[sdk=iphoneos*]" = "com.jubulus.candidate-app";
-				PRODUCT_NAME = Jobulus;
+				PRODUCT_NAME = NetZeHomes;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -803,7 +803,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "JobulusTests" */ = {
+		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "NetZeHomesTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				00E356F61AD99517003FC87E /* Debug */,
@@ -812,7 +812,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Jobulus" */ = {
+		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "NetZeHomes" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
@@ -821,7 +821,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "Jobulus" */ = {
+		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "NetZeHomes" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,

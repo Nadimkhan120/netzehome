@@ -8,7 +8,7 @@ export const palette = {
   primary: '#01C96C',
   secondary: '#ECFDF5',
   tertiary: '#D0FBE6',
-  backgroundLight: '#FFFFFF',
+  backgroundLight: '#FFFFFF', //'#FFFFFF',
   black: '#0D0D26',
   white: '#FFFFFF',
   grey100: '#494A50',
@@ -22,6 +22,8 @@ export const palette = {
   transparent: 'transparent',
   blue: '#2e57bd',
   danger: '#D33415',
+  inputBg: '#F9FAFB',
+  inputBorder: '#E5E7EB',
 };
 
 export const theme = createTheme({
@@ -50,6 +52,8 @@ export const theme = createTheme({
     transparent: 'transparent',
     blue: palette.blue,
     danger: palette.danger,
+    inputBg: palette?.inputBg,
+    inputBorder: palette?.inputBorder,
   },
   spacing: {
     tiny: scale(2),
@@ -275,5 +279,7 @@ export const darkTheme: Theme = {
     transparent: 'transparent',
     blue: palette.blue,
     danger: palette.danger,
+    inputBg: palette?.inputBg,
+    inputBorder: palette?.inputBorder,
   },
 };

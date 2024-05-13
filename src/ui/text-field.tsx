@@ -15,10 +15,11 @@ export interface NInputProps extends TextInputProps {
   error?: string;
   isSecure?: boolean;
   icon?: React.ReactElement;
+  leftIcon?: React.ReactElement;
 }
 
 export const TextField = React.forwardRef<TextInput, NInputProps>((props, ref) => {
-  const { label, error, isSecure, icon, ...inputProps } = props;
+  const { label, error, isSecure, icon, leftIcon, ...inputProps } = props;
 
   const theme = useTheme<Theme>();
 
@@ -35,21 +36,17 @@ export const TextField = React.forwardRef<TextInput, NInputProps>((props, ref) =
 
   return (
     <View>
-      {label && (
-        <Text paddingVertical={'small'} variant="medium14" color={'black'}>
-          {label}
-        </Text>
-      )}
       <View
         flexDirection={'row'}
         alignItems={'center'}
-        borderRadius={scale(8)}
-        height={scale(49)}
+        borderRadius={24}
+        height={56}
         paddingHorizontal={'medium'}
-        borderColor={error ? 'error' : isFocussed ? 'black' : 'grey500'}
+        borderColor={error ? 'error' : isFocussed ? 'black' : 'inputBorder'}
         borderWidth={1}
-        backgroundColor={isFocussed ? 'white' : 'grey500'}
+        backgroundColor={'inputBg'}
       >
+        <View>{leftIcon && leftIcon}</View>
         <NTextInput
           testID="STextInput"
           ref={ref}
@@ -82,9 +79,9 @@ export const TextField = React.forwardRef<TextInput, NInputProps>((props, ref) =
 
 const styles = StyleSheet.create({
   input: {
-    height: scale(49),
+    height: 56,
     flex: 1,
-    borderRadius: scale(8),
+    borderRadius: 24,
     paddingRight: scale(4),
     color: palette.black,
   },

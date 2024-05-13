@@ -29,7 +29,7 @@ end
 # use_frameworks! :linkage => :static
 # $RNFirebaseAsStaticFramework = true
 
-target 'Jobulus' do
+target 'NetZeHomes' do
   use_expo_modules!
   use_frameworks!
 
@@ -62,7 +62,7 @@ target 'Jobulus' do
   use_frameworks! :linkage => :static
  $RNFirebaseAsStaticFramework = true
 
-  target 'JobulusTests' do
+  target 'NetZeHomesTests' do
     inherit! :complete
     # Pods for testing
   end

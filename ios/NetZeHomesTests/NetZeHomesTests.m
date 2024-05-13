@@ -7,11 +7,11 @@
 #define TIMEOUT_SECONDS 600
 #define TEXT_TO_LOOK_FOR @"Welcome to React"
 
-@interface JobulusTests : XCTestCase
+@interface NetZeHomesTests : XCTestCase
 
 @end
 
-@implementation JobulusTests
+@implementation NetZeHomesTests
 
 - (BOOL)findSubviewInView:(UIView *)view matching:(BOOL (^)(UIView *view))test
 {

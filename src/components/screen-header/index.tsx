@@ -1,12 +1,11 @@
 import { useNavigation } from '@react-navigation/native';
 import { Image } from 'expo-image';
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Pressable } from 'react-native';
 import { scale } from 'react-native-size-matters';
-
 import type { IconTypes } from '@/assets/icons';
 import { icons } from '@/assets/icons';
-import { PressableScale, Text, View } from '@/ui';
+import { Text, View } from '@/ui';
 
 type ScreenHeaderProps = {
   icon?: IconTypes;
@@ -33,16 +32,16 @@ export const ScreenHeader = ({
       borderBottomWidth={showBorder ? 1 : 0}
       justifyContent={'space-between'}
     >
-      <View flexDirection={'row'} alignItems={'center'}>
-        <PressableScale onPress={goBack}>
+      <View flexDirection={'row'} flex={1} alignItems={'center'}>
+        <Pressable style={{ position: 'absolute' }} onPress={goBack}>
           <Image
             source={icons[icon] ?? icons['arrow-left']}
             style={styles.image}
             contentFit="contain"
           />
-        </PressableScale>
+        </Pressable>
 
-        <Text variant={'medium17'} color={'grey100'} paddingLeft={'large'}>
+        <Text flex={1} variant={'medium17'} textAlign={'center'} color={'grey100'}>
           {title}
         </Text>
       </View>
@@ -53,5 +52,8 @@ export const ScreenHeader = ({
 };
 
 const styles = StyleSheet.create({
-  image: { height: scale(24), width: scale(24) },
+  image: {
+    height: scale(24),
+    width: scale(24),
+  },
 });

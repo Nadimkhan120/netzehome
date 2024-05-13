@@ -18,6 +18,7 @@ import { showErrorMessage } from '@/utils';
 import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
 import { setShowLoading } from '@/store/loader';
 import { appleAuth } from '@invertase/react-native-apple-authentication';
+import { ScreenHeader } from '@/components/screen-header';
 
 const schema = z.object({
   email: z
@@ -204,26 +205,18 @@ export const Login = () => {
 
   return (
     <Screen backgroundColor={colors.white}>
+      <ScreenHeader title="Login" />
       <ScrollView style={{ marginHorizontal: scale(15) }}>
         <View height={scale(72)} />
-        <Image source={icons.logo} contentFit="contain" style={styles.logo} />
-        <View paddingTop={'large'}>
-          <Text variant={'semiBold24'} color={'black'}>
-            Welcome Back 👋
-          </Text>
-          <Text variant={'regular14'} paddingTop={'small'} color={'grey100'}>
-            Let’s log in. Apply to jobs!
-          </Text>
-        </View>
 
-        <View paddingTop={'large'}>
+        <View paddingTop={'large'} gap={'large'}>
           <ControlledInput
             placeholder="Enter email address"
             label="Email"
             control={control}
             name="email"
           />
-          <View height={scale(8)} />
+
           <ControlledInput
             placeholder="Enter password"
             label="Password"
@@ -232,6 +225,7 @@ export const Login = () => {
             name="password"
           />
         </View>
+
         <View height={scale(24)} />
         <Button label="Log in" onPress={handleSubmit(onSubmit)} loading={isLoading} />
 
