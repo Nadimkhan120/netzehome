@@ -25,8 +25,10 @@ function Request(config: ParamsNetwork) {
 
   let headers = {
     'Content-Type': 'application/json',
-    authorization: 'Bearer ' + token ?? '',
+    Authorization: 'Bearer ' + token ?? '',
   };
+
+  console.log('headers', headers);
 
   const defaultConfig: AxiosRequestConfig = {
     baseURL: BaseConfig.API_URL,
@@ -47,8 +49,6 @@ function Request(config: ParamsNetwork) {
       })
       .catch((error) => {
         reject(error);
-
-        console.log('error', error?.response);
       });
   });
 }

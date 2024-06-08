@@ -5,9 +5,13 @@ import { scale } from 'react-native-size-matters';
 import { AppFonts } from '@/constants/fonts';
 
 export const palette = {
-  primary: '#01C96C',
+  primary: 'rgb(175,50,55)', //'#199A8E',
   secondary: '#ECFDF5',
   tertiary: '#D0FBE6',
+  card: '#47D5BF',
+  cardGrey: '#D0E5FB',
+  cardLight: '#E2FFF6',
+  cardGreyLight: '#EFF7FF',
   backgroundLight: '#FFFFFF', //'#FFFFFF',
   black: '#0D0D26',
   white: '#FFFFFF',
@@ -39,6 +43,7 @@ export const theme = createTheme({
     secondary: palette.secondary,
     tertiary: palette.tertiary,
     background: palette.backgroundLight,
+    card: palette.card,
     black: palette.black,
     white: palette.white,
     grey100: palette.grey100,
@@ -54,6 +59,9 @@ export const theme = createTheme({
     danger: palette.danger,
     inputBg: palette?.inputBg,
     inputBorder: palette?.inputBorder,
+    cardLight: palette.cardLight,
+    cardGrey: palette.cardGrey,
+    cardGreyLight: palette.cardGreyLight,
   },
   spacing: {
     tiny: scale(2),
@@ -213,8 +221,8 @@ export const theme = createTheme({
       backgroundColor: 'primary',
     },
     primary: {
-      borderRadius: scale(4),
-      height: scale(44),
+      borderRadius: 32,
+      height: 56,
       alignItems: 'center',
       justifyContent: 'center',
       backgroundColor: 'primary',
@@ -281,5 +289,9 @@ export const darkTheme: Theme = {
     danger: palette.danger,
     inputBg: palette?.inputBg,
     inputBorder: palette?.inputBorder,
+    card: palette.card,
+    cardLight: palette.cardLight,
+    cardGrey: palette.cardGrey,
+    cardGreyLight: palette.cardGreyLight,
   },
 };

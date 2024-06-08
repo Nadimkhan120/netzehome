@@ -60,7 +60,7 @@ export const TextField = React.forwardRef<TextInput, NInputProps>((props, ref) =
         {isSecure ? (
           <PressableScale onPress={togglePassword}>
             <Image
-              source={showPassword ? icons['eye-closed'] : icons.eye}
+              source={showPassword ? icons['eye-slash'] : icons.eye}
               style={styles.icon}
               contentFit="contain"
             />
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
     height: 56,
     flex: 1,
     borderRadius: 24,
-    paddingRight: scale(4),
+    paddingHorizontal: scale(8),
     color: palette.black,
   },
   icon: { height: 24, width: 24 },

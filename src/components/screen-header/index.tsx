@@ -1,11 +1,11 @@
-import { useNavigation } from '@react-navigation/native';
-import { Image } from 'expo-image';
 import React from 'react';
+import { Image } from 'expo-image';
 import { StyleSheet, Pressable } from 'react-native';
 import { scale } from 'react-native-size-matters';
 import type { IconTypes } from '@/assets/icons';
 import { icons } from '@/assets/icons';
 import { Text, View } from '@/ui';
+import { useNavigation } from '@react-navigation/native';
 
 type ScreenHeaderProps = {
   icon?: IconTypes;
@@ -20,7 +20,9 @@ export const ScreenHeader = ({
   showBorder,
   rightElement,
 }: ScreenHeaderProps) => {
-  const { goBack } = useNavigation();
+  const { goBack, canGoBack } = useNavigation();
+
+  const showLeftArrow = canGoBack();
 
   return (
     <View
@@ -33,13 +35,15 @@ export const ScreenHeader = ({
       justifyContent={'space-between'}
     >
       <View flexDirection={'row'} flex={1} alignItems={'center'}>
-        <Pressable style={{ position: 'absolute' }} onPress={goBack}>
-          <Image
-            source={icons[icon] ?? icons['arrow-left']}
-            style={styles.image}
-            contentFit="contain"
-          />
-        </Pressable>
+        {showLeftArrow ? (
+          <Pressable style={{ position: 'absolute', zIndex: 99 }} onPress={goBack}>
+            <Image
+              source={icons[icon] ?? icons['arrow-left']}
+              style={styles.image}
+              contentFit="contain"
+            />
+          </Pressable>
+        ) : null}
 
         <Text flex={1} variant={'medium17'} textAlign={'center'} color={'grey100'}>
           {title}

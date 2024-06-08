@@ -1,21 +1,27 @@
-import React, { useState } from "react";
-import { StyleSheet } from "react-native";
-import { Dropdown } from "react-native-element-dropdown";
-import { scale } from "react-native-size-matters";
-import { palette } from "@/theme";
-import { Text, View } from "@/ui";
+import React, { useState } from 'react';
+import { StyleSheet } from 'react-native';
+import { Dropdown } from 'react-native-element-dropdown';
+import { scale } from 'react-native-size-matters';
+import { palette } from '@/theme';
+import { Text, View } from '@/ui';
 
-const SelectionBox = ({ placeholder, label, data, onChange }: any) => {
+const SelectionBox = ({ placeholder, label, onChange, data, error }: any) => {
   const [isFocus, setIsFocus] = useState(false);
+  const [value, setValue] = useState(null);
 
   return (
     <>
       {label && (
-        <Text paddingVertical={"small"} variant="medium14" color={"black"}>
+        <Text paddingVertical={'small'} variant="medium14" color={'black'}>
           {label}
         </Text>
       )}
-      <View style={styles.container}>
+      <View
+        borderColor={error ? 'error' : 'inputBorder'}
+        borderWidth={1}
+        backgroundColor={'inputBg'}
+        style={[styles.container]}
+      >
         <Dropdown
           style={styles.dropdown}
           placeholderStyle={styles.placeholderStyle}
@@ -25,19 +31,17 @@ const SelectionBox = ({ placeholder, label, data, onChange }: any) => {
           itemTextStyle={{ color: palette.black }}
           data={data ?? []}
           maxHeight={300}
-          //@ts-ignore
-          labelField="name"
-          //@ts-ignore
-          valueField="id"
+          labelField="label"
+          valueField="value"
           dropdownPosition="auto"
-          placeholder={!isFocus ? placeholder : "..."}
-          //value={value}
+          placeholder={!isFocus ? placeholder : '...'}
+          value={value}
           onFocus={() => setIsFocus(true)}
           onBlur={() => setIsFocus(false)}
           onChange={(item) => {
             //@ts-ignore
-
             onChange?.(item);
+            setValue(`${item?.value}`);
             setIsFocus(false);
           }}
         />
@@ -50,22 +54,21 @@ export default SelectionBox;
 
 const styles = StyleSheet.create({
   container: {
-    height: scale(49),
-    backgroundColor: palette.grey500,
-    borderRadius: scale(8),
-    marginBottom: scale(8),
+    height: 56,
+    backgroundColor: palette.inputBg,
+    borderRadius: 24,
   },
   dropdown: {
-    height: scale(49),
+    height: 56,
     padding: scale(14),
-    borderRadius: scale(8),
+    borderRadius: 24,
   },
   icon: {
     marginRight: 5,
   },
   label: {
-    position: "absolute",
-    backgroundColor: "white",
+    position: 'absolute',
+    backgroundColor: 'white',
     left: 22,
     top: 8,
     zIndex: 999,
@@ -74,7 +77,7 @@ const styles = StyleSheet.create({
   },
   placeholderStyle: {
     fontSize: 16,
-    color: "#8C8C8C",
+    color: '#8C8C8C',
   },
   selectedTextStyle: {
     fontSize: 16,

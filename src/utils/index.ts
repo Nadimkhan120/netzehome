@@ -27,17 +27,12 @@ export const showError = (error: AxiosError) => {
 };
 
 export const showErrorMessage = (message: string = 'Something went wrong ') => {
-  // showMessage({
-  //   message,
-  //   type: 'danger',
-  //   duration: 4000,
-  // });
   Toast.show({
     type: 'error',
-    // text1: "",
     text2: message,
-    text2Style:{fontSize:15},
-    bottomOffset:0,
+    text2Style: { fontSize: 15 },
+    bottomOffset: 0,
+    visibilityTime: 6000,
   });
 };
 
@@ -46,14 +41,10 @@ export const showSuccessMessage = (message: string = 'Something went wrong ') =>
     type: 'success',
     // text1: "",
     text2: message,
-    text2Style:{fontSize:15},
-    bottomOffset:0,
+    text2Style: { fontSize: 15 },
+    bottomOffset: 0,
+    visibilityTime: 6000,
   });
-  // showMessage({
-  //   message,
-  //   type: 'success',
-  //   duration: 4000,
-  // });
 };
 
 export const extractError = (data: unknown): string => {

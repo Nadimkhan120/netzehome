@@ -586,8 +586,8 @@
 				CODE_SIGN_ENTITLEMENTS = NetZeHomes/NetZeHomes.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
-				DEVELOPMENT_TEAM = 4Y34VJ367J;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = GQ7A64PTQH;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = NetZeHomes/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = NetZeHomes;
@@ -595,15 +595,14 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.2;
+				MARKETING_VERSION = 1;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
-				PRODUCT_BUNDLE_IDENTIFIER = com.netzehomes;
-				"PRODUCT_BUNDLE_IDENTIFIER[sdk=iphoneos*]" = "com.jubulus.candidate-app";
+				PRODUCT_BUNDLE_IDENTIFIER = com.netzehomes.property;
 				PRODUCT_NAME = NetZeHomes;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -621,23 +620,22 @@
 				CODE_SIGN_ENTITLEMENTS = NetZeHomes/NetZeHomes.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
-				DEVELOPMENT_TEAM = 4Y34VJ367J;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = GQ7A64PTQH;
 				INFOPLIST_FILE = NetZeHomes/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = NetZeHomes;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.2;
+				MARKETING_VERSION = 1;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
-				PRODUCT_BUNDLE_IDENTIFIER = com.netzehomes;
-				"PRODUCT_BUNDLE_IDENTIFIER[sdk=iphoneos*]" = "com.jubulus.candidate-app";
+				PRODUCT_BUNDLE_IDENTIFIER = com.netzehomes.property;
 				PRODUCT_NAME = NetZeHomes;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;

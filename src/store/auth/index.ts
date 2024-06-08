@@ -1,10 +1,10 @@
-import { create } from "zustand";
+import { create } from 'zustand';
 
-import { removeToken, setToken } from "@/storage";
+import { removeToken, setToken } from '@/storage';
 
 interface AuthState {
   token: string | null;
-  status: "signOut" | "signIn";
+  status: 'signOut' | 'signIn';
   login: (data: string) => void;
   setUserToken: (data: string) => void;
   logOut: () => void;
@@ -12,21 +12,21 @@ interface AuthState {
 }
 
 export const useAuth = create<AuthState>((set) => ({
-  status: "signOut",
+  status: 'signOut',
   token: null,
   login: (token: string) => {
-    set({ status: "signIn", token });
+    set({ status: 'signIn', token });
     setToken(token);
   },
   loginFromVerifyCode: () => {
-    set({ status: "signIn" });
+    set({ status: 'signIn' });
   },
   setUserToken: (token: string) => {
     set({ token });
     setToken(token);
   },
   logOut: () => {
-    set({ status: "signOut", token: null });
+    set({ status: 'signOut', token: null });
     removeToken();
   },
 }));

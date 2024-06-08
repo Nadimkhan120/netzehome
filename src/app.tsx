@@ -15,6 +15,7 @@ import { ActionSheetProvider } from '@expo/react-native-action-sheet';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { AppOverlayLoader } from '@/components/overlay';
 import Toast from 'react-native-toast-message';
+import { KeyboardProvider } from 'react-native-keyboard-controller';
 
 GoogleSignin.configure({
   offlineAccess: false, // if you want to access Google API on behalf of the user FROM YOUR SERVER
@@ -44,20 +45,22 @@ const App = () => {
 
   return (
     <GestureHandlerRootView style={styles.appContainer}>
-      <ThemeProvider theme={theme}>
-        <ActionSheetProvider>
-          <NavigationContainer>
-            <APIProvider>
-              <BottomSheetModalProvider>
-                <Root />
-                <AppOverlayLoader />
-                <Toast position="top" />
-                <FlashMessage position="bottom" />
-              </BottomSheetModalProvider>
-            </APIProvider>
-          </NavigationContainer>
-        </ActionSheetProvider>
-      </ThemeProvider>
+      <KeyboardProvider>
+        <ThemeProvider theme={theme}>
+          <ActionSheetProvider>
+            <NavigationContainer>
+              <APIProvider>
+                <BottomSheetModalProvider>
+                  <Root />
+                  <AppOverlayLoader />
+                  <Toast position="top" />
+                  <FlashMessage position="bottom" />
+                </BottomSheetModalProvider>
+              </APIProvider>
+            </NavigationContainer>
+          </ActionSheetProvider>
+        </ThemeProvider>
+      </KeyboardProvider>
     </GestureHandlerRootView>
   );
 };

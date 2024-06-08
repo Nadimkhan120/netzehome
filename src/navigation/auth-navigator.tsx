@@ -2,29 +2,26 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
 
 import {
-  AgencyInformation,
-  CompanyInformation,
   ForgotPassword,
   Login,
   Register,
   RegisterOptions,
   ResetPassword,
-  SendInvite,
-  VerifyCode,
-  ChooseLocation,
 } from '@/screens';
+
+import RegisterBuyer from '@/screens/register-buyer';
+import RegisterContractor from '@/screens/register-contractor';
+import RegisterManager from '@/screens/register-manager';
 
 export type AuthStackParamList = {
   Login: undefined;
   RegisterOptions: undefined;
   Register: undefined;
-  VerifyCode: { email: string; password: string };
-  CompanyInformation: undefined;
-  SendInvite: undefined;
-  AgencyInformation: undefined;
   ForgotPassword: undefined;
   ResetPassword: { email: string; token: string };
-  ChooseAuthLocation: { from: any };
+  RegisterBuyer: undefined;
+  RegisterContractor: undefined;
+  RegisterManager: undefined;
 };
 
 const Stack = createNativeStackNavigator<AuthStackParamList>();
@@ -48,19 +45,35 @@ export const AuthNavigator = () => {
       />
 
       <Stack.Screen
+        name="RegisterBuyer"
+        component={RegisterBuyer}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="RegisterContractor"
+        component={RegisterContractor}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="RegisterManager"
+        component={RegisterManager}
+        options={{
+          headerShown: false,
+        }}
+      />
+
+      <Stack.Screen
         name="Register"
         component={Register}
         options={{
           headerShown: false,
         }}
       />
-      <Stack.Screen
-        name="VerifyCode"
-        component={VerifyCode}
-        options={{
-          headerShown: false,
-        }}
-      />
+
       <Stack.Screen
         name="ForgotPassword"
         component={ForgotPassword}
@@ -71,34 +84,6 @@ export const AuthNavigator = () => {
       <Stack.Screen
         name="ResetPassword"
         component={ResetPassword}
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="CompanyInformation"
-        component={CompanyInformation}
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="SendInvite"
-        component={SendInvite}
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="AgencyInformation"
-        component={AgencyInformation}
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="ChooseAuthLocation"
-        component={ChooseLocation}
         options={{
           headerShown: false,
         }}
