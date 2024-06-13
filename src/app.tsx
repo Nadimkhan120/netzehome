@@ -1,21 +1,22 @@
+import { ActionSheetProvider } from '@expo/react-native-action-sheet';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { ThemeProvider } from '@shopify/restyle';
 import React, { useEffect } from 'react';
 import { StyleSheet } from 'react-native';
+import BootSplash from 'react-native-bootsplash';
 import FlashMessage from 'react-native-flash-message';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import BootSplash from 'react-native-bootsplash';
+import { KeyboardProvider } from 'react-native-keyboard-controller';
+import Toast from 'react-native-toast-message';
+
+import { AppOverlayLoader } from '@/components/overlay';
 import { useAppFonts } from '@/hooks';
 import { NavigationContainer, Root } from '@/navigation';
 import { APIProvider } from '@/services/api/api-provider';
 import { getToken } from '@/storage';
 import { login } from '@/store/auth';
 import { theme } from '@/theme';
-import { ActionSheetProvider } from '@expo/react-native-action-sheet';
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import { AppOverlayLoader } from '@/components/overlay';
-import Toast from 'react-native-toast-message';
-import { KeyboardProvider } from 'react-native-keyboard-controller';
 
 GoogleSignin.configure({
   offlineAccess: false, // if you want to access Google API on behalf of the user FROM YOUR SERVER

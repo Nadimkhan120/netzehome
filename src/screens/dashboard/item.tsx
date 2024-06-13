@@ -1,10 +1,11 @@
-import { icons } from '@/assets/icons';
-import { View, Text } from '@/ui';
 import { useNavigation } from '@react-navigation/native';
 import { Image } from 'expo-image';
 import React, { useCallback } from 'react';
 import { Pressable } from 'react-native';
 import CircularProgress from 'react-native-circular-progress-indicator';
+
+import { icons } from '@/assets/icons';
+import { Text, View } from '@/ui';
 
 type ItemProps = {
   item: any;
@@ -14,8 +15,8 @@ const Item = ({ item }: ItemProps) => {
   const { navigate } = useNavigation();
 
   const navigateToHouses = useCallback(() => {
-    navigate('Houses', { id: item });
-  }, [item]);
+    navigate('Houses', { id: item?.CommunityID });
+  }, [item, navigate]);
 
   return (
     <Pressable onPress={navigateToHouses}>
@@ -31,13 +32,16 @@ const Item = ({ item }: ItemProps) => {
       >
         <View flex={1} gap={'tiny'}>
           <Text variant={'medium16'} color={'black'}>
-            The Dawns
+            {item?.CommunityName}
           </Text>
           <Text variant={'medium16'} fontSize={32} color={'black'}>
-            45
+            0
           </Text>
           <View flexDirection={'row'} alignItems={'center'}>
-            <Image source={icons['star']} style={{ height: 19.52, width: 19.52 }} />
+            <Image
+              source={icons.star}
+              style={{ height: 19.52, width: 19.52, marginRight: 5 }}
+            />
             <Text variant={'medium12'} color={'black'}>
               4,9 (510 Reviews)
             </Text>
@@ -50,7 +54,7 @@ const Item = ({ item }: ItemProps) => {
             duration={2000}
             maxValue={100}
             titleColor={'black'}
-            value={85}
+            value={0}
             inActiveStrokeColor={'#2ecc71'}
             inActiveStrokeOpacity={0.2}
             progressValueColor={'black'}

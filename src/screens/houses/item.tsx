@@ -1,19 +1,26 @@
-import React, { useCallback } from 'react';
-import { Pressable } from 'react-native';
-import { icons } from '@/assets/icons';
-import { View, Text } from '@/ui';
+/* eslint-disable react-native/no-inline-styles */
 import { useNavigation } from '@react-navigation/native';
 import { Image } from 'expo-image';
+import React, { useCallback } from 'react';
+import { Pressable } from 'react-native';
+
+import { icons } from '@/assets/icons';
+import { Text, View } from '@/ui';
 
 type ItemProps = {
   item: any;
   index: any;
 };
 
-const Item = ({ item, index }: ItemProps) => {
+const Item = ({ item }: ItemProps) => {
   const { navigate } = useNavigation();
 
-  const navigateToHouses = useCallback(() => {}, [item]);
+  const navigateToHouses = useCallback(() => {
+    navigate('PredefinedWorks', {
+      id: item?.HouseID,
+      name: `${item?.HouseNumber} ${item?.StreetAddress}`,
+    });
+  }, [item, navigate]);
 
   const isEven = Math.random() < 0.5;
 
@@ -35,12 +42,12 @@ const Item = ({ item, index }: ItemProps) => {
           />
 
           <Text variant={'medium16'} paddingVertical={'medium'} color={'black'}>
-            Bungalow House
+            {item?.HouseNumber} {item?.StreetAddress}
           </Text>
 
           <View flexDirection={'row'} alignItems={'center'}>
             <View flexDirection={'row'} alignItems={'center'}>
-              <Image source={icons['star']} style={{ height: 9, width: 9 }} />
+              <Image source={icons.star} style={{ height: 9, width: 9 }} />
               <Text marginLeft={'xSmall'} variant={'medium12'} color={'black'}>
                 4,9
               </Text>
@@ -52,7 +59,7 @@ const Item = ({ item, index }: ItemProps) => {
               alignItems={'center'}
             >
               <Image
-                source={icons['pin']}
+                source={icons.pin}
                 contentFit="contain"
                 style={{ height: 9, width: 9 }}
               />
@@ -62,7 +69,7 @@ const Item = ({ item, index }: ItemProps) => {
                 variant={'regular10'}
                 color={'black'}
               >
-                Jakarta, Indonesia
+                {item?.City}, {item?.State}
               </Text>
             </View>
           </View>

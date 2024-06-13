@@ -1,20 +1,20 @@
-import React, { useMemo } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useNavigation } from '@react-navigation/native';
 import { useTheme } from '@shopify/restyle';
 import { Image } from 'expo-image';
+import React, { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { ScrollView, StyleSheet } from 'react-native';
 import { scale } from 'react-native-size-matters';
 import * as z from 'zod';
-import { icons } from '@/assets/icons';
-import { useCommunities, useHouses, useRegisterBuyer } from '@/services/api/auth/login';
 
-import type { Theme } from '@/theme';
-import { Button, ControlledInput, Screen, View, Text } from '@/ui';
-import { showErrorMessage, showSuccessMessage } from '@/utils';
-import { ScreenHeader } from '@/components/screen-header';
+import { icons } from '@/assets/icons';
 import SelectionBox from '@/components/drop-down';
+import { ScreenHeader } from '@/components/screen-header';
+import { useCommunities, useHouses, useRegisterBuyer } from '@/services/api/auth/login';
+import type { Theme } from '@/theme';
+import { Button, ControlledInput, Screen, Text, View } from '@/ui';
+import { showErrorMessage, showSuccessMessage } from '@/utils';
 
 const schema = z.object({
   email: z
@@ -55,6 +55,7 @@ const schema = z.object({
 });
 
 export type FormType = z.infer<typeof schema>;
+// eslint-disable-next-line max-lines-per-function
 const RegisterBuyer = () => {
   const { colors } = useTheme<Theme>();
   const { navigate } = useNavigation();
@@ -239,7 +240,7 @@ const RegisterBuyer = () => {
             control={control}
             name="password"
             leftIcon={
-              <Image source={icons['lock']} style={styles.icon} contentFit="contain" />
+              <Image source={icons.lock} style={styles.icon} contentFit="contain" />
             }
           />
         </View>

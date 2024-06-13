@@ -1,22 +1,17 @@
-import React, { useCallback } from 'react';
-import { View, Screen, Text } from '@/ui';
-import { Header } from './header';
-import type { Theme } from '@/theme';
+/* eslint-disable react-native/no-inline-styles */
+import { useRoute } from '@react-navigation/native';
 import { useTheme } from '@shopify/restyle';
-import { FlatList, StyleSheet, Dimensions } from 'react-native';
+import React, { useCallback, useMemo } from 'react';
+import { FlatList, StyleSheet } from 'react-native';
+
+import { useHouses } from '@/services/api/auth/login';
+import type { Theme } from '@/theme';
+import { Screen, Text, View } from '@/ui';
+
+import { Header } from './header';
 import Item from './item';
 
 const numColumns = 2;
-
-const data = [
-  { key: 'Item 1' },
-  { key: 'Item 2' },
-  { key: 'Item 3' },
-  { key: 'Item 4' },
-  { key: 'Item 5' },
-  { key: 'Item 6' },
-  { key: 'Item 6' },
-];
 
 const formatData = (data, numColumns) => {
   const numberOfFullRows = Math.floor(data.length / numColumns);
@@ -32,6 +27,8 @@ const formatData = (data, numColumns) => {
 
 const Houses = () => {
   const { colors } = useTheme<Theme>();
+  const { params } = useRoute();
+  const { data: houses } = useHouses();
 
   const renderItem = useCallback(({ item, index }) => {
     if (item.empty === true) {
@@ -41,9 +38,15 @@ const Houses = () => {
     return <Item item={item} index={index} />;
   }, []);
 
-  const itemSeparatorComponent = useCallback(() => {
-    return <View height={10}></View>;
-  }, []);
+  // @ts-ignore
+  const communityId = params?.id;
+
+  const filteredHouses = useMemo(() => {
+    let newHouses =
+      houses?.filter((element) => element?.CommunityID === communityId) ?? [];
+
+    return newHouses;
+  }, [communityId, houses]);
 
   return (
     <Screen backgroundColor={colors.white} edges={['top']}>
@@ -53,18 +56,26 @@ const Houses = () => {
           contentContainerStyle={{
             paddingHorizontal: 16,
             paddingTop: 16,
+            paddingBottom: 44,
           }}
-          data={formatData(data, numColumns)}
+          data={formatData(filteredHouses, numColumns)}
           numColumns={2}
           renderItem={renderItem}
           keyExtractor={(item, index) => index?.toString()}
-          ListHeaderComponent={
-            <View paddingBottom={'medium'} flexDirection={'row'}>
-              <Text variant={'medium17'}>Found</Text>
-              <Text variant={'semiBold17'} marginLeft={'small'}>
-                128
-              </Text>
+          ListEmptyComponent={
+            <View height={300} alignItems={'center'} justifyContent={'center'}>
+              <Text variant={'medium17'}> No Houses Found</Text>
             </View>
+          }
+          ListHeaderComponent={
+            filteredHouses?.length ? (
+              <View paddingBottom={'medium'} flexDirection={'row'}>
+                <Text variant={'medium17'}>Found</Text>
+                <Text variant={'semiBold17'} marginLeft={'small'}>
+                  {filteredHouses?.length}
+                </Text>
+              </View>
+            ) : null
           }
         />
       </View>

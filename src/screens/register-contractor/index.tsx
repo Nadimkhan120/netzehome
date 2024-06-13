@@ -1,23 +1,24 @@
-import React, { useState } from 'react';
+import { useActionSheet } from '@expo/react-native-action-sheet';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useNavigation } from '@react-navigation/native';
 import { useTheme } from '@shopify/restyle';
 import { Image } from 'expo-image';
+import * as ImagePicker from 'expo-image-picker';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Platform, StyleSheet } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
+import * as mime from 'react-native-mime-types';
 import { scale } from 'react-native-size-matters';
 import * as z from 'zod';
+
 import { icons } from '@/assets/icons';
+import SelectionBox from '@/components/drop-down';
+import { ScreenHeader } from '@/components/screen-header';
 import { useContractorTypes, useRegisterContractor } from '@/services/api/auth/login';
 import type { Theme } from '@/theme';
 import { Button, ControlledInput, PressableScale, Screen, Text, View } from '@/ui';
 import { showErrorMessage, showSuccessMessage } from '@/utils';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
-import { useActionSheet } from '@expo/react-native-action-sheet';
-import { ScreenHeader } from '@/components/screen-header';
-import SelectionBox from '@/components/drop-down';
-import * as ImagePicker from 'expo-image-picker';
-import * as mime from 'react-native-mime-types';
 
 const schema = z.object({
   email: z
@@ -77,6 +78,7 @@ function generateFileName(metadata) {
   return `Image_${width}x${height}_${fileSize}.jpg`;
 }
 
+// eslint-disable-next-line max-lines-per-function
 const RegisterContractor = () => {
   const { colors } = useTheme<Theme>();
   const { navigate } = useNavigation();
@@ -89,6 +91,11 @@ const RegisterContractor = () => {
 
   const { showActionSheetWithOptions } = useActionSheet();
 
+  const [cameraPermissionStatus, requestCameraPermission] =
+    ImagePicker.useCameraPermissions();
+  const [galleryPermission, requestGallaryPermission] =
+    ImagePicker.useMediaLibraryPermissions();
+
   const {
     handleSubmit,
     control,
@@ -98,6 +105,15 @@ const RegisterContractor = () => {
   } = useForm<FormType>({
     resolver: zodResolver(schema),
   });
+
+  useEffect(() => {
+    if (!cameraPermissionStatus?.granted) {
+      requestCameraPermission();
+    }
+    if (!galleryPermission?.granted) {
+      requestGallaryPermission();
+    }
+  }, []);
 
   const onSubmit = (data: FormType) => {
     const imageData = new FormData();

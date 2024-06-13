@@ -54,6 +54,16 @@ export const icons = {
   moon: require('../images/moon.png'),
   lock2: require('../images/lock2.png'),
   star: require('../images/star.png'),
+
+  // work icons
+
+  'work-1': require('../work/work-1.png'),
+  'work-2': require('../work/work-2.png'),
+  'work-3': require('../work/work-3.png'),
+  'work-4': require('../work/work-4.png'),
+  'work-5': require('../work/work-5.png'),
+  'placeholder-image': require('../images/placeholder-image.png'),
+  image: require('../images/image.png'),
 };
 
 export type IconTypes = keyof typeof icons;

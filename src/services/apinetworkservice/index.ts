@@ -28,8 +28,6 @@ function Request(config: ParamsNetwork) {
     Authorization: 'Bearer ' + token ?? '',
   };
 
-  console.log('headers', headers);
-
   const defaultConfig: AxiosRequestConfig = {
     baseURL: BaseConfig.API_URL,
     timeout: TIME_OUT,
