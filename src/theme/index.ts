@@ -62,6 +62,7 @@ export const theme = createTheme({
     cardLight: palette.cardLight,
     cardGrey: palette.cardGrey,
     cardGreyLight: palette.cardGreyLight,
+    newGrey: '#F5F5F7',
   },
   spacing: {
     tiny: scale(2),
@@ -293,5 +294,6 @@ export const darkTheme: Theme = {
     cardLight: palette.cardLight,
     cardGrey: palette.cardGrey,
     cardGreyLight: palette.cardGreyLight,
+    newGrey: '#F5F5F7',
   },
 };

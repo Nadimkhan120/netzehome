@@ -53,6 +53,10 @@ type Variables2 = void;
 type Variables3 = { houseId: any };
 type Variables4 = { projectId: any };
 type Variables5 = { workId: any };
+type Variables6 = { userId: any };
+type Variables7 = { workId: any; ProjectManagerId: any };
+type Variables8 = { workIdItemId: any; formData: any };
+type Variables9 = { workIdItemId: any };
 
 type Response = any;
 
@@ -202,4 +206,61 @@ export const useWorksWithWorkId = createQuery<Response, Variables5, AxiosError>(
       //@ts-ignore
     }).then((response) => response.data);
   },
+});
+
+export const useUserWithUserId = createQuery<Response, Variables6, AxiosError>({
+  primaryKey: 'users',
+  queryFn: ({ queryKey: [primaryKey, variables] }) => {
+    return NetWorkService.Get({
+      url: `${primaryKey}/${variables?.userId}`,
+      //@ts-ignore
+    }).then((response) => response.data);
+  },
+});
+
+export const useStartStatus = createMutation<Response, Variables7, AxiosError>({
+  mutationFn: async (variables) =>
+    NetWorkService.Patch({
+      url: `workitems/${variables?.workId}/start`,
+      body: {
+        ProjectManagerId: variables?.ProjectManagerId,
+      },
+      // @ts-ignore
+    }).then((response) => response?.data),
+});
+
+export const useUploadWorkImages = createMutation<Response, Variables8, AxiosError>({
+  mutationFn: async (variables) => {
+    let headers = {
+      'Content-Type': 'multipart/form-data',
+    };
+
+    return NetWorkService.Patch({
+      headers: headers,
+      url: `workitems/${variables?.workIdItemId}/contractorupload`,
+      body: variables.formData,
+
+      // @ts-ignore
+    }).then((response) => response?.data);
+  },
+});
+
+export const useWorkDone = createMutation<Response, Variables9, AxiosError>({
+  mutationFn: async (variables) =>
+    NetWorkService.Patch({
+      url: `workitems/${variables?.workIdItemId}/markdone`,
+      // body: {
+      //   ProjectManagerId: variables?.ProjectManagerId,
+      // },
+      // @ts-ignore
+    }).then((response) => response?.data),
+});
+
+export const useRejectStatus = createMutation<Response, Variables9, AxiosError>({
+  mutationFn: async (variables) =>
+    NetWorkService.Patch({
+      url: `workitems/${variables?.workIdItemId}/reject`,
+
+      // @ts-ignore
+    }).then((response) => response?.data),
 });

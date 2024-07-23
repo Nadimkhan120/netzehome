@@ -25,8 +25,6 @@ const Dashboard = () => {
     return <View height={10} />;
   }, []);
 
-  console.log('data', JSON.stringify(data, null, 2));
-
   return (
     <AppDrawer>
       <Screen backgroundColor={colors.white}>

@@ -12,7 +12,7 @@ import { Screen, View } from '@/ui';
 
 import Item from './item';
 
-const SubProcesses = () => {
+const InternalInspections = () => {
   const { colors } = useTheme<Theme>();
 
   const route = useRoute<any>();
@@ -42,9 +42,11 @@ const SubProcesses = () => {
     );
   };
 
+  console.log('data', JSON.stringify(data, null, 2));
+
   return (
     <Screen backgroundColor={colors.white}>
-      <ScreenHeader title="Sub-Processes" />
+      <ScreenHeader title="Inspections" />
       <View flex={1}>
         {isLoading ? (
           renderLoading()
@@ -66,11 +68,11 @@ const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 16,
     paddingVertical: 20,
-    backgroundColor: '#F5F5F7',
+    // backgroundColor: '#F5F5F7',
     marginHorizontal: 16,
     marginVertical: 24,
     borderRadius: 16,
   },
 });
 
-export default SubProcesses;
+export default InternalInspections;

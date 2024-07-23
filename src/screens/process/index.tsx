@@ -7,6 +7,7 @@ import { Theme } from '@/theme';
 import { Screen, View } from '@/ui';
 
 import Item from './item';
+import { useRoute } from '@react-navigation/native';
 
 const numColumns = 2;
 
@@ -36,13 +37,19 @@ const formatData = (data, numColumns) => {
 const Processes = () => {
   const { colors } = useTheme<Theme>();
 
-  const renderItem = useCallback(({ item, index }) => {
-    if (item.empty === true) {
-      return <View style={[styles.item, styles.itemInvisible]} />;
-    }
+  const route = useRoute();
 
-    return <Item item={item} index={index} />;
-  }, []);
+  const renderItem = useCallback(
+    ({ item, index }) => {
+      if (item.empty === true) {
+        return <View style={[styles.item, styles.itemInvisible]} />;
+      }
+
+      // @ts-ignore
+      return <Item item={item} index={index} workId={route?.params?.id} />;
+    },
+    [route]
+  );
 
   return (
     <Screen backgroundColor={colors.white} edges={['top']}>

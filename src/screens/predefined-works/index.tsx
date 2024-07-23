@@ -28,11 +28,7 @@ const PredefinedWorks = () => {
     },
   });
 
-  const {
-    // isLoading: loading2,
-    data: works,
-    // error: workError,
-  } = useWorksWithProjectId({
+  const { isLoading: loading2, data: works } = useWorksWithProjectId({
     enabled: data && data[0] && data[0]?.ProjectID ? true : false,
     variables: {
       projectId: data && data[0] && data[0]?.ProjectID,
@@ -55,16 +51,13 @@ const PredefinedWorks = () => {
     );
   };
 
-  // console.log('data', JSON.stringify(data, null, 2));
-  // console.log('erorr', error?.response?.data);
-  //console.log('workError', workError?.response?.data);
-  console.log('works', JSON.stringify(works, null, 2));
-
   return (
     <Screen backgroundColor={colors.white} edges={['top']}>
       <ScreenHeader title={params?.name} />
       <View flex={1}>
-        {isLoading ? (
+        {(isLoading || loading2) &&
+        // @ts-ignore
+        !error?.response?.data?.message ? (
           renderLoading()
         ) : (
           <FlatList

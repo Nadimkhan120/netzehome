@@ -9,6 +9,7 @@ import { Text, View } from '@/ui';
 type ItemProps = {
   item: any;
   index: any;
+  workId: any;
 };
 
 const COLORS = [
@@ -44,16 +45,19 @@ const ICON_COLORS = [
   '#EEC6AA',
 ];
 
-const Item = ({ item, index }: ItemProps) => {
+const Item = ({ item, index, workId }: ItemProps) => {
   const { navigate } = useNavigation();
 
   const navigateToHouses = useCallback(() => {
     // navigate('SubProcesses', { id: });
 
-    if (item?.id) {
-      navigate('SubProcesses', { id: 1 });
+    if (item?.id === 1) {
+      navigate('SubProcesses', { id: workId });
     }
-  }, [navigate, item]);
+    if (item?.id === 5) {
+      navigate('InternalInspections', { id: workId });
+    }
+  }, [navigate, item, workId]);
 
   return (
     // eslint-disable-next-line react-native/no-inline-styles

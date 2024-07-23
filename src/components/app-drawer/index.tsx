@@ -1,14 +1,18 @@
+/* eslint-disable react-native/no-inline-styles */
+import { useNavigation } from '@react-navigation/native';
+import { Image } from 'expo-image';
 import * as React from 'react';
 import { Dimensions } from 'react-native';
 import { Drawer } from 'react-native-drawer-layout';
+
 import { icons } from '@/assets/icons';
+import { useUserWithUserId } from '@/services/api/auth/login';
 import { closeDrawer, openDrawer, toggleDrawer, useApp } from '@/store/app';
+import { logOut } from '@/store/auth';
 import { useUser } from '@/store/user';
 import { Button, PressableScale, Screen, Text, View } from '@/ui';
+
 import { Avatar } from '../avatar';
-import { useNavigation } from '@react-navigation/native';
-import { Image } from 'expo-image';
-import { logOut } from '@/store/auth';
 
 const { width } = Dimensions.get('screen');
 
@@ -16,11 +20,19 @@ type AppDrawer = {
   children: React.ReactNode;
 };
 
+// eslint-disable-next-line max-lines-per-function
 export function AppDrawer({ children }: AppDrawer) {
   const { navigate } = useNavigation();
 
   const drawerStatus = useApp((state) => state.drawerStatus);
-  const user = useUser((state) => state?.profile);
+  const user = useUser((state) => state?.user);
+
+  const { data } = useUserWithUserId({
+    enabled: user?.UserID ? true : false,
+    variables: {
+      userId: user?.UserID,
+    },
+  });
 
   return (
     <Drawer
@@ -28,6 +40,7 @@ export function AppDrawer({ children }: AppDrawer) {
       onOpen={openDrawer}
       onClose={closeDrawer}
       drawerStyle={{ width: width * 0.8 }}
+      // eslint-disable-next-line max-lines-per-function
       renderDrawerContent={() => {
         return (
           <Screen>
@@ -57,7 +70,7 @@ export function AppDrawer({ children }: AppDrawer) {
                     numberOfLines={2}
                     maxWidth={200}
                   >
-                    {'Nadeem Khan'} 👋
+                    {data?.FirstName} {data?.LastName} 👋
                   </Text>
                 </View>
               </View>
@@ -87,7 +100,7 @@ export function AppDrawer({ children }: AppDrawer) {
                       backgroundColor: '#FFEBF0',
                     }}
                   >
-                    <Image source={icons['lock2']} style={{ height: 24, width: 24 }} />
+                    <Image source={icons.lock2} style={{ height: 24, width: 24 }} />
                   </View>
                   <Text variant={'medium12'} fontSize={16} marginLeft={'medium'}>
                     Change Password
@@ -116,7 +129,7 @@ export function AppDrawer({ children }: AppDrawer) {
                     }}
                   >
                     <Image
-                      source={icons['moon']}
+                      source={icons.moon}
                       contentFit="contain"
                       style={{ height: 24, width: 24 }}
                     />
@@ -131,7 +144,13 @@ export function AppDrawer({ children }: AppDrawer) {
 
               <View flex={1} paddingBottom={'large'} justifyContent={'flex-end'}>
                 <View paddingHorizontal={'large'}>
-                  <Button label="Logout" onPress={() => logOut()} />
+                  <Button
+                    label="Logout"
+                    onPress={() => {
+                      logOut();
+                      closeDrawer();
+                    }}
+                  />
                 </View>
               </View>
             </View>

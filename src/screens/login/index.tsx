@@ -1,21 +1,23 @@
-import React from 'react';
+/* eslint-disable react-native/no-inline-styles */
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useNavigation } from '@react-navigation/native';
 import { useTheme } from '@shopify/restyle';
 import { Image } from 'expo-image';
+import React from 'react';
 import { useForm } from 'react-hook-form';
 import { ScrollView, StyleSheet } from 'react-native';
 import { scale } from 'react-native-size-matters';
 import * as z from 'zod';
+
 import { icons } from '@/assets/icons';
+import { ScreenHeader } from '@/components/screen-header';
+// import SocialButton from '@/components/social-button';
 import { useLogin } from '@/services/api/auth/login';
 import { login } from '@/store/auth';
+import { setUserData } from '@/store/user';
 import type { Theme } from '@/theme';
 import { Button, ControlledInput, PressableScale, Screen, Text, View } from '@/ui';
 import { showErrorMessage } from '@/utils';
-
-import { ScreenHeader } from '@/components/screen-header';
-import SocialButton from '@/components/social-button';
 
 const schema = z.object({
   email: z
@@ -32,6 +34,7 @@ const schema = z.object({
 
 export type FormType = z.infer<typeof schema>;
 
+// eslint-disable-next-line max-lines-per-function
 export const Login = () => {
   const { colors } = useTheme<Theme>();
   const { navigate } = useNavigation();
@@ -47,10 +50,11 @@ export const Login = () => {
       { Email: data?.email, Password: data?.password },
       {
         onSuccess: (data: any) => {
-          //console.log('data', JSON.stringify(data, null, 2));
+          console.log('data', JSON.stringify(data, null, 2));
 
           if (data?.token) {
             login(data?.token);
+            setUserData(data);
           } else {
             showErrorMessage('Error while login');
           }
@@ -76,7 +80,7 @@ export const Login = () => {
             control={control}
             name="email"
             leftIcon={
-              <Image source={icons['sms']} style={styles.icon} contentFit="contain" />
+              <Image source={icons.sms} style={styles.icon} contentFit="contain" />
             }
           />
 
@@ -87,7 +91,7 @@ export const Login = () => {
             control={control}
             name="password"
             leftIcon={
-              <Image source={icons['lock']} style={styles.icon} contentFit="contain" />
+              <Image source={icons.lock} style={styles.icon} contentFit="contain" />
             }
           />
           <View alignSelf={'flex-end'}>

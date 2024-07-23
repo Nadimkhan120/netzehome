@@ -1,3 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable dot-notation */
+/* eslint-disable @typescript-eslint/no-shadow */
+/* eslint-disable react-native/no-inline-styles */
 import { useActionSheet } from '@expo/react-native-action-sheet';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useNavigation } from '@react-navigation/native';
@@ -373,7 +377,7 @@ const RegisterContractor = () => {
             name="businessInsurance"
             editable={false}
             leftIcon={
-              <Image source={icons['case']} style={styles.icon} contentFit="contain" />
+              <Image source={icons.case} style={styles.icon} contentFit="contain" />
             }
             icon={
               <PressableScale onPress={() => showImageOptions({ picType: 'insurance' })}>

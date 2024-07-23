@@ -4,6 +4,7 @@ import * as React from 'react';
 import { ChangePassword } from '@/screens/change-password';
 import Dashboard from '@/screens/dashboard';
 import Houses from '@/screens/houses';
+import InternalInspections from '@/screens/internal-inspections';
 import PredefinedWorks from '@/screens/predefined-works';
 import Processes from '@/screens/process';
 import SubProcesses from '@/screens/sub-process';
@@ -17,6 +18,7 @@ export type AppStackParamList = {
   Processes: { id: number };
   UploadImages: { id: number };
   SubProcesses: { id: number };
+  InternalInspections: { id: number };
 };
 
 const Stack = createNativeStackNavigator<AppStackParamList>();
@@ -35,6 +37,7 @@ export const AppNavigator = () => {
         <Stack.Screen name="Processes" component={Processes} />
         <Stack.Screen name="UploadImages" component={UploadImages} />
         <Stack.Screen name="SubProcesses" component={SubProcesses} />
+        <Stack.Screen name="InternalInspections" component={InternalInspections} />
         <Stack.Screen name="ChangePassword" component={ChangePassword} />
       </Stack.Group>
     </Stack.Navigator>

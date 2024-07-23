@@ -4,8 +4,9 @@ import { useTheme } from '@shopify/restyle';
 import React, { useCallback, useMemo } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
 
+import ActivityIndicator from '@/components/activity-indicator';
 import { useHouses } from '@/services/api/auth/login';
-import type { Theme } from '@/theme';
+import { palette, type Theme } from '@/theme';
 import { Screen, Text, View } from '@/ui';
 
 import { Header } from './header';
@@ -28,7 +29,7 @@ const formatData = (data, numColumns) => {
 const Houses = () => {
   const { colors } = useTheme<Theme>();
   const { params } = useRoute();
-  const { data: houses } = useHouses();
+  const { data: houses, isLoading } = useHouses();
 
   const renderItem = useCallback(({ item, index }) => {
     if (item.empty === true) {
@@ -48,36 +49,48 @@ const Houses = () => {
     return newHouses;
   }, [communityId, houses]);
 
+  const renderLoading = () => {
+    return (
+      <View flex={1} alignItems={'center'} justifyContent={'center'}>
+        <ActivityIndicator size={'large'} color={palette.primary} />
+      </View>
+    );
+  };
+
   return (
     <Screen backgroundColor={colors.white} edges={['top']}>
       <Header title="Houses" />
       <View flex={1}>
-        <FlatList
-          contentContainerStyle={{
-            paddingHorizontal: 16,
-            paddingTop: 16,
-            paddingBottom: 44,
-          }}
-          data={formatData(filteredHouses, numColumns)}
-          numColumns={2}
-          renderItem={renderItem}
-          keyExtractor={(item, index) => index?.toString()}
-          ListEmptyComponent={
-            <View height={300} alignItems={'center'} justifyContent={'center'}>
-              <Text variant={'medium17'}> No Houses Found</Text>
-            </View>
-          }
-          ListHeaderComponent={
-            filteredHouses?.length ? (
-              <View paddingBottom={'medium'} flexDirection={'row'}>
-                <Text variant={'medium17'}>Found</Text>
-                <Text variant={'semiBold17'} marginLeft={'small'}>
-                  {filteredHouses?.length}
-                </Text>
+        {isLoading ? (
+          renderLoading()
+        ) : (
+          <FlatList
+            contentContainerStyle={{
+              paddingHorizontal: 16,
+              paddingTop: 16,
+              paddingBottom: 44,
+            }}
+            data={formatData(filteredHouses, numColumns)}
+            numColumns={2}
+            renderItem={renderItem}
+            keyExtractor={(item, index) => index?.toString()}
+            ListEmptyComponent={
+              <View height={300} alignItems={'center'} justifyContent={'center'}>
+                <Text variant={'medium17'}> No Houses Found</Text>
               </View>
-            ) : null
-          }
-        />
+            }
+            ListHeaderComponent={
+              filteredHouses?.length ? (
+                <View paddingBottom={'medium'} flexDirection={'row'}>
+                  <Text variant={'medium17'}>Found</Text>
+                  <Text variant={'semiBold17'} marginLeft={'small'}>
+                    {filteredHouses?.length}
+                  </Text>
+                </View>
+              ) : null
+            }
+          />
+        )}
       </View>
     </Screen>
   );
